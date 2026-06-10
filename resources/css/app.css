@@ -449,26 +449,26 @@ html, body, .shell, .frame, .bolinao-hero, .bolinao-card {
     .package-detail-stats {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+}
 
-    @media (max-width: 1024px) {
-        .package-detail-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .package-detail-media {
-            max-height: 22rem;
-        }
+@media (max-width: 1024px) {
+    .package-detail-grid {
+        grid-template-columns: 1fr;
     }
 
-    @media (max-width: 680px) {
-        .package-detail-summary,
-        .package-detail-panel {
-            padding: 1.2rem;
-        }
+    .package-detail-media {
+        max-height: 22rem;
+    }
+}
 
-        .package-detail-section-heading h2 {
-            font-size: 1.35rem;
-        }
+@media (max-width: 680px) {
+    .package-detail-summary,
+    .package-detail-panel {
+        padding: 1.2rem;
+    }
+
+    .package-detail-section-heading h2 {
+        font-size: 1.35rem;
     }
 }
 
