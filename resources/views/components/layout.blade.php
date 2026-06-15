@@ -10,7 +10,9 @@
         $viteJs = public_path('build/assets/app.js');
     @endphp
     @php
-        $asset = request()->secure() ? secure_asset : asset;
+        $asset = request()->secure()
+            ? fn ($path) => secure_asset($path)
+            : fn ($path) => asset($path);
     @endphp
     @if (file_exists($viteCss))
         <link rel="stylesheet" href="{{ $asset('build/assets/app.css') }}">
