@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,6 +25,10 @@ class AppServiceProvider extends ServiceProvider
     {
         $forceDebug = env('FORCE_APP_DEBUG', 'false') === 'true';
         $localMode = App::environment('local') || $forceDebug;
+
+        if (! $localMode) {
+            URL::forceScheme('https');
+        }
 
         if (! $localMode) {
             return;
