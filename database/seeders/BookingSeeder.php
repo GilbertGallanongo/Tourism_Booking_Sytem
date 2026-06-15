@@ -25,16 +25,16 @@ class BookingSeeder extends Seeder
             return;
         }
 
-        // Past bookings (completed)
-        $this->createPastBooking($tourist, $packages[0], '2025-12-15', 'completed');
-        $this->createPastBooking($juan, $packages[1], '2025-11-20', 'completed');
+        // Past bookings (mapped to 'confirmed' for DB compatibility)
+        $this->createPastBooking($tourist, $packages[0], '2025-12-15', 'confirmed');
+        $this->createPastBooking($juan, $packages[1], '2025-11-20', 'confirmed');
         $this->createPastBooking($tourist, $packages[2], '2025-10-10', 'cancelled', 'Emergency cancellation');
-        $this->createPastBooking($juan, $packages[3], '2025-09-05', 'completed');
-        $this->createPastBooking($tourist, $packages[4], '2025-08-15', 'completed');
+        $this->createPastBooking($juan, $packages[3], '2025-09-05', 'confirmed');
+        $this->createPastBooking($tourist, $packages[4], '2025-08-15', 'confirmed');
 
         // Recent past (last 30 days)
-        $this->createPastBooking($juan, $packages[0], now()->subDays(25)->toDateString(), 'completed');
-        $this->createPastBooking($tourist, $packages[1], now()->subDays(15)->toDateString(), 'completed');
+        $this->createPastBooking($juan, $packages[0], now()->subDays(25)->toDateString(), 'confirmed');
+        $this->createPastBooking($tourist, $packages[1], now()->subDays(15)->toDateString(), 'confirmed');
         $this->createPastBooking($juan, $packages[2], now()->subDays(10)->toDateString(), 'cancelled', 'Schedule conflict');
 
         // Current month bookings
