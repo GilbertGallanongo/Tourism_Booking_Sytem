@@ -1,0 +1,13 @@
+node_modules/
+.git
+.github
+tests/
+storage/logs/*
+bootstrap/cache/*
+.env.example
+.editorconfig
+.gitattributes
+.gitignore
+phpunit.xml
+README.md
+RAILWAY_DEPLOYMENT.md

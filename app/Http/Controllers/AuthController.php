@@ -32,39 +32,36 @@ class AuthController extends Controller
 
     public function loginTourist(Request $request): JsonResponse|RedirectResponse
     {
-        return $this->authenticate($request, 'tourist', route('home'));
-    }
-
-    public function loginAdmin(Request $request): JsonResponse|RedirectResponse
-    {
-        return $this->authenticateAdmin($request, route('admin.dashboard'));
-    }
-
-    private function authenticate(
-        Request $request,
-        string $role,
-        string $redirectTo
-    ): JsonResponse|RedirectResponse {
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required', 'string'],
         ]);
 
-        $user = User::query()
-            ->where('email', $credentials['email'])
-            ->first();
+        $remember = $request->boolean('remember');
 
-        if (
-            ! $user
-            || $user->role !== $role
-            || ! $this->passwordMatches($credentials['password'], $user->password)
-        ) {
+        // Check if user account exists
+        $user = User::where('email', $credentials['email'])->first();
+        if (! $user) {
+            throw ValidationException::withMessages([
+                'email' => 'No user account found with this email address.',
+            ]);
+        }
+
+        if (! Auth::guard('web')->attempt($credentials, $remember)) {
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
             ]);
         }
 
-        Auth::login($user, $request->boolean('remember'));
+        $user = Auth::guard('web')->user();
+
+        if (! $user || $user->role !== 'tourist') {
+            Auth::guard('web')->logout();
+
+            throw ValidationException::withMessages([
+                'email' => __('auth.failed'),
+            ]);
+        }
 
         $request->session()->regenerate();
 
@@ -75,49 +72,41 @@ class AuthController extends Controller
             ]);
         }
 
-        return redirect()->intended($redirectTo);
+        return redirect()->intended(route('home'));
     }
 
-    private function authenticateAdmin(Request $request, string $redirectTo): JsonResponse|RedirectResponse
+    public function loginAdmin(Request $request): JsonResponse|RedirectResponse
     {
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required', 'string'],
         ]);
 
-        $user = User::query()
-            ->where('email', $credentials['email'])
-            ->where('role', 'admin')
-            ->first();
+        $remember = $request->boolean('remember');
 
-        if ($user && $this->passwordMatches($credentials['password'], $user->password)) {
-            Auth::login($user, $request->boolean('remember'));
-            $request->session()->regenerate();
-
-            if ($request->expectsJson()) {
-                return response()->json([
-                    'message' => 'Logged in successfully.',
-                    'user' => $user,
-                ]);
-            }
-
-            return redirect()->intended($redirectTo);
+        // Check if admin account exists
+        $admin = Admin::where('email', $credentials['email'])->first();
+        if (! $admin) {
+            throw ValidationException::withMessages([
+                'email' => 'No admin account found with this email address.',
+            ]);
         }
 
-        $admin = Admin::query()
-            ->where('email', $credentials['email'])
-            ->first();
-
-        if (
-            ! $admin
-            || ! $this->passwordMatches($credentials['password'], $admin->password)
-        ) {
+        if (! Auth::guard('admin')->attempt($credentials, $remember)) {
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
             ]);
         }
 
-        Auth::guard('admin')->login($admin, $request->boolean('remember'));
+        $admin = Auth::guard('admin')->user();
+
+        if (! $admin || $admin->role !== 'admin') {
+            Auth::guard('admin')->logout();
+
+            throw ValidationException::withMessages([
+                'email' => __('auth.failed'),
+            ]);
+        }
 
         $request->session()->regenerate();
 
@@ -128,7 +117,7 @@ class AuthController extends Controller
             ]);
         }
 
-        return redirect()->intended($redirectTo);
+        return redirect()->intended(route('admin.dashboard'));
     }
 
     public function register(Request $request): JsonResponse|RedirectResponse

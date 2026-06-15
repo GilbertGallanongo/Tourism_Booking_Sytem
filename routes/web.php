@@ -22,16 +22,19 @@ Route::get('/health', function () {
 use App\Http\Controllers\DiagnosticsController;
 Route::get('/_diagnostics', [DiagnosticsController::class, 'status'])->name('diagnostics.status');
 
-Route::middleware('guest')->group(function () {
+Route::middleware('guest:web')->group(function () {
     // Keep a lightweight GET route for legacy '/login' links.
     Route::get('/login', function () { return redirect()->route('home', ['auth' => 'signin']); })->name('login');
     Route::get('/register', function () { return redirect()->route('home', ['auth' => 'register']); });
 
     Route::post('/login', [AuthController::class, 'loginTourist'])->name('login.store');
-    Route::get('/admin/login', [AuthController::class, 'showAdminLoginForm'])->name('admin.login');
-    Route::post('/admin/login', [AuthController::class, 'loginAdmin'])->name('admin.login.store');
     Route::post('/guest-login', [AuthController::class, 'guestLogin'])->name('guest.login');
     Route::post('/register', [AuthController::class, 'register'])->name('register');
+});
+
+Route::middleware('guest:admin')->group(function () {
+    Route::get('/admin/login', [AuthController::class, 'showAdminLoginForm'])->name('admin.login');
+    Route::post('/admin/login', [AuthController::class, 'loginAdmin'])->name('admin.login.store');
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])

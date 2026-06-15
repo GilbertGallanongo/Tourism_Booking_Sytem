@@ -14,19 +14,6 @@
     <script>
         // Global button enhancement for immediate response
         document.addEventListener('DOMContentLoaded', function() {
-            // Password visibility toggle
-            const passwordToggles = document.querySelectorAll('.password-toggle');
-            passwordToggles.forEach(toggle => {
-                toggle.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const input = this.parentElement.querySelector('input[type=\"password\"], input[type=\"text\"]');
-                    if (input) {
-                        const isPassword = input.type === 'password';
-                        input.type = isPassword ? 'text' : 'password';
-                        this.classList.toggle('active', !isPassword);
-                    }
-                });
-            });
 
             // Enhance all buttons with immediate feedback
             const buttons = document.querySelectorAll('button, .btn, .btn-primary, .btn-secondary, .navbtn, .bolinao-button');
@@ -182,12 +169,7 @@
 
                     <div class="auth-group">
                         <label for="modal-login-password">Password</label>
-                        <div class="password-input-wrapper">
-                            <input id="modal-login-password" name="password" type="password" placeholder="Password" class="auth-input" required />
-                            <button type="button" class="password-toggle" aria-label="Toggle password visibility">
-                                <svg class="eye-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                            </button>
-                        </div>
+                        <input id="modal-login-password" name="password" type="password" placeholder="Password" class="auth-input" required />
                     </div>
 
                     <label class="remember-row">
@@ -238,22 +220,12 @@
 
                     <div class="auth-group">
                         <label for="modal-register-password">Password</label>
-                        <div class="password-input-wrapper">
-                            <input id="modal-register-password" name="password" type="password" placeholder="Password" class="auth-input" required />
-                            <button type="button" class="password-toggle" aria-label="Toggle password visibility">
-                                <svg class="eye-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                            </button>
-                        </div>
+                        <input id="modal-register-password" name="password" type="password" placeholder="Password" class="auth-input" required />
                     </div>
 
                     <div class="auth-group">
                         <label for="modal-register-password-confirm">Confirm Password</label>
-                        <div class="password-input-wrapper">
-                            <input id="modal-register-password-confirm" name="password_confirmation" type="password" placeholder="Confirm Password" class="auth-input" required />
-                            <button type="button" class="password-toggle" aria-label="Toggle password visibility">
-                                <svg class="eye-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                            </button>
-                        </div>
+                        <input id="modal-register-password-confirm" name="password_confirmation" type="password" placeholder="Confirm Password" class="auth-input" required />
                     </div>
 
                     <button type="submit" class="btn-primary">Create Account</button>

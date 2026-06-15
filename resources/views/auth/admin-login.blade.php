@@ -22,18 +22,13 @@
 
             <div class="auth-group">
                 <label for="email">Email Address</label>
-                <input id="email" name="email" type="email" value="{{ old('email') }}" placeholder="admin@tourph.com" class="auth-input" required autocomplete="email" />
+                <input id="email" name="email" type="email" value="{{ old('email') }}" placeholder="name@example.com" class="auth-input" required autocomplete="email" />
                 @error('email')<p class="error-text">{{ $message }}</p>@enderror
             </div>
 
             <div class="auth-group">
                 <label for="password">Password</label>
-                <div class="password-input-wrapper">
-                    <input id="password" name="password" type="password" placeholder="••••••••" class="auth-input" required autocomplete="current-password" />
-                    <button type="button" class="password-toggle" aria-label="Toggle password visibility">
-                        <svg class="eye-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                    </button>
-                </div>
+                <input id="password" name="password" type="password" placeholder="Enter your password" class="auth-input" required autocomplete="current-password" />
                 @error('password')<p class="error-text">{{ $message }}</p>@enderror
             </div>
 
@@ -53,13 +48,12 @@
             <div></div>
         </div>
 
-        @if (app()->isLocal())
-            <div class="auth-helper">
-                <p><strong>Seeded admin credentials:</strong> admin@tourph.com / password123</p>
-            </div>
-        @endif
+        <div class="auth-helper">
+            <p>If you do not have admin access, please log in as a regular user or continue as guest.</p>
+        </div>
 
         <div class="auth-links">
+            <a href="{{ route('login') }}" class="btn-secondary">Log in as Regular User</a>
             <a href="{{ route('home') }}" class="btn-secondary">Continue as Guest</a>
         </div>
     </div>

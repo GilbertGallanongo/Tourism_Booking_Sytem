@@ -3,10 +3,20 @@
 use App\Http\Controllers\Api\BookingController;
 use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\TourPackageController;
+use App\Http\Controllers\Api\TokenController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/packages', [TourPackageController::class, 'index']);
 Route::get('/packages/{package}', [TourPackageController::class, 'show']);
+
+// Token management endpoints (for authenticated users)
+Route::middleware('auth:sanctum')->group(function () {
+    // Token management
+    Route::post('/tokens', [TokenController::class, 'createToken'])->name('tokens.create');
+    Route::get('/tokens', [TokenController::class, 'listTokens'])->name('tokens.list');
+    Route::delete('/tokens/{tokenId}', [TokenController::class, 'revokeToken'])->name('tokens.revoke');
+    Route::post('/tokens/revoke-all', [TokenController::class, 'revokeAllTokens'])->name('tokens.revoke-all');
+});
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/bookings', [BookingController::class, 'index']);

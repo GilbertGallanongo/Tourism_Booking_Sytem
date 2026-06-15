@@ -1,265 +1,331 @@
-# Railway Deployment Guide
+# Railway Deployment Guide - Tourism Booking System
 
-This guide will help you deploy the Tourism Booking System to Railway.
+This guide walks you through deploying your Laravel 12 Tourism Booking System to Railway, step by step.
+
+---
+
+## Table of Contents
+1. [Prerequisites](#prerequisites)
+2. [Step 1: Prepare Your Repository](#step-1-prepare-your-repository)
+3. [Step 2: Create Railway Account](#step-2-create-railway-account)
+4. [Step 3: Connect Repository](#step-3-connect-repository)
+5. [Step 4: Configure Database](#step-4-configure-database)
+6. [Step 5: Set Environment Variables](#step-5-set-environment-variables)
+7. [Step 6: Deploy](#step-6-deploy)
+8. [Step 7: Run Migrations](#step-7-run-migrations)
+9. [Step 8: Verify Deployment](#step-8-verify-deployment)
+10. [Troubleshooting](#troubleshooting)
+
+---
 
 ## Prerequisites
 
-- Railway account (free tier available at [railway.app](https://railway.app))
-- Docker (for local testing)
-- Git repository with this code pushed to GitHub
+Before starting, ensure you have:
+- A GitHub account with your repository
+- Railway account (create at https://railway.app)
+- Git installed and configured locally
+- The project pushed to GitHub
 
-## Quick Start
+---
 
-### 1. Connect Your GitHub Repository
+## Step 1: Prepare Your Repository
 
-1. Go to [Railway Dashboard](https://railway.app/dashboard)
-2. Click "New Project" → "Deploy from GitHub repo"
-3. Select your repository and authorize Railway
-4. Railway will automatically detect the Dockerfile and start building
+### 1.1 Ensure .env.example is properly configured
+Your `.env.example` should contain all configuration templates. Check it exists in your repo root.
 
-### 2. Configure Environment Variables
+### 1.2 Add deployment files to your repository
+This includes:
+- `Procfile` - tells Railway how to run your app
+- `.railwayignore` - files to ignore in Railway
 
-Railway will automatically create environment variables. Add the following to your Railway project:
+These files are created in the next steps.
 
-#### Required Variables
+### 1.3 Update .gitignore (if needed)
+Ensure these are NOT committed:
+```
+.env
+.env.*.php
+node_modules/
+vendor/
+storage/logs/*
+bootstrap/cache/*
+public/hot
+```
 
-```env
-APP_NAME=TourismBooking
+### 1.4 Verify Git is clean
+```bash
+git status
+```
+All changes should be committed before proceeding.
+
+---
+
+## Step 2: Create Railway Account
+
+1. Go to **https://railway.app**
+2. Click **"Start Your Project"**
+3. Sign up using GitHub (recommended for easy integration)
+4. Authorize Railway to access your GitHub account
+5. Complete the setup
+
+---
+
+## Step 3: Connect Repository
+
+### 3.1 Create New Railway Project
+1. Go to https://railway.app/dashboard
+2. Click **"New Project"**
+3. Select **"Deploy from GitHub"**
+4. Authorize Railway if prompted
+5. Search for your repository: `Tourism_Booking_Sytem`
+6. Select it and click **"Deploy Now"**
+
+### 3.2 Wait for Initial Build (may fail - this is normal!)
+Railway will attempt a build. It may fail because we haven't configured the database yet. This is expected.
+
+---
+
+## Step 4: Configure Database
+
+### 4.1 Add PostgreSQL Database Plugin
+
+**In your Railway project:**
+1. Click **"+ Add"** button (top right)
+2. Select **"Database"** → **"PostgreSQL"**
+3. Wait for PostgreSQL to be provisioned (2-3 minutes)
+
+### 4.2 Connect Database to Your App
+
+1. Click on **PostgreSQL** service in your Railway project
+2. Click **"Connect"** button
+3. Select your Laravel app from the dropdown
+4. This automatically sets database environment variables
+
+---
+
+## Step 5: Set Environment Variables
+
+### 5.1 Set Variables in Railway Dashboard
+
+In your Railway project, click on your Laravel app service, then go to **"Variables"** tab.
+
+Add the following environment variables:
+
+```
 APP_ENV=production
 APP_DEBUG=false
-APP_KEY=                    # Leave blank - will be generated automatically
-APP_URL=https://your-railway-app.up.railway.app
+APP_KEY=<leave blank for now, will be generated>
+APP_URL=https://your-app-name.railway.app
 
-LOG_CHANNEL=stack
-LOG_LEVEL=info
+DB_CONNECTION=pgsql
+DB_HOST=${{ Postgres.PGHOST }}
+DB_PORT=${{ Postgres.PGPORT }}
+DB_DATABASE=${{ Postgres.PGDATABASE }}
+DB_USERNAME=${{ Postgres.PGUSER }}
+DB_PASSWORD=${{ Postgres.PGPASSWORD }}
 
-# Database Configuration
-DB_CONNECTION=postgres
-DB_HOST=                    # Railway will populate this from linked database
-DB_PORT=5432
-DB_DATABASE=tourismdb
-DB_USERNAME=                # Railway will populate this
-DB_PASSWORD=                # Railway will populate this
-
-# Cache & Session
-CACHE_DRIVER=file
-SESSION_DRIVER=file
+FILESYSTEM_DISK=local
 QUEUE_CONNECTION=sync
+CACHE_STORE=database
+SESSION_DRIVER=database
 
-# Migrations
-RUN_MIGRATIONS=true         # Auto-run migrations on startup
-RUN_SEEDS=false             # Set to true to seed demo data on first deploy
+SANCTUM_STATEFUL_DOMAINS=your-app-name.railway.app
+SESSION_DOMAIN=.railway.app
 
-# Mail Configuration (optional)
-MAIL_MAILER=smtp
-MAIL_HOST=smtp.mailtrap.io
-MAIL_PORT=465
-MAIL_USERNAME=              # Your SMTP username
-MAIL_PASSWORD=              # Your SMTP password
-MAIL_FROM_ADDRESS=noreply@tourismapp.com
-MAIL_FROM_NAME="Tourism Booking"
-
-# CORS
-CORS_ALLOW_ORIGIN=*
+LOG_CHANNEL=single
 ```
 
-### 3. Add PostgreSQL Database
+### 5.2 Generate APP_KEY
 
-1. In Railway Dashboard, click "Create" → "Database" → "PostgreSQL"
-2. Railway will automatically link it and populate DB_* variables
-3. The database will be provisioned and ready to use
+1. Go back to your laptop terminal
+2. Run: `php artisan key:generate`
+3. Copy the key from your `.env` file (it looks like: `base64:xxxxx...`)
+4. Paste it into Railway's `APP_KEY` variable
 
-### 4. Manual APP_KEY Generation (if needed)
+### 5.3 Set Your Domain
 
-If `APP_KEY` is not auto-generated, run in the Railway shell or locally:
+If you have a custom domain, update `APP_URL` and `SANCTUM_STATEFUL_DOMAINS` accordingly.
 
+---
+
+## Step 6: Deploy
+
+### 6.1 Trigger Manual Deployment
+
+1. In Railway dashboard, go to your **Laravel app**
+2. Click **"Deployments"** tab
+3. Click **"Redeploy"** button on the latest deployment
+4. Wait for the build to complete (5-10 minutes)
+
+**What happens during build:**
+- Downloads composer dependencies
+- Builds frontend assets with Vite
+- Compiles optimizations
+- Prepares the application
+
+---
+
+## Step 7: Run Migrations
+
+### 7.1 Execute Migrations on Railway
+
+Once deployment is successful:
+
+1. Click on your **Laravel app** in Railway
+2. Go to the **"Logs"** tab to verify the app is running
+3. Click **"Command Palette"** (top right) or use railway CLI
+
+**Option A: Using Railway CLI (Recommended)**
 ```bash
-php artisan key:generate
+npm install -g @railway/cli
+railway link
+railway run php artisan migrate --force
+railway run php artisan db:seed --force
 ```
 
-Then add the generated key to your Railway environment variables.
+**Option B: Using Heroku-like exec commands**
+In Railway dashboard:
+1. Click your Laravel app
+2. Look for a terminal or exec option
+3. Run: `php artisan migrate --force`
+4. Run: `php artisan db:seed --force` (if you want sample data)
 
-### 5. Access Your Application
-
-Once the deployment completes (green status), visit the Railway URL displayed in your dashboard.
-
-## Environment Variables Explained
-
-| Variable | Purpose | Example |
-|----------|---------|---------|
-| `APP_ENV` | Environment type | `production` |
-| `APP_DEBUG` | Show debug info | `false` (always false in production) |
-| `RUN_MIGRATIONS` | Auto-run migrations on startup | `true` |
-| `RUN_SEEDS` | Auto-seed database on startup | `false` (only for initial setup) |
-| `CACHE_DRIVER` | Cache mechanism | `file` or `redis` |
-| `SESSION_DRIVER` | Session storage | `file` or `database` |
-| `QUEUE_CONNECTION` | Job queue type | `sync` or `database` |
-
-## Monitoring & Logs
-
-### View Logs
+### 7.2 Create API Token (Optional)
+If your API requires tokens:
 ```bash
-# Via Railway CLI
-railway logs -f
-
-# Or in Dashboard: Project → Deployments → Logs tab
-```
-
-### Database Migrations
-
-The docker-entrypoint.sh script automatically runs migrations on startup. To check if they completed:
-
-```bash
-railway run php artisan migrate:status
-```
-
-### Cache Clearing
-
-If you need to clear the cache:
-
-```bash
-railway run php artisan cache:clear
-railway run php artisan config:cache
-railway run php artisan route:cache
-```
-
-## Database Management
-
-### Connect to Database
-
-```bash
-# Via Railway CLI
 railway run php artisan tinker
+# Then in tinker:
+$user = App\Models\User::first();
+$token = $user->createToken('api-token')->plainTextToken;
 ```
 
-### Backup Database
+---
 
-```bash
-# Create a backup
-railway run php artisan db:backup
+## Step 8: Verify Deployment
 
-# Or use pg_dump
-pg_dump $DATABASE_URL > backup.sql
-```
+### 8.1 Check Application Health
+
+1. Go to Railway dashboard → Your app → **"Settings"**
+2. Find your **"Public Domain"** (looks like: `your-app-xxxx.railway.app`)
+3. Click the domain link to open your app
+4. You should see your Tourism Booking System home page
+
+### 8.2 Test Key Features
+
+- **Home page loads** ✓
+- **Login works** (test with admin@tourph.com / password123)
+- **Packages display** ✓
+- **API endpoints work** (test `/api/packages`)
+
+### 8.3 Check Logs for Errors
+
+In Railway dashboard:
+1. Click your **Laravel app**
+2. Click **"Logs"** tab
+3. Look for any ERROR or CRITICAL messages
+4. Address any issues (see Troubleshooting section)
+
+---
 
 ## Troubleshooting
 
-### Build Fails
-
-**Error**: "Dockerfile build failed"
-- Check Docker syntax in Dockerfile
-- Ensure all COPY paths exist
-- Check available disk space in build container
-
-**Solution**: 
+### Build Fails: "Missing composer.lock"
+**Solution:** Commit `composer.lock` to Git:
 ```bash
-# Test locally first
-docker build -t tourism-booking .
+git add composer.lock
+git commit -m "Add composer lock file"
+git push
 ```
 
-### App Crashes After Deploy
-
-**Error**: "503 Service Unavailable"
-- Check logs: `railway logs -f`
-- Common issues: APP_KEY not set, database not connected
-- Verify DATABASE_URL in environment
-
-**Solution**:
-1. Check Railway logs for specific errors
-2. Ensure PostgreSQL is linked
-3. Verify all required env vars are set
-
-### Migration Fails
-
-**Error**: "php artisan migrate" fails during startup
-
-**Solutions**:
-1. Check database connection: `railway run php artisan db:connection`
-2. View migrations: `railway run php artisan migrate:status`
-3. Manually run: `railway run php artisan migrate --force`
-
-### Storage/Cache Issues
-
-Ensure storage directories are writable:
-
-```bash
-railway run php artisan storage:link
+### Build Fails: "PHP Version Mismatch"
+**Solution:** Railway requires `composer.json` to specify PHP ^8.2. Verify in your `composer.json`:
+```json
+"require": {
+    "php": "^8.2",
+    ...
+}
 ```
 
-## Performance Optimization
+### App Crashes: "No APP_KEY Set"
+**Solution:** Generate and set the APP_KEY as described in Step 5.2
 
-### For Better Performance
+### Database Connection Error
+**Solution:** 
+1. Verify PostgreSQL is connected in Step 4.2
+2. Check environment variables are correct
+3. Run migrations as described in Step 7.1
 
-1. **Use Redis** (optional):
-   - Add Redis plugin in Railway
-   - Set `CACHE_DRIVER=redis`
-   - Set `SESSION_DRIVER=redis`
-
-2. **Enable Configuration Caching**:
-   ```bash
-   railway run php artisan config:cache
-   railway run php artisan route:cache
-   ```
-
-3. **Database Indexing**:
-   - Ensure database tables have proper indexes
-   - Check slow query logs if performance degrades
-
-## Security Checklist
-
-- [ ] `APP_DEBUG=false` in production
-- [ ] `APP_ENV=production`
-- [ ] Strong database password set
-- [ ] CORS properly configured
-- [ ] HTTPS enforced (automatic with Railway)
-- [ ] API rate limiting enabled (if applicable)
-- [ ] Sensitive files in .gitignore
-- [ ] Regular backups enabled
-
-## Custom Domain Setup
-
-1. In Railway Dashboard → Project Settings
-2. Add your custom domain (e.g., tourismapp.com)
-3. Update DNS records as instructed by Railway
-4. Update `APP_URL` in environment variables
-5. Update `CORS_ALLOW_ORIGIN` if needed
-
-## Scaling & Costs
-
-- Railway free tier includes monthly credits
-- Monitor resource usage in Dashboard
-- Upgrade plan as needed for higher traffic
-- PostgreSQL and other services are billed separately
-
-## Additional Commands
-
+### Migrations Won't Run
+**Solution:**
 ```bash
-# Clear all caches
-railway run php artisan optimize:clear
-
-# Tinker shell
-railway run php artisan tinker
-
-# Run tests
-railway run php artisan test
-
-# View database schema
-railway run php artisan schema:show
-
-# Generate API docs (if applicable)
-railway run php artisan api:docs
+# Force migrations in production
+railway run php artisan migrate --force --step
 ```
+
+### Static Assets (CSS/JS) Not Loading
+**Solution:**
+1. Ensure Vite build ran successfully during deployment
+2. Check `APP_URL` is correct in environment variables
+3. Run: `railway run php artisan storage:link`
+
+### File Upload Issues
+**Solution:**
+Railway uses ephemeral storage. For persistent file uploads:
+1. Use **Railway Volumes** (Pro feature) or
+2. Switch to cloud storage (S3, etc.)
+
+---
 
 ## Next Steps
 
-1. Set up a staging environment (create another Railway project)
-2. Configure CI/CD for automated deployments
-3. Set up monitoring and alerting
-4. Regular database backups
-5. Document any custom configurations
+### Security Checklist
+- [ ] Set `APP_DEBUG=false` (already done)
+- [ ] Enable HTTPS (Railway provides automatic SSL)
+- [ ] Set strong `APP_KEY`
+- [ ] Use environment variables for sensitive data
+- [ ] Enable CSRF protection (enabled by default)
 
-## Support
+### Performance Optimization
+- [ ] Enable caching: `php artisan config:cache`
+- [ ] Optimize autoloader: `composer install --optimize-autoloader`
+- [ ] Clear logs periodically to save disk space
 
-For Railway-specific issues, visit [Railway Documentation](https://docs.railway.app)
+### Monitoring
+- In Railway dashboard, monitor:
+  - Deploy logs
+  - Application logs
+  - Memory usage
+  - CPU usage
 
-For Laravel-specific help, check [Laravel Documentation](https://laravel.com/docs)
+---
+
+## Useful Railway CLI Commands
+
+```bash
+# Install Railway CLI
+npm install -g @railway/cli
+
+# Link to your Railway project
+railway link
+
+# Run a command on Railway
+railway run php artisan migrate
+
+# View logs
+railway logs
+
+# Open Railway dashboard
+railway open
+```
+
+---
+
+## Support & Resources
+
+- **Railway Docs:** https://docs.railway.app
+- **Laravel Deployment:** https://laravel.com/docs/12/deployment
+- **PostgreSQL with Laravel:** https://laravel.com/docs/12/database
+
+---
+
+**Good luck with your deployment! 🚀**
