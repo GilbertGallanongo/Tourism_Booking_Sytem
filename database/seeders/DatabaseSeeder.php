@@ -67,6 +67,9 @@ class DatabaseSeeder extends Seeder
 
         $this->call(ReviewSeeder::class);
 
-        $this->call(BookingSeeder::class);
+        // In production we skip booking seeders to avoid constraints/migration timing issues.
+        if (! app()->environment('production')) {
+            $this->call(BookingSeeder::class);
+        }
     }
 }
