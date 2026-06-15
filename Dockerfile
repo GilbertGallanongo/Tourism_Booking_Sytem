@@ -5,7 +5,7 @@ RUN npm ci --legacy-peer-deps
 COPY . .
 RUN npm run build
 
-FROM php:8.4-apache
+FROM php:8.4-cli
 
 RUN apt-get update && apt-get install -y \
     build-essential \
@@ -35,15 +35,9 @@ COPY . .
 
 RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
 
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
-
-ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
-RUN sed -ri -e "s!/var/www/html!${APACHE_DOCUMENT_ROOT}!g" /etc/apache2/sites-available/*.conf
-RUN a2dismod mpm_event || true
-RUN a2dismod mpm_worker || true
-RUN a2enmod mpm_prefork || true
-RUN a2enmod rewrite
+RUN useradd -m appuser || true
+RUN chown -R appuser:appuser /var/www/html/storage /var/www/html/bootstrap/cache
 
 EXPOSE 80
 
-CMD ["apache2-foreground"]
+CMD ["php", "-S", "0.0.0.0:80", "-t", "public"]
