@@ -4,12 +4,25 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name', 'Tourism Booking System') }}</title>
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}?v={{ filemtime(public_path('css/app.css')) }}">
+    {{-- Use built Vite assets when available, fallback to legacy public/css and public/js paths --}}
+    @php
+        $viteCss = public_path('build/assets/app.css');
+        $viteJs = public_path('build/assets/app.js');
+    @endphp
+    @if (file_exists($viteCss))
+        <link rel="stylesheet" href="{{ asset('build/assets/app.css') }}">
+    @else
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}?v={{ file_exists(public_path('css/app.css')) ? filemtime(public_path('css/app.css')) : time() }}">
+    @endif
     {{-- Provide runtime API URL for non-built frontend (useful on free Render plan without Vite build) --}}
     <script>
         window.__API_URL__ = "{{ env('VITE_API_URL', env('APP_URL')) }}";
     </script>
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    @if (file_exists($viteJs))
+        <script src="{{ asset('build/assets/app.js') }}" defer></script>
+    @else
+        <script src="{{ asset('js/app.js') }}" defer></script>
+    @endif
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Global button enhancement for immediate response
