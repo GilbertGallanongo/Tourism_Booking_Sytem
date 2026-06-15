@@ -38,6 +38,6 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-di
 RUN useradd -m appuser || true
 RUN chown -R appuser:appuser /var/www/html/storage /var/www/html/bootstrap/cache
 
-EXPOSE 80
+EXPOSE 8080
 
-CMD ["php", "-S", "0.0.0.0:80", "-t", "public"]
+CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-8080} -t public"]
