@@ -1,4 +1,4 @@
-FROM node:18 AS node_builder
+FROM node:20 AS node_builder
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci --legacy-peer-deps
