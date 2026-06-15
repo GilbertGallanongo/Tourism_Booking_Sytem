@@ -1,7 +1,0 @@
-services:
-  - type: web
-    name: tourism-booking-system
-    env: docker
-    dockerfilePath: Dockerfile
-    branch: main
-    plan: free
