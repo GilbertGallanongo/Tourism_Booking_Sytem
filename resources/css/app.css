@@ -4769,3 +4769,336 @@ body.home-shell .famous-tourist-spots,
 body.home-shell .promo-packages-section {
     background: transparent !important;
 }
+
+/* Railway/package listing parity overrides */
+body.packages-shell {
+    min-height: 100%;
+    background:
+        linear-gradient(180deg, rgba(2, 5, 15, 0.58), rgba(2, 5, 15, 0.66)),
+        url('/images/bolinao-church.jpg') center top / cover fixed no-repeat !important;
+}
+
+body.packages-shell::before {
+    background: transparent !important;
+}
+
+body.packages-shell .content {
+    width: 100% !important;
+    max-width: none !important;
+    padding: 3.25rem 0 0 !important;
+    background: transparent !important;
+}
+
+body.packages-shell .packages-hero {
+    width: min(92vw, 70rem) !important;
+    min-height: auto !important;
+    margin: 0 auto 4.5rem !important;
+    padding: 4.5rem 0 0 !important;
+    background: transparent !important;
+    display: flex !important;
+    justify-content: center !important;
+}
+
+body.packages-shell .packages-hero::before,
+body.packages-shell .packages-hero::after {
+    display: none !important;
+}
+
+body.packages-shell .packages-hero-card {
+    width: min(92vw, 40rem) !important;
+    max-width: 40rem !important;
+    margin: 0 auto !important;
+    padding: 2.25rem 2.8rem !important;
+    border-radius: 0.95rem !important;
+    background: rgba(17, 31, 77, 0.92) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    box-shadow: 0 1.5rem 3.25rem rgba(0, 0, 0, 0.34) !important;
+}
+
+body.packages-shell .packages-hero-card::before,
+body.packages-shell .packages-hero-card::after {
+    display: none !important;
+}
+
+body.packages-shell .packages-hero-copy {
+    max-width: 28rem !important;
+}
+
+body.packages-shell .packages-hero-copy .visual-tag {
+    margin-bottom: 0.8rem !important;
+    padding: 0.45rem 0.7rem !important;
+    border-radius: 999px !important;
+    background: rgba(255, 255, 255, 0.12) !important;
+    font-size: 0.64rem !important;
+    letter-spacing: 0.08em !important;
+}
+
+body.packages-shell .packages-hero-copy .visual-headline {
+    max-width: 24rem !important;
+    font-size: clamp(2rem, 3.8vw, 3.25rem) !important;
+    line-height: 0.96 !important;
+    letter-spacing: 0 !important;
+    text-transform: uppercase !important;
+}
+
+body.packages-shell .packages-hero-copy .visual-copy {
+    max-width: 22rem !important;
+    margin-top: 0.95rem !important;
+    padding-left: 0.75rem !important;
+    border-left: 2px solid rgba(234, 224, 207, 0.55) !important;
+    color: rgba(248, 250, 252, 0.78) !important;
+    font-size: 0.72rem !important;
+    line-height: 1.55 !important;
+}
+
+body.packages-shell .packages-hero-cta {
+    margin-top: 0.5rem !important;
+    color: rgba(248, 250, 252, 0.86) !important;
+    font-size: 0.76rem !important;
+}
+
+body.packages-shell .packages-listing {
+    width: min(92vw, 70rem) !important;
+    margin: 0 auto !important;
+    padding: 0 0 4rem !important;
+    background: transparent !important;
+}
+
+body.packages-shell .packages-container {
+    width: min(92vw, 43rem) !important;
+    max-width: 43rem !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    display: block !important;
+    background: transparent !important;
+}
+
+body.packages-shell .packages-search-panel {
+    width: 100% !important;
+    margin: 0 auto 1.65rem !important;
+    padding: 1.55rem 1.65rem !important;
+    border-radius: 0.85rem !important;
+    background: rgba(3, 8, 22, 0.92) !important;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+    box-shadow: 0 1.25rem 2.75rem rgba(0, 0, 0, 0.30) !important;
+}
+
+body.packages-shell .packages-search-panel h3 {
+    margin: 0 0 1.25rem !important;
+    color: #f8fafc !important;
+    font-size: 1.25rem !important;
+}
+
+body.packages-shell .packages-search-form {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1.85fr) minmax(8rem, 0.75fr) minmax(5.6rem, 0.45fr) !important;
+    gap: 0.9rem !important;
+    align-items: end !important;
+}
+
+body.packages-shell .packages-search-field {
+    margin: 0 !important;
+    display: grid !important;
+    gap: 0.45rem !important;
+}
+
+body.packages-shell .packages-search-field-wide {
+    grid-column: span 1 !important;
+}
+
+body.packages-shell .duration-group {
+    grid-column: 1 / span 2 !important;
+}
+
+body.packages-shell .packages-search-submit {
+    grid-column: 3 !important;
+    align-self: end !important;
+}
+
+body.packages-shell .packages-search-panel label,
+body.packages-shell .duration-title {
+    color: #f8fafc !important;
+    font-size: 0.78rem !important;
+    font-weight: 700 !important;
+}
+
+body.packages-shell .packages-search-panel .form-control {
+    height: 2rem !important;
+    min-height: 2rem !important;
+    padding: 0.45rem 0.65rem !important;
+    border-radius: 0.35rem !important;
+    background: rgba(17, 31, 77, 0.72) !important;
+    border: 1px solid rgba(255, 255, 255, 0.26) !important;
+    color: #f8fafc !important;
+    font-size: 0.72rem !important;
+}
+
+body.packages-shell .search-input-wrap {
+    display: block !important;
+}
+
+body.packages-shell .search-input-icon {
+    display: none !important;
+}
+
+body.packages-shell .duration-filter {
+    display: flex !important;
+    gap: 0.75rem !important;
+    align-items: center !important;
+}
+
+body.packages-shell .duration-option {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.35rem !important;
+    color: #f8fafc !important;
+    font-size: 0.78rem !important;
+    font-weight: 700 !important;
+}
+
+body.packages-shell .duration-option input {
+    accent-color: #78c26d !important;
+}
+
+body.packages-shell .packages-search-submit {
+    min-width: 5.8rem !important;
+    min-height: 2.1rem !important;
+    padding: 0.5rem 1rem !important;
+    border: 0 !important;
+    border-radius: 0.45rem !important;
+    background: #f8fafc !important;
+    color: #081226 !important;
+    font-size: 0.68rem !important;
+    font-weight: 800 !important;
+}
+
+body.packages-shell .packages-main {
+    width: 100% !important;
+}
+
+body.packages-shell .packages-header-row {
+    margin: 0 0 1rem !important;
+    color: #f8fafc !important;
+}
+
+body.packages-shell .packages-header-row .section-title {
+    margin: 0 !important;
+    font-size: 1rem !important;
+    color: #f8fafc !important;
+}
+
+body.packages-shell .packages-header-row .section-copy {
+    margin-top: 0.45rem !important;
+    max-width: 38rem !important;
+    color: rgba(248, 250, 252, 0.82) !important;
+    font-size: 0.72rem !important;
+}
+
+body.packages-shell .packages-listing .package-card-grid {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 1rem !important;
+}
+
+body.packages-shell .packages-listing .package-card {
+    min-height: 19.2rem !important;
+    border-radius: 0.65rem !important;
+    background: rgba(3, 8, 22, 0.76) !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    box-shadow: 0 1rem 2.2rem rgba(0, 0, 0, 0.30) !important;
+}
+
+body.packages-shell .packages-listing .package-card-media {
+    min-height: 7.4rem !important;
+    height: 7.4rem !important;
+    background-size: cover !important;
+    background-position: center !important;
+}
+
+body.packages-shell .packages-listing .package-card-body {
+    padding: 0.85rem !important;
+    gap: 0.55rem !important;
+}
+
+body.packages-shell .packages-listing .badge-rating {
+    left: 0.55rem !important;
+    top: 0.45rem !important;
+    color: #f8fafc !important;
+    font-size: 0.65rem !important;
+    font-weight: 800 !important;
+    z-index: 2 !important;
+}
+
+body.packages-shell .packages-listing .package-card-meta {
+    gap: 0.35rem !important;
+    color: rgba(248, 250, 252, 0.72) !important;
+    font-size: 0.57rem !important;
+}
+
+body.packages-shell .packages-listing .package-card-title {
+    font-size: 0.82rem !important;
+    line-height: 1.18 !important;
+}
+
+body.packages-shell .packages-listing .package-card-description {
+    min-height: 2.5rem !important;
+    color: rgba(248, 250, 252, 0.82) !important;
+    font-size: 0.66rem !important;
+    line-height: 1.45 !important;
+}
+
+body.packages-shell .packages-listing .package-card-footer {
+    gap: 0.65rem !important;
+}
+
+body.packages-shell .packages-listing .package-card-price .price {
+    color: #2ecf91 !important;
+    font-size: 0.72rem !important;
+}
+
+body.packages-shell .packages-listing .package-card-price .price-note {
+    color: rgba(248, 250, 252, 0.64) !important;
+    font-size: 0.62rem !important;
+}
+
+body.packages-shell .packages-listing .package-card-actions {
+    gap: 0.55rem !important;
+}
+
+body.packages-shell .packages-listing .package-card-actions .btn {
+    min-height: 2rem !important;
+    padding: 0.45rem 0.6rem !important;
+    border-radius: 0.35rem !important;
+    font-size: 0.64rem !important;
+    font-weight: 800 !important;
+}
+
+body.packages-shell .packages-listing .package-card-actions .btn:not(.btn-secondary) {
+    background: #139464 !important;
+    color: #ffffff !important;
+}
+
+body.packages-shell .packages-listing .package-card-actions .btn-secondary {
+    background: rgba(255, 255, 255, 0.12) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+@media (max-width: 900px) {
+    body.packages-shell .packages-search-form,
+    body.packages-shell .packages-listing .package-card-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    body.packages-shell .duration-group,
+    body.packages-shell .packages-search-submit {
+        grid-column: auto !important;
+    }
+
+    body.packages-shell .packages-container {
+        width: min(92vw, 30rem) !important;
+    }
+}
