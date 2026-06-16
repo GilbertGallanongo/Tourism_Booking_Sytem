@@ -1,12 +1,23 @@
 #!/bin/bash
+set -e
 
 # Build script for Railway deployment
+
+if [ -z "${APP_KEY:-}" ]; then
+  echo "WARNING: APP_KEY is not set in environment. Generating one into .env for this build."
+  if [ ! -f .env ]; then
+    cp .env.example .env
+    echo "Created .env from .env.example"
+  fi
+  php artisan key:generate --ansi --force
+  echo "Generated APP_KEY in .env"
+fi
 
 echo "Installing PHP dependencies..."
 composer install --optimize-autoloader --no-dev
 
 echo "Installing Node dependencies..."
-npm install --production
+npm install
 
 echo "Building frontend assets..."
 npm run build

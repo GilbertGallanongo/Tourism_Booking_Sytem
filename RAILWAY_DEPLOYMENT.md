@@ -114,22 +114,26 @@ Add the following environment variables:
 ```
 APP_ENV=production
 APP_DEBUG=false
-APP_KEY=<leave blank for now, will be generated>
-APP_URL=https://your-app-name.railway.app
+APP_KEY=<paste your generated Laravel key here>
+APP_URL=https://tourism-booking-system-production-b0bb.up.railway.app
 
 DB_CONNECTION=pgsql
+DATABASE_URL=${{ Postgres.DATABASE_PUBLIC_URL }}
+DB_URL=${{ Postgres.DATABASE_PUBLIC_URL }}
+# Use the internal host only if it is resolvable in your runtime environment.
 DB_HOST=${{ Postgres.PGHOST }}
 DB_PORT=${{ Postgres.PGPORT }}
 DB_DATABASE=${{ Postgres.PGDATABASE }}
 DB_USERNAME=${{ Postgres.PGUSER }}
 DB_PASSWORD=${{ Postgres.PGPASSWORD }}
+DB_SSLMODE=require
 
 FILESYSTEM_DISK=local
 QUEUE_CONNECTION=sync
 CACHE_STORE=database
 SESSION_DRIVER=database
 
-SANCTUM_STATEFUL_DOMAINS=your-app-name.railway.app
+SANCTUM_STATEFUL_DOMAINS=tourism-booking-system-production-b0bb.up.railway.app
 SESSION_DOMAIN=.railway.app
 
 LOG_CHANNEL=single

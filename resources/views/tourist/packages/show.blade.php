@@ -1,4 +1,34 @@
 <x-layout :title="$tourPackage->name">
+    <style>
+        /* Package detail hero layout */
+        .package-detail-page { padding: 2rem 1.25rem; }
+        .package-detail-hero { max-width: 1100px; margin: 0 auto; }
+        .package-detail-grid { display: grid; grid-template-columns: 1fr 360px; gap: 1.5rem; align-items: start; }
+        .package-detail-media img { width: 100%; height: 360px; object-fit: cover; border-radius: 12px; box-shadow: 0 6px 30px rgba(0,0,0,0.6); }
+        .package-detail-media { position: relative; }
+        .package-detail-badge { position: absolute; right: 1rem; top: 1rem; background: rgba(17,31,77,0.9); color: #fff; padding: 0.35rem 0.6rem; border-radius: 8px; font-size: 0.85rem; }
+        .package-detail-summary { background: rgba(6,10,23,0.85); color: #fff; border-radius: 12px; padding: 1.25rem; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
+        .package-detail-kicker { font-size: 0.85rem; color: #cbd5e1; margin-bottom: 0.4rem; }
+        .package-detail-rating span { color: #ffd54d; margin-right: 2px; }
+        .package-detail-location { color: rgba(234,224,207,0.8); margin: 0.5rem 0; }
+        .package-detail-description { color: rgba(234,224,207,0.85); margin-bottom: 0.75rem; }
+        .package-detail-price { background: rgba(10,14,30,0.6); padding: 0.8rem; border-radius: 8px; text-align: center; margin-top: 1rem; }
+        .package-detail-price strong { display:block; font-size:1.35rem; margin-top:0.35rem; }
+        .package-detail-primary { display:inline-block; margin-top:0.75rem; padding:0.6rem 1rem; border-radius:8px; background:#3b82f6; color:#fff; text-decoration:none; }
+
+        /* Panels */
+        .package-detail-content { max-width: 1100px; margin: 1.5rem auto 4rem; }
+        .package-detail-panel { background: rgba(8,12,22,0.7); padding: 1rem; border-radius: 10px; margin-bottom: 1rem; color: #eae0cf; box-shadow: 0 6px 30px rgba(0,0,0,0.55); }
+        .package-detail-stats { display:grid; grid-template-columns: repeat(4,1fr); gap:1rem; }
+        .package-detail-stats div { background: rgba(10,16,32,0.5); padding:0.75rem; border-radius:8px; text-align:center; }
+        .package-detail-review-list { display:flex; flex-direction:column; gap:0.75rem; }
+        .package-detail-review { background: rgba(2,6,14,0.55); padding:0.75rem; border-radius:8px; }
+        @media (max-width: 880px) {
+            .package-detail-grid { grid-template-columns: 1fr; }
+            .package-detail-media img { height: 260px; }
+            .package-detail-stats { grid-template-columns: repeat(2,1fr); }
+        }
+    </style>
 @php
     $selectedPromoId = request('promo');
 @endphp

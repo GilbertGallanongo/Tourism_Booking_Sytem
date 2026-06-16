@@ -1,4 +1,10 @@
 <x-layout>
+    <style>
+        /* Force equal-height package cards and consistent media sizing */
+        .homepage-slider .package-card { display: flex; flex-direction: column; height: 100%; }
+        .homepage-slider .package-card-media { flex: 0 0 9.5rem; width: 100%; background-size: cover; background-position: center; }
+        .homepage-slider .package-card-body { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: space-between; }
+    </style>
 
     <section class="homepage-slider" aria-label="Homepage slider">
         <div class="slider-view">

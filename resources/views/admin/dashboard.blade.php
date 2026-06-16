@@ -1,20 +1,78 @@
 <x-layout>
     <style>
         /* Dark & Simple Admin Dashboard */
+        .admin-dashboard-shell {
+            min-height: 100vh;
+            background: linear-gradient(180deg, rgba(7, 11, 23, 0.95) 0%, rgba(7, 11, 23, 0.92) 45%, rgba(7, 11, 23, 0.96) 100%);
+            color: #e8edf7;
+        }
+
+        .admin-dashboard-hero {
+            position: relative;
+            overflow: hidden;
+            padding: 3rem 1.5rem 4rem;
+            background-color: #07111b;
+            background-image: linear-gradient(180deg, rgba(7, 17, 35, 0.96) 0%, rgba(7, 11, 23, 0.92) 30%, rgba(7, 11, 23, 0.98) 100%), url('/images/bolinao-church.jpg');
+            background-size: cover;
+            background-position: center;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .admin-dashboard-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(7, 11, 23, 0.8) 0%, rgba(7, 11, 23, 0.95) 100%);
+            pointer-events: none;
+        }
+
+        .admin-dashboard-content {
+            max-width: 1300px;
+            margin: -2.5rem auto 0;
+            position: relative;
+            z-index: 1;
+            padding: 0 1rem 4rem;
+        }
+
+        .admin-dashboard-hero-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            display: grid;
+            gap: 1.5rem;
+        }
+
         .admin-dashboard-header {
-            margin-bottom: 2rem;
-            background: #1a1a2e;
+            margin-bottom: 0;
+        }
+
+        .hero-panel {
+            display: grid;
+            gap: 1.5rem;
+            background: rgba(12, 20, 42, 0.88);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 1.25rem;
             padding: 2rem;
-            border-radius: 0.75rem;
-            border: 1px solid #2d2d4d;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 24px 80px rgba(2, 8, 25, 0.35);
+            backdrop-filter: blur(16px);
+        }
+
+        .admin-dashboard-header {
+            margin-bottom: 0;
+            padding: 0;
+            background: transparent;
+            border: none;
+            box-shadow: none;
         }
 
         .admin-title {
-            font-size: 2.5rem;
+            font-size: clamp(2rem, 3vw, 3.5rem);
             font-weight: 800;
             margin-bottom: 0.5rem;
             color: #ffffff;
+            letter-spacing: -0.02em;
+            line-height: 1.05;
         }
 
         .admin-subtitle {
@@ -24,13 +82,36 @@
             gap: 0.5rem;
             font-size: 1rem;
             font-weight: 600;
+            margin: 0;
+        }
+
+        .hero-stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .hero-stat-grid .stat-card,
+        .top-packages-grid .insight-card,
+        .famous-spots-grid .insight-card,
+        .review-grid .review-card,
+        .insights-grid .insight-card {
+            min-height: 230px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .hero-stat-grid .stat-card {
+            padding: 1.5rem;
         }
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(7, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 1rem;
-            margin-bottom: 2.5rem;
+            margin-bottom: 0;
         }
 
         .stat-card {
@@ -94,14 +175,59 @@
             margin-bottom: 2.5rem;
         }
 
+        .section-row {
+            display: grid;
+            grid-template-columns: 1.25fr 0.9fr;
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        .section-row .insight-card {
+            min-height: 330px;
+        }
+
         .section-title {
             font-size: 1.4rem;
             font-weight: 800;
-            margin-bottom: 1.25rem;
+            margin-bottom: 1rem;
             color: #ffffff;
             display: flex;
             align-items: center;
             gap: 0.75rem;
+        }
+
+        .top-packages-grid,
+        .famous-spots-grid,
+        .review-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            align-items: start;
+        }
+
+        .top-packages-grid,
+        .famous-spots-grid,
+        .review-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .top-packages-grid .insight-card,
+        .famous-spots-grid .insight-card,
+        .review-grid .review-card {
+            min-height: 260px;
+        }
+
+        .insight-card {
+            min-height: 280px;
         }
 
         .section-icon {
@@ -306,18 +432,199 @@
             margin-top: 0.5rem;
             font-weight: 600;
         }
+
+        .recent-bookings-table {
+            background: #1f1f3a;
+            border: 1px solid #3d3d5c;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .recent-bookings-header {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(0, 1fr));
+            gap: 1rem;
+            padding: 1.25rem;
+            background: linear-gradient(135deg, #2d3561 0%, #3d4571 100%);
+            border-bottom: 2px solid #4d5d8d;
+            font-weight: 700;
+            color: #ffffff;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .recent-bookings-row {
+            grid-template-columns: repeat(7, minmax(0, 1fr));
+        }
+
+        .recent-bookings-rows {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .recent-bookings-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+            gap: 1rem;
+            padding: 1.25rem;
+            border-bottom: 1px solid #3d3d5c;
+            align-items: center;
+            transition: all 0.2s ease;
+            background-color: transparent;
+        }
+
+        .recent-bookings-row:nth-child(odd) {
+            background: rgba(45, 53, 97, 0.4);
+        }
+
+        .recent-bookings-row:nth-child(even) {
+            background: rgba(36, 40, 66, 0.4);
+        }
+
+        .recent-bookings-row:hover {
+            background: rgba(61, 93, 157, 0.5);
+        }
+
+        .recent-bookings-row .guest-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .recent-bookings-row .guest-name {
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .recent-bookings-row .guest-email {
+            color: #9db3d1;
+            font-size: 0.75rem;
+        }
+
+        .recent-bookings-row .cell-text {
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        .recent-bookings-row .cell-secondary {
+            color: #b0b8d0;
+            font-size: 0.9rem;
+        }
+
+        .recent-bookings-row .cell-amount {
+            color: #7dd87d;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .review-card {
+            background: linear-gradient(135deg, rgba(45, 53, 97, 0.6) 0%, rgba(36, 40, 66, 0.6) 100%);
+            border: 1px solid #3d3d5c;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .review-card:hover {
+            border-color: #4d5d8d;
+            background: linear-gradient(135deg, rgba(61, 93, 157, 0.6) 0%, rgba(45, 53, 97, 0.6) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .review-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            gap: 1rem;
+        }
+
+        .review-card-info h3 {
+            color: #ffffff;
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 0 0 0.25rem 0;
+        }
+
+        .review-card-info p {
+            color: #9db3d1;
+            font-size: 0.875rem;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .review-card-rating {
+            font-size: 1.75rem;
+            color: #FFD700;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .review-card-comment {
+            color: #b0b8d0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin: 0.75rem 0;
+        }
+
+        .review-card-date {
+            color: #7d8fa3;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .booking-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .badge-pending {
+            background: rgba(255, 193, 7, 0.2);
+            color: #FFC107;
+        }
+
+        .badge-approved,
+        .badge-paid {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+        }
+
+        .badge-cancelled {
+            background: rgba(244, 67, 54, 0.2);
+            color: #F44336;
+        }
+
+        .section-card {
+            background: rgba(75, 86, 148, 0.1);
+            border: 1px solid rgba(75, 86, 148, 0.2);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+        }
     </style>
 
-    <!-- Header -->
-    <div class="admin-dashboard-header">
-        <h1 class="admin-title">📊 Administration Dashboard</h1>
-        <p class="admin-subtitle">
-            <span>📈</span> Complete overview of your tourism booking system
-        </p>
-    </div>
+    <div class="admin-dashboard-shell">
+        <div class="admin-dashboard-hero">
+            <div class="admin-dashboard-hero-inner hero-panel">
+                <!-- Header -->
+                <div class="admin-dashboard-header">
+                    <h1 class="admin-title">📊 Administration Dashboard</h1>
+                    <p class="admin-subtitle">
+                        <span>📈</span> Complete overview of your tourism booking system
+                    </p>
+                </div>
 
-    <!-- Primary Stats Grid -->
-    <div class="stats-grid">
+                <!-- Primary Stats Grid -->
+                <div class="hero-stat-grid">
         <div class="stat-card">
             <div class="stat-header">
                 <div>
@@ -394,10 +701,13 @@
             </div>
             <div class="stat-change">From paid bookings</div>
         </div>
-    </div>
+                </div>
+            </div>
+        </div>
 
-    <!-- Key Performance Indicators -->
-    <div class="content-section">
+        <div class="admin-dashboard-content">
+        <!-- Key Performance Indicators -->
+        <div class="content-section">
         <h2 class="section-title">
             <span class="section-icon">📈</span>
             Performance Metrics
@@ -591,7 +901,7 @@
             Top Performing & Highly Rated Packages
         </h2>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+        <div class="top-packages-grid">
             @foreach($topPackages as $package)
                 <div class="insight-card">
                     <div class="insight-title">{{ $package->name ?? 'Unknown Package' }}</div>
@@ -640,7 +950,7 @@
             Famous Tourist Spots
         </h2>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+        <div class="famous-spots-grid">
             @foreach($famousTouristSpots->take(5) as $spot)
                 <div class="insight-card">
                     <div class="insight-title">{{ $spot->name }}</div>
@@ -669,90 +979,6 @@
 
     <!-- Recent Bookings -->
     @if($recentBookings->isNotEmpty())
-    <style>
-        .recent-bookings-table {
-            background: #1f1f3a;
-            border: 1px solid #3d3d5c;
-            border-radius: 0.75rem;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .recent-bookings-header {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-            gap: 1rem;
-            padding: 1.25rem;
-            background: linear-gradient(135deg, #2d3561 0%, #3d4571 100%);
-            border-bottom: 2px solid #4d5d8d;
-            font-weight: 700;
-            color: #ffffff;
-            font-size: 0.875rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .recent-bookings-rows {
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        .recent-bookings-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-            gap: 1rem;
-            padding: 1.25rem;
-            border-bottom: 1px solid #3d3d5c;
-            align-items: center;
-            transition: all 0.2s ease;
-            background-color: transparent;
-        }
-
-        .recent-bookings-row:nth-child(odd) {
-            background: rgba(45, 53, 97, 0.4);
-        }
-
-        .recent-bookings-row:nth-child(even) {
-            background: rgba(36, 40, 66, 0.4);
-        }
-
-        .recent-bookings-row:hover {
-            background: rgba(61, 93, 157, 0.5);
-        }
-
-        .recent-bookings-row .guest-info {
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-        }
-
-        .recent-bookings-row .guest-name {
-            color: #ffffff;
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-
-        .recent-bookings-row .guest-email {
-            color: #9db3d1;
-            font-size: 0.75rem;
-        }
-
-        .recent-bookings-row .cell-text {
-            color: #ffffff;
-            font-weight: 500;
-        }
-
-        .recent-bookings-row .cell-secondary {
-            color: #b0b8d0;
-            font-size: 0.9rem;
-        }
-
-        .recent-bookings-row .cell-amount {
-            color: #7dd87d;
-            font-weight: 700;
-            font-size: 1rem;
-        }
-    </style>
     <div class="content-section">
         <h2 class="section-title">
             <span class="section-icon">📋</span>
@@ -793,72 +1019,13 @@
 
     <!-- Recent Reviews -->
     @if($recentReviews->isNotEmpty())
-    <style>
-        .review-card {
-            background: linear-gradient(135deg, rgba(45, 53, 97, 0.6) 0%, rgba(36, 40, 66, 0.6) 100%);
-            border: 1px solid #3d3d5c;
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .review-card:hover {
-            border-color: #4d5d8d;
-            background: linear-gradient(135deg, rgba(61, 93, 157, 0.6) 0%, rgba(45, 53, 97, 0.6) 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        }
-
-        .review-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1rem;
-            gap: 1rem;
-        }
-
-        .review-card-info h3 {
-            color: #ffffff;
-            font-size: 1rem;
-            font-weight: 700;
-            margin: 0 0 0.25rem 0;
-        }
-
-        .review-card-info p {
-            color: #9db3d1;
-            font-size: 0.875rem;
-            margin: 0;
-            font-weight: 500;
-        }
-
-        .review-card-rating {
-            font-size: 1.75rem;
-            color: #FFD700;
-            font-weight: 700;
-            white-space: nowrap;
-        }
-
-        .review-card-comment {
-            color: #b0b8d0;
-            font-size: 0.9rem;
-            line-height: 1.5;
-            margin: 0.75rem 0;
-        }
-
-        .review-card-date {
-            color: #7d8fa3;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-    </style>
     <div class="content-section">
         <h2 class="section-title">
             <span class="section-icon">⭐</span>
             Recent Customer Reviews
         </h2>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+        <div class="review-grid">
             @foreach($recentReviews->take(6) as $review)
                 <div class="review-card">
                     <div class="review-card-header">
@@ -875,44 +1042,7 @@
         </div>
     </div>
     @endif
+    </div>
+</div>
 
 </x-layout>
-
-<style>
-    .booking-badge {
-        display: inline-block;
-        padding: 0.25rem 0.75rem;
-        border-radius: 9999px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-    }
-
-    .badge-pending {
-        background: rgba(255, 193, 7, 0.2);
-        color: #FFC107;
-    }
-
-    .badge-approved {
-        background: rgba(76, 175, 80, 0.2);
-        color: #4CAF50;
-    }
-
-    .badge-paid {
-        background: rgba(76, 175, 80, 0.2);
-        color: #4CAF50;
-    }
-
-    .badge-cancelled {
-        background: rgba(244, 67, 54, 0.2);
-        color: #F44336;
-    }
-
-    .section-card {
-        background: rgba(75, 86, 148, 0.1);
-        border: 1px solid rgba(75, 86, 148, 0.2);
-        border-radius: 0.75rem;
-        padding: 1.5rem;
-    }
-</style>

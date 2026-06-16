@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class TourPackage extends Model
 {
@@ -43,6 +44,43 @@ class TourPackage extends Model
         return ltrim($imagePath, '/');
     }
 
+    private function publicPackageImagePath(): ?string
+    {
+        $exactName = 'images/' . $this->name;
+        foreach (['jpg', 'jpeg', 'png', 'webp'] as $extension) {
+            $candidate = $exactName . '.' . $extension;
+            if (file_exists(public_path($candidate))) {
+                return $candidate;
+            }
+        }
+
+        $packageSlug = Str::slug($this->name);
+        foreach (glob(public_path('images/*')) ?: [] as $file) {
+            if (! is_file($file)) {
+                continue;
+            }
+
+            $filename = pathinfo($file, PATHINFO_FILENAME);
+            if (Str::slug($filename) === $packageSlug) {
+                return 'images/' . basename($file);
+            }
+        }
+
+        $fallbacks = [
+            'Enchanted Cave & Shell Museum' => 'images/enchanted cave and shell museum.png',
+            'Patar Beach Family Picnic' => 'images/patar beach sunrise escape.png',
+            'Bolinao Heritage Food Walk' => 'images/Heritage & Culture Museum Tour.jpg',
+            'Bolinao Mangrove Eco Cruise' => 'images/Ecotourism & Conservation Areas.png',
+        ];
+
+        $fallback = $fallbacks[$this->name] ?? null;
+        if ($fallback && file_exists(public_path($fallback))) {
+            return $fallback;
+        }
+
+        return null;
+    }
+
     public function getImageUrlAttribute(): string
     {
         if (! $this->image) {
@@ -60,7 +98,7 @@ class TourPackage extends Model
         }
 
         // Optimize: Check most likely paths first and cache the result
-        $cacheKey = 'package_image_url_' . $this->id . '_' . md5($imagePath);
+        $cacheKey = 'package_image_url_' . $this->id . '_' . md5($imagePath . '|' . $this->name);
         
         return cache()->remember($cacheKey, now()->addHours(24), function() use ($imagePath) {
             // Public storage root (storage/app/public) - most common
@@ -86,6 +124,10 @@ class TourPackage extends Model
             // If image is already stored under storage/ path in the DB use it directly
             if (file_exists(public_path('storage/' . $imagePath))) {
                 return asset('storage/' . $imagePath);
+            }
+
+            if ($packageImagePath = $this->publicPackageImagePath()) {
+                return asset($packageImagePath);
             }
 
             return asset('images/package-default.svg');
@@ -128,7 +170,7 @@ class TourPackage extends Model
             return true;
         }
 
-        return false;
+        return $this->publicPackageImagePath() !== null;
     }
 
     public static function categoryLabels(): array

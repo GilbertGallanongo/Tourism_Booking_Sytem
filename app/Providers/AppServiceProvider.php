@@ -26,11 +26,16 @@ class AppServiceProvider extends ServiceProvider
         $forceDebug = env('FORCE_APP_DEBUG', 'false') === 'true';
         $localMode = App::environment('local') || $forceDebug;
 
-        if (! $localMode) {
+        $appUrl = env('APP_URL', '');
+        if (! $localMode || str_starts_with($appUrl, 'https://')) {
+            if ($appUrl !== '') {
+                URL::forceRootUrl(rtrim($appUrl, '/'));
+            }
+
             URL::forceScheme('https');
         }
 
-        if (! $localMode) {
+        if (! $localMode && ! str_starts_with($appUrl, 'https://')) {
             return;
         }
 

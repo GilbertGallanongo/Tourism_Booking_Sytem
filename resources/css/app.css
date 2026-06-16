@@ -4750,6 +4750,27 @@ body.home-shell .homepage-slider .package-card-media {
     min-height: 9.5rem !important;
 }
 
+/* Ensure package cards are equal height and media fills the area */
+body.home-shell .homepage-slider .package-card {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+}
+
+body.home-shell .homepage-slider .package-card-media {
+    flex: 0 0 9.5rem !important;
+    width: 100% !important;
+    background-size: cover !important;
+    background-position: center !important;
+}
+
+body.home-shell .homepage-slider .package-card-body {
+    flex: 1 1 auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+}
+
 body.home-shell .homepage-slider .package-card-media.has-card-image,
 body.home-shell .famous-tourist-spots .package-card-media.has-card-image,
 body.home-shell .promo-packages-section .package-card-media.has-card-image {
@@ -4790,10 +4811,10 @@ body.packages-shell .content {
 }
 
 body.packages-shell .packages-hero {
-    width: min(92vw, 62rem) !important;
+    width: min(92vw, 34rem) !important;
     min-height: auto !important;
-    margin: 0 auto 6.9rem !important;
-    padding: 5.1rem 0 0 !important;
+    margin: 0 auto 2rem !important;
+    padding: 1.15rem 0 0 !important;
     background: transparent !important;
     display: flex !important;
     justify-content: center !important;
@@ -4806,11 +4827,11 @@ body.packages-shell .packages-hero::after {
 
 body.packages-shell .packages-hero-card {
     width: 100% !important;
-    max-width: 62rem !important;
+    max-width: 34rem !important;
     margin: 0 auto !important;
-    min-height: 17.4rem !important;
-    padding: 3rem 3.35rem !important;
-    border-radius: 1.35rem !important;
+    min-height: 15rem !important;
+    padding: clamp(1.75rem, 3vw, 2.25rem) !important;
+    border-radius: 0.9rem !important;
     background: rgba(17, 31, 77, 0.94) !important;
     border: 1px solid rgba(255, 255, 255, 0.18) !important;
     box-shadow: 0 1.5rem 3.25rem rgba(0, 0, 0, 0.34) !important;
@@ -4822,52 +4843,66 @@ body.packages-shell .packages-hero-card::after {
 }
 
 body.packages-shell .packages-hero-copy {
-    max-width: 26.5rem !important;
+    max-width: 100% !important;
+}
+
+body.packages-shell .packages-hero-copy .visual-tag,
+body.packages-shell .packages-hero-copy .visual-headline,
+body.packages-shell .packages-hero-copy .visual-copy {
+    position: static !important;
+    inset: auto !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
 }
 
 body.packages-shell .packages-hero-copy .visual-tag {
-    margin-bottom: 0.95rem !important;
+    display: inline-flex !important;
+    margin-bottom: 0.5rem !important;
     padding: 0.48rem 0.8rem !important;
     border-radius: 999px !important;
     background: rgba(255, 255, 255, 0.12) !important;
-    font-size: 0.62rem !important;
+    color: #f8fafc !important;
+    font-size: 0.72rem !important;
     letter-spacing: 0.08em !important;
 }
 
 body.packages-shell .packages-hero-copy .visual-headline {
-    max-width: 25rem !important;
-    font-size: clamp(2.75rem, 4vw, 3.65rem) !important;
-    line-height: 0.96 !important;
+    max-width: 26rem !important;
+    margin: 0 !important;
+    font-size: clamp(2.35rem, 5vw, 3.35rem) !important;
+    line-height: 0.95 !important;
     letter-spacing: 0 !important;
     text-transform: uppercase !important;
 }
 
 body.packages-shell .packages-hero-copy .visual-copy {
-    max-width: 22rem !important;
-    margin-top: 1rem !important;
+    max-width: 26rem !important;
+    margin: 0.7rem 0 0 !important;
     padding-left: 0.75rem !important;
     border-left: 2px solid rgba(234, 224, 207, 0.55) !important;
     color: rgba(248, 250, 252, 0.78) !important;
-    font-size: 0.72rem !important;
-    line-height: 1.5 !important;
+    font-size: 0.78rem !important;
+    line-height: 1.55 !important;
 }
 
 body.packages-shell .packages-hero-cta {
     margin-top: 0.35rem !important;
     color: rgba(248, 250, 252, 0.86) !important;
-    font-size: 0.72rem !important;
+    font-size: 0.76rem !important;
 }
 
 body.packages-shell .packages-listing {
-    width: min(92vw, 64rem) !important;
+    width: min(92vw, 70rem) !important;
     margin: 0 auto !important;
     padding: 0 0 4rem !important;
     background: transparent !important;
 }
 
 body.packages-shell .packages-container {
-    width: min(92vw, 64rem) !important;
-    max-width: 64rem !important;
+    width: min(92vw, 43rem) !important;
+    max-width: 43rem !important;
     margin: 0 auto !important;
     padding: 0 !important;
     display: block !important;
@@ -4877,7 +4912,7 @@ body.packages-shell .packages-container {
 body.packages-shell .packages-search-panel {
     width: 100% !important;
     margin: 0 auto 1.65rem !important;
-    padding: 2rem 2rem !important;
+    padding: 1.55rem 1.65rem !important;
     border-radius: 0.85rem !important;
     background: rgba(3, 8, 22, 0.92) !important;
     border: 1px solid rgba(255, 255, 255, 0.16) !important;
@@ -4892,7 +4927,7 @@ body.packages-shell .packages-search-panel h3 {
 
 body.packages-shell .packages-search-form {
     display: grid !important;
-    grid-template-columns: minmax(0, 2.35fr) minmax(9rem, 0.75fr) minmax(6rem, 0.45fr) !important;
+    grid-template-columns: minmax(0, 1.85fr) minmax(8rem, 0.75fr) minmax(5.6rem, 0.45fr) !important;
     gap: 0.9rem !important;
     align-items: end !important;
 }

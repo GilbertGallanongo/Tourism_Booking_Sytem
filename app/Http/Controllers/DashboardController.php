@@ -199,7 +199,7 @@ class DashboardController extends Controller
             ->when($request->type, fn($q) => $q->where('type', $request->type))
             ->when($request->max_price, fn($q) => $q->where('price', '<=', $request->max_price))
             ->orderBy('updated_at', 'desc')
-            ->paginate(10)
+            ->paginate(18)
             ->withQueryString();
 
         $destinations = Destination::orderBy('name')->get();
@@ -474,12 +474,12 @@ class DashboardController extends Controller
         
         // Optimize: Single query with aggregation instead of multiple count queries
         $bookingStats = Booking::where('user_id', $user->id)
-            ->selectRaw('
+            ->selectRaw("
                 COUNT(*) as total,
-                SUM(CASE WHEN status = "pending" THEN 1 ELSE 0 END) as pending,
-                SUM(CASE WHEN status = "approved" THEN 1 ELSE 0 END) as approved,
-                SUM(CASE WHEN status = "cancelled" THEN 1 ELSE 0 END) as cancelled
-            ')
+                SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as pending,
+                SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) as approved,
+                SUM(CASE WHEN status = 'cancelled' THEN 1 ELSE 0 END) as cancelled
+            ")
             ->first();
         
         $bookings = Booking::with(['user', 'package', 'payment'])
@@ -489,10 +489,10 @@ class DashboardController extends Controller
 
         // Optimize: Single query for payment stats
         $paymentStats = Payment::whereIn('booking_id', Booking::where('user_id', $user->id)->select('id'))
-            ->selectRaw('
-                SUM(CASE WHEN status = "paid" THEN 1 ELSE 0 END) as paid_count,
-                SUM(CASE WHEN status = "paid" THEN amount ELSE 0 END) as revenue
-            ')
+            ->selectRaw("
+                SUM(CASE WHEN status = 'paid' THEN 1 ELSE 0 END) as paid_count,
+                SUM(CASE WHEN status = 'paid' THEN amount ELSE 0 END) as revenue
+            ")
             ->first();
 
         // Get top-rated packages
@@ -560,24 +560,24 @@ class DashboardController extends Controller
 
         // Optimize: Single query for booking stats aggregation
         // Make metrics mutually exclusive based on booking lifecycle
-        $bookingStats = Booking::selectRaw('
+        $bookingStats = Booking::selectRaw("
             COUNT(*) as total,
-            SUM(CASE WHEN status = "pending" THEN 1 ELSE 0 END) as pending,
-            SUM(CASE WHEN status = "approved" THEN 1 ELSE 0 END) as approved,
-            SUM(CASE WHEN status = "cancelled" THEN 1 ELSE 0 END) as cancelled,
+            SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as pending,
+            SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) as approved,
+            SUM(CASE WHEN status = 'cancelled' THEN 1 ELSE 0 END) as cancelled,
             SUM(CASE WHEN tour_started_at IS NOT NULL AND tour_ended_at IS NULL THEN 1 ELSE 0 END) as checked_in,
             SUM(CASE WHEN tour_ended_at IS NOT NULL THEN 1 ELSE 0 END) as checked_out
-        ')
+        ")
         ->first();
 
         // Optimize: Single query for payment stats
         // Count paid bookings that are not already in tour progress
-        $paymentStats = Payment::selectRaw('
-            SUM(CASE WHEN status = "paid" THEN 1 ELSE 0 END) as paid_count,
-            SUM(CASE WHEN status = "pending" THEN 1 ELSE 0 END) as pending_count,
-            SUM(CASE WHEN status = "failed" THEN 1 ELSE 0 END) as failed_count,
-            SUM(CASE WHEN status = "paid" THEN amount ELSE 0 END) as revenue
-        ')
+        $paymentStats = Payment::selectRaw("
+            SUM(CASE WHEN status = 'paid' THEN 1 ELSE 0 END) as paid_count,
+            SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as pending_count,
+            SUM(CASE WHEN status = 'failed' THEN 1 ELSE 0 END) as failed_count,
+            SUM(CASE WHEN status = 'paid' THEN amount ELSE 0 END) as revenue
+        ")
         ->first();
 
         // Get paid bookings count excluding those with tour progress
@@ -610,12 +610,23 @@ class DashboardController extends Controller
             ->get();
 
         // Get monthly booking data (last 6 months)
-        $monthlyBookings = Booking::selectRaw("CAST(strftime('%m', created_at) AS INTEGER) as month, COUNT(*) as count, SUM(total_price) as revenue")
-            ->whereRaw("strftime('%Y', created_at) = strftime('%Y', 'now')")
-            ->groupBy('month')
-            ->orderBy('month')
-            ->get()
-            ->keyBy('month');
+        $driver = DB::getDriverName();
+
+        if ($driver === 'pgsql') {
+            $monthlyBookings = Booking::selectRaw('EXTRACT(MONTH FROM created_at)::int as month, COUNT(*) as count, SUM(total_price) as revenue')
+                ->whereYear('created_at', now()->year)
+                ->groupBy('month')
+                ->orderBy('month')
+                ->get()
+                ->keyBy('month');
+        } else {
+            $monthlyBookings = Booking::selectRaw("CAST(strftime('%m', created_at) AS INTEGER) as month, COUNT(*) as count, SUM(total_price) as revenue")
+                ->whereYear('created_at', now()->year)
+                ->groupBy('month')
+                ->orderBy('month')
+                ->get()
+                ->keyBy('month');
+        }
 
         // Get booking status breakdown
         $bookingsByStatus = [

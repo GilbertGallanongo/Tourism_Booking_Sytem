@@ -11,14 +11,17 @@ class ForceHttpsAssets
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if (app()->environment('production')) {
+        $forwardedProto = strtolower($request->header('x-forwarded-proto') ?? '');
+        $isSecureForwarded = $forwardedProto !== '' && strpos($forwardedProto, 'https') !== false;
+
+        if (app()->environment('production') || $isSecureForwarded) {
             URL::forceScheme('https');
         }
 
         /** @var \Symfony\Component\HttpFoundation\Response $response */
         $response = $next($request);
 
-        if (app()->environment('production')) {
+        if (app()->environment('production') || $isSecureForwarded) {
             $response->headers->set('Content-Security-Policy', 'upgrade-insecure-requests');
         }
 

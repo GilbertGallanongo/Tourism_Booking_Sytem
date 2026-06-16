@@ -120,3 +120,64 @@ async function loadPackages() {
 }
 
 window.addEventListener('DOMContentLoaded', loadPackages);
+
+// Auth modal handler
+window.addEventListener('DOMContentLoaded', () => {
+    const authModal = document.querySelector('[data-auth-modal]');
+    if (!authModal) return;
+
+    const authPanes = authModal.querySelectorAll('[data-auth-pane]');
+    const authOpenButtons = document.querySelectorAll('[data-auth-open]');
+    const authCloseButtons = authModal.querySelectorAll('[data-auth-close]');
+
+    // Open modal
+    authOpenButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            const mode = button.getAttribute('data-auth-mode') || 'signin';
+            authModal.removeAttribute('hidden');
+            
+            // Switch to the specified pane
+            authPanes.forEach(pane => {
+                if (pane.getAttribute('data-auth-pane') === mode) {
+                    pane.classList.add('active');
+                } else {
+                    pane.classList.remove('active');
+                }
+            });
+        });
+    });
+
+    // Close modal
+    authCloseButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            authModal.setAttribute('hidden', '');
+        });
+    });
+
+    // Close on backdrop click
+    const backdrop = authModal.querySelector('[data-auth-close]');
+    if (backdrop) {
+        backdrop.addEventListener('click', (e) => {
+            if (e.target === backdrop) {
+                authModal.setAttribute('hidden', '');
+            }
+        });
+    }
+
+    // Switch panes via auth-open links inside modal
+    authModal.querySelectorAll('[data-auth-open]').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const mode = link.getAttribute('data-auth-mode') || 'signin';
+            authPanes.forEach(pane => {
+                if (pane.getAttribute('data-auth-pane') === mode) {
+                    pane.classList.add('active');
+                } else {
+                    pane.classList.remove('active');
+                }
+            });
+        });
+    });
+});

@@ -10,9 +10,13 @@
         $viteJs = public_path('build/assets/app.js');
     @endphp
     @php
-        $asset = app()->environment('production') || request()->secure()
-            ? fn ($path) => secure_asset($path)
-            : fn ($path) => asset($path);
+        $appUrl = config('app.url') ?: env('APP_URL', '');
+        $forwardedProto = strtolower(request()->header('x-forwarded-proto') ?? '');
+        $isSecureForwarded = $forwardedProto !== '' && strpos($forwardedProto, 'https') !== false;
+        $usesSecure = app()->environment('production') || request()->secure() || $isSecureForwarded || str_starts_with($appUrl, 'https://');
+        $asset = fn ($path) => $usesSecure
+            ? secure_asset($path)
+            : asset($path);
     @endphp
     @if (file_exists($viteCss))
         <link rel="stylesheet" href="{{ $asset('build/assets/app.css') }}?v={{ filemtime($viteCss) }}">
