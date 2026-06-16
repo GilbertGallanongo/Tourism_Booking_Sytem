@@ -10,7 +10,7 @@
         $viteJs = public_path('build/assets/app.js');
     @endphp
     @php
-        $asset = request()->secure()
+        $asset = app()->environment('production') || request()->secure()
             ? fn ($path) => secure_asset($path)
             : fn ($path) => asset($path);
     @endphp
