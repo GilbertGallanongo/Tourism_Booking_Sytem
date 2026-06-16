@@ -4580,3 +4580,182 @@ input:focus, textarea:focus, select:focus {
 .progress-fill.blue {
     background: #2196F3;
 }
+
+/* Railway/homepage parity overrides */
+body.home-shell {
+    min-height: 100%;
+    background:
+        linear-gradient(180deg, rgba(2, 5, 15, 0.58), rgba(2, 5, 15, 0.66)),
+        url('/images/bolinao-church.jpg') center top / cover fixed no-repeat !important;
+}
+
+body.home-shell::before {
+    background: transparent !important;
+}
+
+body.home-shell .content {
+    width: 100% !important;
+    max-width: none !important;
+    padding: 3.25rem 0 0 !important;
+    background: transparent !important;
+}
+
+body.home-shell .homepage-slider {
+    width: min(100%, 72rem) !important;
+    margin: 0 auto 2rem !important;
+    overflow: visible !important;
+}
+
+body.home-shell .slider-view {
+    overflow: visible !important;
+}
+
+body.home-shell .slider-track {
+    display: block !important;
+    width: 100% !important;
+    transform: none !important;
+    transition: none !important;
+}
+
+body.home-shell .slider-slide {
+    width: 100% !important;
+    display: block !important;
+}
+
+body.home-shell .slide-hero .bolinao-hero {
+    min-height: 16rem !important;
+    padding: 3.5rem 1rem 2rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+}
+
+body.home-shell .slide-hero .bolinao-hero::before,
+body.home-shell .slide-hero .bolinao-hero::after {
+    display: none !important;
+}
+
+body.home-shell .slide-hero .bolinao-card {
+    width: min(92vw, 34rem) !important;
+    max-width: 34rem !important;
+    display: block !important;
+    padding: clamp(1.5rem, 3vw, 2.25rem) !important;
+    margin: 0 auto !important;
+    border-radius: 0.9rem !important;
+    background: rgba(17, 31, 77, 0.92) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.30) !important;
+}
+
+body.home-shell .slide-hero .bolinao-card::before,
+body.home-shell .slide-hero .bolinao-card::after {
+    display: none !important;
+}
+
+body.home-shell .slide-hero .bolinao-hero-grid {
+    display: block !important;
+    margin: 0 !important;
+}
+
+body.home-shell .slide-hero .bolinao-copy {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+body.home-shell .slide-hero .bolinao-hero-visual {
+    display: none !important;
+}
+
+body.home-shell .slide-hero .bolinao-kicker {
+    margin-bottom: 0.35rem !important;
+    color: #f8fafc !important;
+    font-size: 0.72rem !important;
+    letter-spacing: 0.08em !important;
+}
+
+body.home-shell .slide-hero .bolinao-copy h1 {
+    font-size: clamp(2.4rem, 5vw, 3.35rem) !important;
+    line-height: 0.95 !important;
+    letter-spacing: 0 !important;
+}
+
+body.home-shell .slide-hero .bolinao-copy p:not(.bolinao-kicker) {
+    margin-top: 0.7rem !important;
+    max-width: 26rem !important;
+    font-size: 0.78rem !important;
+    line-height: 1.55 !important;
+}
+
+body.home-shell .slide-hero .bolinao-actions {
+    margin-top: 1.15rem !important;
+    gap: 0.75rem !important;
+}
+
+body.home-shell .slide-hero .bolinao-button {
+    min-width: 6.8rem !important;
+    min-height: 2.05rem !important;
+    padding: 0.5rem 0.85rem !important;
+    border-radius: 0.35rem !important;
+    font-size: 0.68rem !important;
+}
+
+body.home-shell .homepage-slider .slide-packages,
+body.home-shell .homepage-slider .slide-reviews {
+    width: min(92vw, 56rem) !important;
+    margin: 0 auto !important;
+    padding: 2rem 1.25rem !important;
+    background: rgba(17, 31, 77, 0.68) !important;
+    border-left: 1px solid rgba(255, 255, 255, 0.10) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.10) !important;
+    backdrop-filter: blur(2px) !important;
+}
+
+body.home-shell .homepage-slider .slide-packages {
+    border-radius: 0.25rem 0.25rem 0 0 !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.10) !important;
+}
+
+body.home-shell .homepage-slider .slide-reviews {
+    border-radius: 0 0 0.25rem 0.25rem !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.10) !important;
+}
+
+body.home-shell .homepage-slider .featured-packages-inner,
+body.home-shell .homepage-slider .reviews-container {
+    padding: 0 !important;
+}
+
+body.home-shell .homepage-slider .section-header,
+body.home-shell .homepage-slider .reviews-header {
+    margin-bottom: 1.25rem !important;
+}
+
+body.home-shell .homepage-slider .section-header h2,
+body.home-shell .homepage-slider .reviews-header h2 {
+    font-size: clamp(1.45rem, 2.2vw, 2rem) !important;
+}
+
+body.home-shell .homepage-slider .package-card-grid,
+body.home-shell .homepage-slider .reviews-grid {
+    gap: 1rem !important;
+}
+
+body.home-shell .homepage-slider .package-card {
+    border-radius: 0.45rem !important;
+}
+
+body.home-shell .homepage-slider .package-card-media {
+    height: 9.5rem !important;
+    min-height: 9.5rem !important;
+}
+
+body.home-shell .homepage-slider .package-card-body,
+body.home-shell .homepage-slider .review-card {
+    padding: 0.9rem !important;
+}
+
+body.home-shell .famous-tourist-spots,
+body.home-shell .promo-packages-section {
+    background: transparent !important;
+}
