@@ -15,7 +15,7 @@
             : fn ($path) => asset($path);
     @endphp
     @if (file_exists($viteCss))
-        <link rel="stylesheet" href="{{ $asset('build/assets/app.css') }}">
+        <link rel="stylesheet" href="{{ $asset('build/assets/app.css') }}?v={{ filemtime($viteCss) }}">
     @else
         <link rel="stylesheet" href="{{ $asset('css/app.css') }}?v={{ file_exists(public_path('css/app.css')) ? filemtime(public_path('css/app.css')) : time() }}">
     @endif
@@ -24,7 +24,7 @@
         window.__API_URL__ = "{{ env('VITE_API_URL', env('APP_URL')) }}";
     </script>
     @if (file_exists($viteJs))
-        <script src="{{ $asset('build/assets/app.js') }}" defer></script>
+        <script src="{{ $asset('build/assets/app.js') }}?v={{ filemtime($viteJs) }}" defer></script>
     @else
         <script src="{{ $asset('js/app.js') }}" defer></script>
     @endif
