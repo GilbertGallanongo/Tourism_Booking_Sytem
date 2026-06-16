@@ -4790,10 +4790,10 @@ body.packages-shell .content {
 }
 
 body.packages-shell .packages-hero {
-    width: min(92vw, 86rem) !important;
+    width: min(92vw, 62rem) !important;
     min-height: auto !important;
-    margin: 0 auto 4.25rem !important;
-    padding: 1.75rem 0 0 !important;
+    margin: 0 auto 6.9rem !important;
+    padding: 5.1rem 0 0 !important;
     background: transparent !important;
     display: flex !important;
     justify-content: center !important;
@@ -4806,11 +4806,11 @@ body.packages-shell .packages-hero::after {
 
 body.packages-shell .packages-hero-card {
     width: 100% !important;
-    max-width: 86rem !important;
+    max-width: 62rem !important;
     margin: 0 auto !important;
-    min-height: 25.5rem !important;
-    padding: clamp(4.5rem, 6vw, 5.2rem) clamp(3rem, 5vw, 4.1rem) !important;
-    border-radius: 2.1rem !important;
+    min-height: 17.4rem !important;
+    padding: 3rem 3.35rem !important;
+    border-radius: 1.35rem !important;
     background: rgba(17, 31, 77, 0.94) !important;
     border: 1px solid rgba(255, 255, 255, 0.18) !important;
     box-shadow: 0 1.5rem 3.25rem rgba(0, 0, 0, 0.34) !important;
@@ -4822,52 +4822,52 @@ body.packages-shell .packages-hero-card::after {
 }
 
 body.packages-shell .packages-hero-copy {
-    max-width: 33rem !important;
+    max-width: 26.5rem !important;
 }
 
 body.packages-shell .packages-hero-copy .visual-tag {
-    margin-bottom: 1.65rem !important;
-    padding: 0.72rem 1.05rem !important;
+    margin-bottom: 0.95rem !important;
+    padding: 0.48rem 0.8rem !important;
     border-radius: 999px !important;
     background: rgba(255, 255, 255, 0.12) !important;
-    font-size: 0.82rem !important;
+    font-size: 0.62rem !important;
     letter-spacing: 0.08em !important;
 }
 
 body.packages-shell .packages-hero-copy .visual-headline {
-    max-width: 31rem !important;
-    font-size: clamp(3.35rem, 5vw, 5rem) !important;
+    max-width: 25rem !important;
+    font-size: clamp(2.75rem, 4vw, 3.65rem) !important;
     line-height: 0.96 !important;
     letter-spacing: 0 !important;
     text-transform: uppercase !important;
 }
 
 body.packages-shell .packages-hero-copy .visual-copy {
-    max-width: 26rem !important;
-    margin-top: 1.55rem !important;
-    padding-left: 1rem !important;
+    max-width: 22rem !important;
+    margin-top: 1rem !important;
+    padding-left: 0.75rem !important;
     border-left: 2px solid rgba(234, 224, 207, 0.55) !important;
     color: rgba(248, 250, 252, 0.78) !important;
-    font-size: 1rem !important;
-    line-height: 1.65 !important;
+    font-size: 0.72rem !important;
+    line-height: 1.5 !important;
 }
 
 body.packages-shell .packages-hero-cta {
-    margin-top: 0.15rem !important;
+    margin-top: 0.35rem !important;
     color: rgba(248, 250, 252, 0.86) !important;
-    font-size: 1rem !important;
+    font-size: 0.72rem !important;
 }
 
 body.packages-shell .packages-listing {
-    width: min(92vw, 70rem) !important;
+    width: min(92vw, 64rem) !important;
     margin: 0 auto !important;
     padding: 0 0 4rem !important;
     background: transparent !important;
 }
 
 body.packages-shell .packages-container {
-    width: min(92vw, 43rem) !important;
-    max-width: 43rem !important;
+    width: min(92vw, 64rem) !important;
+    max-width: 64rem !important;
     margin: 0 auto !important;
     padding: 0 !important;
     display: block !important;
@@ -4877,7 +4877,7 @@ body.packages-shell .packages-container {
 body.packages-shell .packages-search-panel {
     width: 100% !important;
     margin: 0 auto 1.65rem !important;
-    padding: 1.55rem 1.65rem !important;
+    padding: 2rem 2rem !important;
     border-radius: 0.85rem !important;
     background: rgba(3, 8, 22, 0.92) !important;
     border: 1px solid rgba(255, 255, 255, 0.16) !important;
@@ -4892,7 +4892,7 @@ body.packages-shell .packages-search-panel h3 {
 
 body.packages-shell .packages-search-form {
     display: grid !important;
-    grid-template-columns: minmax(0, 1.85fr) minmax(8rem, 0.75fr) minmax(5.6rem, 0.45fr) !important;
+    grid-template-columns: minmax(0, 2.35fr) minmax(9rem, 0.75fr) minmax(6rem, 0.45fr) !important;
     gap: 0.9rem !important;
     align-items: end !important;
 }
