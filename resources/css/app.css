@@ -4750,6 +4750,16 @@ body.home-shell .homepage-slider .package-card-media {
     min-height: 9.5rem !important;
 }
 
+body.home-shell .homepage-slider .package-card-media.has-card-image,
+body.home-shell .famous-tourist-spots .package-card-media.has-card-image,
+body.home-shell .promo-packages-section .package-card-media.has-card-image {
+    background-image: var(--card-image) !important;
+    background-color: #172a62 !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+}
+
 body.home-shell .homepage-slider .package-card-body,
 body.home-shell .homepage-slider .review-card {
     padding: 0.9rem !important;
