@@ -33,8 +33,13 @@ class FamousTouristSpotController extends Controller
             'sort_order' => 'integer',
         ]);
 
+        $validated['is_active'] = $request->has('is_active');
+        $validated['sort_order'] = $validated['sort_order'] ?? 0;
+
+        $disk = config('filesystems.default') ?? env('FILESYSTEM_DISK', 'public');
+
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('famous-tourist-spots', 'public');
+            $imagePath = $request->file('image')->storePublicly('famous-tourist-spots', $disk);
             $validated['image'] = $imagePath;
         }
 
@@ -60,12 +65,17 @@ class FamousTouristSpotController extends Controller
             'sort_order' => 'integer',
         ]);
 
+        $validated['is_active'] = $request->has('is_active');
+        $validated['sort_order'] = $validated['sort_order'] ?? $famousTouristSpot->sort_order;
+
+        $disk = config('filesystems.default') ?? env('FILESYSTEM_DISK', 'public');
+
         if ($request->hasFile('image')) {
-            // Delete old image
+            // Delete old image on the configured disk
             if ($famousTouristSpot->image) {
-                Storage::disk('public')->delete($famousTouristSpot->image);
+                Storage::disk($disk)->delete($famousTouristSpot->image);
             }
-            $imagePath = $request->file('image')->store('famous-tourist-spots', 'public');
+            $imagePath = $request->file('image')->storePublicly('famous-tourist-spots', $disk);
             $validated['image'] = $imagePath;
         }
 

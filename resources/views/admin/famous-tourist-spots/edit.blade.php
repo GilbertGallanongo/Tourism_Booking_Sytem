@@ -36,7 +36,7 @@
             <div style="margin-bottom: 1.5rem;">
                 <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: white;">Current Image</label>
                 @if($famousTouristSpot->image)
-                    <img src="{{ asset('storage/' . $famousTouristSpot->image) }}" alt="{{ $famousTouristSpot->name }}" style="width: 150px; height: 150px; object-fit: cover; border-radius: 0.5rem; margin-bottom: 0.5rem;">
+                    <img src="{{ $famousTouristSpot->image_url }}" alt="{{ $famousTouristSpot->name }}" style="width: 150px; height: 150px; object-fit: cover; border-radius: 0.5rem; margin-bottom: 0.5rem;">
                 @else
                     <div style="width: 150px; height: 150px; background: #3d3d5c; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; color: #8890a8; margin-bottom: 0.5rem;">No Image</div>
                 @endif

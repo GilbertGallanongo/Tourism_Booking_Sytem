@@ -140,13 +140,7 @@
             <div class="package-card-grid">
                 @forelse($famousTouristSpots->take(3) as $spot)
                     <article class="package-card">
-                        @if($spot->image)
-                            <div class="package-card-media has-card-image" style="--card-image: url('{{ asset('storage/' . $spot->image) }}'); background-image: var(--card-image);"></div>
-                        @else
-                            <div class="package-card-media" style="background: linear-gradient(135deg, rgba(75, 86, 148, 0.3) 0%, rgba(17, 24, 68, 0.5) 100%); display: flex; align-items: center; justify-content: center;">
-                                <div style="font-size: 4rem; opacity: 0.5;">🗺️</div>
-                            </div>
-                        @endif
+                        <div class="package-card-media has-card-image" style="--card-image: url('{{ $spot->image_url }}'); background-image: var(--card-image);"></div>
                         <div class="package-card-body">
                             <div class="package-card-meta">
                                 <span>📍 {{ $spot->location }}</span>

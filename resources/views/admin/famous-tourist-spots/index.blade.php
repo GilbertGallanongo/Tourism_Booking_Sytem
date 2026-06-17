@@ -26,11 +26,7 @@
                     @forelse($spots as $spot)
                         <tr style="border-bottom: 1px solid #3d3d5c;">
                             <td style="padding: 0.75rem;">
-                                @if($spot->image)
-                                    <img src="{{ asset('storage/' . $spot->image) }}" alt="{{ $spot->name }}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 0.25rem;">
-                                @else
-                                    <div style="width: 60px; height: 60px; background: #3d3d5c; border-radius: 0.25rem; display: flex; align-items: center; justify-content: center; color: #8890a8; font-size: 0.75rem;">No Image</div>
-                                @endif
+                                <img src="{{ $spot->image_url }}" alt="{{ $spot->name }}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 0.25rem;">
                             </td>
                             <td style="padding: 0.75rem;">{{ $spot->name }}</td>
                             <td style="padding: 0.75rem;">{{ $spot->location }}</td>
