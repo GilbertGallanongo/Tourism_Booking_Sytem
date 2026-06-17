@@ -53,4 +53,14 @@ class Review extends Model
     {
         return $this->belongsTo(TourPackage::class);
     }
+
+    public function canBeModifiedBy(?User $user): bool
+    {
+        return $user
+            && $user->isTourist()
+            && ! $user->isGuest()
+            && $user->id === $this->user_id
+            && $this->created_at
+            && $this->created_at->gte(now()->subDays(3));
+    }
 }

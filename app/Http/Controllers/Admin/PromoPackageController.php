@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\PromoPackage;
+use App\Support\UploadedImage;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
@@ -30,12 +32,12 @@ class PromoPackageController extends Controller
                 'description' => ['nullable', 'string'],
                 'discount_percentage' => ['required', 'numeric', 'min:0', 'max:100'],
                 'start_date' => ['required', 'date'],
-                'end_date' => ['required', 'date', 'after:start_date'],
+                'end_date' => ['required', 'date', 'after_or_equal:start_date'],
                 'is_active' => ['boolean'],
-                'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
+                'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:5120'],
             ]);
 
-            $data['is_active'] = $request->has('is_active');
+            $data['is_active'] = $request->boolean('is_active');
 
             if ($request->hasFile('image')) {
                 $data['image'] = $request->file('image')->store('promo-packages', 'public');
@@ -75,12 +77,12 @@ class PromoPackageController extends Controller
                 'description' => ['nullable', 'string'],
                 'discount_percentage' => ['required', 'numeric', 'min:0', 'max:100'],
                 'start_date' => ['required', 'date'],
-                'end_date' => ['required', 'date', 'after:start_date'],
+                'end_date' => ['required', 'date', 'after_or_equal:start_date'],
                 'is_active' => ['boolean'],
-                'image' => ['nullable', 'file', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
+                'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:5120'],
             ]);
 
-            $data['is_active'] = $request->has('is_active');
+            $data['is_active'] = $request->boolean('is_active');
 
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
                 if ($promoPackage->image) {
@@ -105,6 +107,52 @@ class PromoPackageController extends Controller
             return redirect()->back()
                 ->withInput()
                 ->with('error', 'Error updating promo package: ' . $e->getMessage());
+        }
+    }
+
+    public function uploadImage(Request $request, PromoPackage $promoPackage): JsonResponse
+    {
+        try {
+            if (!$request->hasFile('image') || !$request->file('image')->isValid()) {
+                return response()->json(['error' => 'No valid image file provided'], 422);
+            }
+
+            $file = $request->file('image');
+
+            // Delete old image if exists
+            if ($promoPackage->image) {
+                Storage::disk('public')->delete($promoPackage->image);
+            }
+
+            // Store new image
+            $path = $file->store('promo-packages', 'public');
+            $promoPackage->image = $path;
+            $promoPackage->save();
+
+            $url = UploadedImage::url($path);
+            $timestamp = time();
+            try {
+                $timestamp = Storage::disk('public')->lastModified($path);
+            } catch (\Throwable $_) {
+                $timestamp = time();
+            }
+
+            \Log::info('Promo package image uploaded', ['path' => $path, 'url' => $url]);
+
+            return response()->json([
+                'url' => $url,
+                'path' => $path,
+                'timestamp' => $timestamp,
+            ], 200);
+        } catch (\Throwable $exception) {
+            \Log::error('Promo package image upload failed', [
+                'error' => $exception->getMessage(),
+                'trace' => $exception->getTraceAsString(),
+            ]);
+            return response()->json([
+                'error' => 'Image upload failed.',
+                'message' => $exception->getMessage(),
+            ], 500);
         }
     }
 

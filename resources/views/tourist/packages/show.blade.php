@@ -23,6 +23,15 @@
         .package-detail-stats div { background: rgba(10,16,32,0.5); padding:0.75rem; border-radius:8px; text-align:center; }
         .package-detail-review-list { display:flex; flex-direction:column; gap:0.75rem; }
         .package-detail-review { background: rgba(2,6,14,0.55); padding:0.75rem; border-radius:8px; }
+        .package-detail-review-actions { display:flex; flex-wrap:wrap; gap:0.5rem; margin-top:0.75rem; }
+        .package-detail-edit { width:100%; }
+        .package-detail-edit summary,
+        .package-detail-delete-form button { cursor:pointer; border:0; border-radius:8px; padding:0.45rem 0.75rem; font-weight:800; color:#fff; background:#334155; }
+        .package-detail-delete-form button { background:#dc2626; }
+        .package-detail-edit-form { display:grid; gap:0.6rem; margin-top:0.75rem; }
+        .package-detail-edit-form select,
+        .package-detail-edit-form textarea { width:100%; border:1px solid rgba(148,163,184,0.35); border-radius:8px; padding:0.65rem; color:#fff; background:rgba(15,23,42,0.85); }
+        .package-detail-review-lock { margin-top:0.75rem; color:#cbd5e1; font-size:0.85rem; }
         @media (max-width: 880px) {
             .package-detail-grid { grid-template-columns: 1fr; }
             .package-detail-media img { height: 260px; }
@@ -138,6 +147,10 @@
                 @else
                     <div class="package-detail-review-list">
                         @foreach($tourPackage->reviews as $review)
+                            @php
+                                $canModifyReview = $review->canBeModifiedBy(auth()->user());
+                                $ownsReview = auth()->id() === $review->user_id;
+                            @endphp
                             <article class="package-detail-review">
                                 <div class="package-detail-review-top">
                                     <div>
@@ -151,12 +164,37 @@
                                     </div>
                                 </div>
                                 <p>{{ $review->comment }}</p>
-                                @if(auth()->id() === $review->user_id)
-                                    <form action="{{ route('reviews.destroy', $review) }}" method="POST" class="package-detail-delete-form">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit">Delete review</button>
-                                    </form>
+                                @if($canModifyReview)
+                                    <div class="package-detail-review-actions">
+                                        <details class="package-detail-edit">
+                                            <summary>Edit review</summary>
+                                            <form action="{{ route('reviews.update', $review) }}" method="POST" class="package-detail-edit-form">
+                                                @csrf
+                                                @method('PATCH')
+                                                <label>
+                                                    <span>Rating</span>
+                                                    <select name="rating">
+                                                        @for($i = 1; $i <= 5; $i++)
+                                                            <option value="{{ $i }}" {{ old('rating', $review->rating) == $i ? 'selected' : '' }}>{{ $i }} star{{ $i === 1 ? '' : 's' }}</option>
+                                                        @endfor
+                                                    </select>
+                                                </label>
+                                                <label>
+                                                    <span>Comment</span>
+                                                    <textarea name="comment" rows="4">{{ old('comment', $review->comment) }}</textarea>
+                                                </label>
+                                                <button type="submit" class="package-detail-primary package-detail-submit">Save changes</button>
+                                            </form>
+                                        </details>
+
+                                        <form action="{{ route('reviews.destroy', $review) }}" method="POST" class="package-detail-delete-form" onsubmit="return confirm('Delete this review?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit">Delete review</button>
+                                        </form>
+                                    </div>
+                                @elseif($ownsReview)
+                                    <p class="package-detail-review-lock">Edit and delete are available only within 3 days after posting.</p>
                                 @endif
                             </article>
                         @endforeach
@@ -164,7 +202,7 @@
                 @endif
             </section>
 
-            @if(auth()->check() && auth()->user()->isTourist())
+            @if(auth()->check() && auth()->user()->isTourist() && ! auth()->user()->isGuest())
                 <section class="package-detail-panel package-detail-review-form">
                     <div class="package-detail-section-heading">
                         <p>Your experience</p>
@@ -192,7 +230,7 @@
                 </section>
             @elseif(auth()->check())
                 <div class="package-detail-note">
-                    Only tourist accounts may submit reviews. Admins cannot rate tour packages.
+                    Only registered tourist accounts may submit reviews.
                 </div>
             @endif
         </div>

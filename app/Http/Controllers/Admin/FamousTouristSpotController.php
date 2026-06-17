@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\FamousTouristSpot;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
@@ -24,6 +25,13 @@ class FamousTouristSpotController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        \Log::info('Famous tourist spot store request', [
+            'has_image' => $request->hasFile('image'),
+            'image_exists' => $request->file('image') ? 'yes' : 'no',
+            'all_request' => $request->all(),
+            'files' => $request->files->all(),
+        ]);
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
@@ -36,10 +44,8 @@ class FamousTouristSpotController extends Controller
         $validated['is_active'] = $request->has('is_active');
         $validated['sort_order'] = $validated['sort_order'] ?? 0;
 
-        $disk = config('filesystems.default') ?? env('FILESYSTEM_DISK', 'public');
-
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->storePublicly('famous-tourist-spots', $disk);
+            $imagePath = $request->file('image')->store('famous-tourist-spots', 'public');
             $validated['image'] = $imagePath;
         }
 
@@ -68,14 +74,12 @@ class FamousTouristSpotController extends Controller
         $validated['is_active'] = $request->has('is_active');
         $validated['sort_order'] = $validated['sort_order'] ?? $famousTouristSpot->sort_order;
 
-        $disk = config('filesystems.default') ?? env('FILESYSTEM_DISK', 'public');
-
         if ($request->hasFile('image')) {
-            // Delete old image on the configured disk
+            // Delete old image
             if ($famousTouristSpot->image) {
-                Storage::disk($disk)->delete($famousTouristSpot->image);
+                Storage::disk('public')->delete($famousTouristSpot->image);
             }
-            $imagePath = $request->file('image')->storePublicly('famous-tourist-spots', $disk);
+            $imagePath = $request->file('image')->store('famous-tourist-spots', 'public');
             $validated['image'] = $imagePath;
         }
 
@@ -83,6 +87,53 @@ class FamousTouristSpotController extends Controller
 
         return redirect()->route('admin.famous-tourist-spots.index')
             ->with('success', 'Famous tourist spot updated successfully.');
+    }
+
+    public function uploadImage(Request $request, FamousTouristSpot $famousTouristSpot): JsonResponse
+    {
+        try {
+            if (!$request->hasFile('image') || !$request->file('image')->isValid()) {
+                return response()->json(['error' => 'No valid image file provided'], 422);
+            }
+
+            $file = $request->file('image');
+
+            // Delete old image if exists
+            if ($famousTouristSpot->image) {
+                Storage::disk('public')->delete($famousTouristSpot->image);
+            }
+
+            // Store new image
+            $path = $file->store('famous-tourist-spots', 'public');
+            $famousTouristSpot->image = $path;
+            $famousTouristSpot->save();
+
+            // Generate URL
+            $url = $famousTouristSpot->image_url;
+            $timestamp = time();
+            try {
+                $timestamp = Storage::disk('public')->lastModified($path);
+            } catch (\Throwable $_) {
+                $timestamp = time();
+            }
+
+            \Log::info('Tourist spot image uploaded', ['path' => $path, 'url' => $url]);
+
+            return response()->json([
+                'url' => $url,
+                'path' => $path,
+                'timestamp' => $timestamp,
+            ], 200);
+        } catch (\Throwable $exception) {
+            \Log::error('Tourist spot image upload failed', [
+                'error' => $exception->getMessage(),
+                'trace' => $exception->getTraceAsString(),
+            ]);
+            return response()->json([
+                'error' => 'Image upload failed.',
+                'message' => $exception->getMessage(),
+            ], 500);
+        }
     }
 
     public function destroy(FamousTouristSpot $famousTouristSpot): RedirectResponse

@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;use Carbon\Carbon;use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Support\UploadedImage;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -31,17 +34,7 @@ class TourPackage extends Model
 
     private function normalizeImagePath(): string
     {
-        $imagePath = ltrim($this->image ?? '', '/');
-
-        if ($imagePath === '') {
-            return '';
-        }
-
-        // Handle stale or duplicated storage/public prefixes
-        $imagePath = preg_replace('#^(public/|storage/)#i', '', $imagePath);
-        $imagePath = preg_replace('#^(public/storage/)#i', '', $imagePath);
-
-        return ltrim($imagePath, '/');
+        return UploadedImage::normalize($this->image);
     }
 
     private function publicPackageImagePath(): ?string
@@ -98,12 +91,12 @@ class TourPackage extends Model
         }
 
         // Optimize: Check most likely paths first and cache the result
-        $cacheKey = 'package_image_url_' . $this->id . '_' . md5($imagePath . '|' . $this->name);
+        $cacheKey = 'package_image_url_v2_' . $this->id . '_' . md5($imagePath . '|' . $this->name);
         
         return cache()->remember($cacheKey, now()->addHours(24), function() use ($imagePath) {
             // Public storage root (storage/app/public) - most common
             if (Storage::disk('public')->exists($imagePath)) {
-                return asset('storage/' . $imagePath);
+                return UploadedImage::url($imagePath);
             }
 
             // Public path directly under public/
@@ -113,7 +106,7 @@ class TourPackage extends Model
 
             // Storage public path under storage/app/public/images/
             if (Storage::disk('public')->exists('images/' . $imagePath)) {
-                return asset('storage/images/' . $imagePath);
+                return UploadedImage::url('images/' . $imagePath);
             }
 
             // Public path under public/images/

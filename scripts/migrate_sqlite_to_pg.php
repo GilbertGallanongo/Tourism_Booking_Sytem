@@ -5,6 +5,11 @@ $ifEmpty = in_array('--if-empty', $argv, true);
 $projectRoot = realpath(__DIR__ . '/..');
 $sqlitePath = $projectRoot . '/database/database.sqlite';
 if (! file_exists($sqlitePath)) {
+    if ($ifEmpty) {
+        echo "Local SQLite file not found. Skipping optional SQLite import.\n";
+        exit(0);
+    }
+
     fwrite(STDERR, "ERROR: Local SQLite file not found at $sqlitePath\n");
     exit(1);
 }

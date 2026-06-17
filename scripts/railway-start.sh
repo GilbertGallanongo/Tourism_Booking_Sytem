@@ -7,6 +7,16 @@ if [ -z "${APP_KEY:-}" ]; then
   echo "WARNING: APP_KEY is not set. Set APP_KEY in Railway variables for stable sessions." >&2
 fi
 
+if [ -n "${RAILWAY_VOLUME_MOUNT_PATH:-}" ] && [ -z "${PUBLIC_STORAGE_PATH:-}" ]; then
+  export PUBLIC_STORAGE_PATH="${RAILWAY_VOLUME_MOUNT_PATH%/}/storage/app/public"
+fi
+
+if [ -n "${PUBLIC_STORAGE_PATH:-}" ]; then
+  mkdir -p "$PUBLIC_STORAGE_PATH"
+else
+  mkdir -p storage/app/public
+fi
+
 php artisan storage:link || true
 php artisan migrate --force
 

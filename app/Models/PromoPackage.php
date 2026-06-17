@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Support\UploadedImage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class PromoPackage extends Model
 {
@@ -27,9 +29,42 @@ class PromoPackage extends Model
 
     public function isActive(): bool
     {
-        return $this->is_active 
-            && $this->start_date <= now() 
-            && $this->end_date >= now();
+        $today = now()->startOfDay();
+
+        return (bool) $this->is_active
+            && $this->start_date?->copy()->startOfDay()->lte($today)
+            && $this->end_date?->copy()->endOfDay()->gte($today);
+    }
+
+    public function getImageUrlAttribute(): string
+    {
+        if (! $this->image) {
+            return asset('images/package-default.svg');
+        }
+
+        if (str_starts_with($this->image, 'http')) {
+            return $this->image;
+        }
+
+        $imagePath = UploadedImage::normalize($this->image);
+
+        if ($imagePath === '') {
+            return asset('images/package-default.svg');
+        }
+
+        if (Storage::disk('public')->exists($imagePath)) {
+            return UploadedImage::url($imagePath);
+        }
+
+        if (file_exists(public_path($imagePath))) {
+            return asset($imagePath);
+        }
+
+        if (file_exists(public_path('storage/' . $imagePath))) {
+            return asset('storage/' . $imagePath);
+        }
+
+        return asset('images/package-default.svg');
     }
 
     public function minGuestCapacity(): ?int

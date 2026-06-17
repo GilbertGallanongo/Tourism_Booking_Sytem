@@ -8,7 +8,7 @@
     <div style="max-width: 1200px; margin: 2rem auto;">
         <div style="background: linear-gradient(135deg, rgba(76, 175, 80, 0.3) 0%, rgba(17, 24, 68, 0.5) 100%); border: 1px solid rgba(114, 136, 174, 0.3); border-radius: 1.25rem; overflow: hidden; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
             @if($promoPackage->image)
-                <img src="{{ asset('storage/' . $promoPackage->image) }}" alt="{{ $promoPackage->name }}" style="width: 100%; height: 400px; object-fit: cover;">
+                <img src="{{ $promoPackage->image_url }}" alt="{{ $promoPackage->name }}" style="width: 100%; height: 400px; object-fit: cover;">
             @else
                 <div style="width: 100%; height: 400px; background: linear-gradient(135deg, rgba(76, 175, 80, 0.2) 0%, rgba(17, 24, 68, 0.4) 100%); display: flex; align-items: center; justify-content: center; color: #8890a8; font-size: 5rem;">🎉</div>
             @endif

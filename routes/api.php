@@ -9,8 +9,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/packages', [TourPackageController::class, 'index']);
 Route::get('/packages/{package}', [TourPackageController::class, 'show']);
 
+Route::post('/login', [TokenController::class, 'loginTourist'])->name('api.login');
+Route::post('/admin/login', [TokenController::class, 'loginAdmin'])->name('api.admin.login');
+
 // Token management endpoints (for authenticated users)
 Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [TokenController::class, 'logout'])->name('tokens.logout');
+
     // Token management
     Route::post('/tokens', [TokenController::class, 'createToken'])->name('tokens.create');
     Route::get('/tokens', [TokenController::class, 'listTokens'])->name('tokens.list');

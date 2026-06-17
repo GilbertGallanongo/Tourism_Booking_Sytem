@@ -118,19 +118,7 @@
                     @enderror
                     <div class="mt-2">
                         @php
-                            $previewPath = null;
-                            if ($package->image) {
-                                // check storage public disk first
-                                try {
-                                    if (\Illuminate\Support\Facades\Storage::disk('public')->exists($package->image)) {
-                                        $previewPath = asset('storage/' . ltrim($package->image, '/')) . '?v=' . \Illuminate\Support\Facades\Storage::disk('public')->lastModified($package->image);
-                                    } elseif (file_exists(public_path($package->image))) {
-                                        $previewPath = asset($package->image) . '?v=' . filemtime(public_path($package->image));
-                                    }
-                                } catch (\Throwable $_) {
-                                    $previewPath = null;
-                                }
-                            }
+                            $previewPath = $package->image ? $package->image_url : null;
                         @endphp
                         <img id="image_preview" src="{{ $previewPath ?? asset('images/package-default.svg') }}" alt="Preview" style="max-width:160px; max-height:120px; object-fit:cover; border-radius:6px;">
                         @if($package->image)
@@ -171,10 +159,85 @@ document.addEventListener('DOMContentLoaded', function () {
     let uploadInProgress = false;
     let uploadFailed = false;
     let uploadSucceeded = false;
+    window.packageImageProcessing = false;
 
-        input.addEventListener('change', function (e) {
-        const file = e.target.files && e.target.files[0];
+    function replaceSelectedFile(file) {
+        try {
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+            input.files = dataTransfer.files;
+        } catch (error) {
+            console.warn('Could not replace selected package image file', error);
+        }
+    }
+
+    function canvasToBlob(canvas, type, quality) {
+        return new Promise((resolve) => {
+            canvas.toBlob(resolve, type, quality);
+        });
+    }
+
+    async function preparePackageImage(file) {
+        const maxBytes = 1500 * 1024;
+        const maxSide = 1600;
+
+        if (!file.type.startsWith('image/') || file.type === 'image/gif' || file.size <= maxBytes) {
+            return file;
+        }
+
+        window.packageImageProcessing = true;
+        const toast = document.getElementById('upload_toast');
+        if (toast) {
+            toast.textContent = 'Preparing image...';
+            toast.style.display = 'block';
+        }
+
+        try {
+            const bitmap = await createImageBitmap(file);
+            const scale = Math.min(1, maxSide / Math.max(bitmap.width, bitmap.height));
+            const width = Math.max(1, Math.round(bitmap.width * scale));
+            const height = Math.max(1, Math.round(bitmap.height * scale));
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const context = canvas.getContext('2d');
+            context.drawImage(bitmap, 0, 0, width, height);
+            bitmap.close();
+
+            let blob = null;
+            for (const quality of [0.82, 0.68, 0.55, 0.45]) {
+                blob = await canvasToBlob(canvas, 'image/jpeg', quality);
+                if (blob && blob.size <= maxBytes) {
+                    break;
+                }
+            }
+
+            if (!blob || blob.size >= file.size) {
+                return file;
+            }
+
+            const compressedName = file.name.replace(/\.[^.]+$/, '') + '.jpg';
+            return new File([blob], compressedName, {
+                type: 'image/jpeg',
+                lastModified: Date.now()
+            });
+        } catch (error) {
+            console.error('Package image preparation failed', error);
+            return file;
+        } finally {
+            window.packageImageProcessing = false;
+            if (toast) {
+                setTimeout(() => { toast.style.display = 'none'; }, 1200);
+            }
+        }
+    }
+
+        input.addEventListener('change', async function (e) {
+        let file = e.target.files && e.target.files[0];
         if (!file) return;
+
+        file = await preparePackageImage(file);
+        replaceSelectedFile(file);
 
         // Check if upload is possible (package must exist)
         const uploadUrl = input.dataset.uploadUrl;
@@ -425,7 +488,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 // If upload failed, clear the file input to allow form to submit without image
                 if (uploadFailed) {
                     input.value = '';
-                    input.files = new DataTransfer().items;
+                }
+
+                if (window.packageImageProcessing) {
+                    e.preventDefault();
+                    return false;
                 }
             }
         });

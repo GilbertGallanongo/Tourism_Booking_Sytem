@@ -9,6 +9,7 @@ use App\Http\Controllers\Tourist\BookingController;
 use App\Http\Controllers\Tourist\PackageController as TouristPackageController;
 use App\Http\Controllers\Tourist\ReservationController;
 use App\Http\Middleware\EnsureAdmin;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DashboardController::class, 'home'])->name('home');
@@ -17,6 +18,17 @@ Route::get('/', [DashboardController::class, 'home'])->name('home');
 Route::get('/health', function () {
     return response()->json(['status' => 'healthy'], 200);
 })->name('health');
+
+Route::get('/uploads/{path}', function (string $path) {
+    $path = ltrim($path, '/');
+
+    abort_if($path === '' || str_contains($path, '..') || str_contains($path, '\\'), 404);
+    abort_unless(Storage::disk('public')->exists($path), 404);
+
+    return response()->file(Storage::disk('public')->path($path), [
+        'Cache-Control' => 'public, max-age=31536000',
+    ]);
+})->where('path', '.*')->name('uploads.show');
 
 // Diagnostics endpoint (enabled only when FORCE_APP_DEBUG=true)
 use App\Http\Controllers\DiagnosticsController;
@@ -63,11 +75,15 @@ Route::get('/packages/{tourPackage}', [TouristPackageController::class, 'show'])
     ->name('packages.show');
 
 Route::post('/packages/{tourPackage}/reviews', [\App\Http\Controllers\ReviewController::class, 'store'])
-    ->middleware('auth')
+    ->middleware(['auth', 'not.guest'])
     ->name('reviews.store');
 
+Route::patch('/reviews/{review}', [\App\Http\Controllers\ReviewController::class, 'update'])
+    ->middleware(['auth', 'not.guest'])
+    ->name('reviews.update');
+
 Route::delete('/reviews/{review}', [\App\Http\Controllers\ReviewController::class, 'destroy'])
-    ->middleware('auth')
+    ->middleware(['auth', 'not.guest'])
     ->name('reviews.destroy');
 
 Route::get('/bookings/{tourPackage}/create', [BookingController::class, 'create'])
@@ -98,6 +114,10 @@ Route::post('/reservations/{booking}/check-in', [ReservationController::class, '
 Route::post('/reservations/{booking}/check-out', [ReservationController::class, 'checkOut'])
     ->middleware('auth')
     ->name('reservations.check-out');
+
+Route::post('/reservations/{booking}/payment', [ReservationController::class, 'submitPayment'])
+    ->middleware(['auth', 'not.guest'])
+    ->name('reservations.payment');
 
 Route::post('/bookings', [DashboardController::class, 'storeBooking'])
     ->middleware(['auth', 'not.guest'])
@@ -146,10 +166,12 @@ Route::prefix('admin')
         Route::delete('/packages/{package}', [PackageController::class, 'destroy'])->name('packages.destroy');
 
         Route::resource('famous-tourist-spots', FamousTouristSpotController::class)->except(['show']);
+        Route::post('/famous-tourist-spots/{famousTouristSpot}/upload-image', [\App\Http\Controllers\Admin\FamousTouristSpotController::class, 'uploadImage'])->name('famous-tourist-spots.upload-image');
 
         Route::resource('destinations', \App\Http\Controllers\Admin\DestinationController::class)->except(['show']);
 
         Route::resource('promo-packages', \App\Http\Controllers\Admin\PromoPackageController::class)->except(['show']);
+        Route::post('/promo-packages/{promoPackage}/upload-image', [\App\Http\Controllers\Admin\PromoPackageController::class, 'uploadImage'])->name('promo-packages.upload-image');
 
         Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 

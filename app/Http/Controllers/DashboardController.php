@@ -60,8 +60,8 @@ class DashboardController extends Controller
             ->get();
 
         $promoPackages = PromoPackage::where('is_active', true)
-            ->where('start_date', '<=', now())
-            ->where('end_date', '>=', now())
+            ->whereDate('start_date', '<=', today())
+            ->whereDate('end_date', '>=', today())
             ->latest()
             ->limit(3)
             ->get();
@@ -108,8 +108,8 @@ class DashboardController extends Controller
     public function promoPackages(Request $request): View
     {
         $promoPackages = PromoPackage::where('is_active', true)
-            ->where('start_date', '<=', now())
-            ->where('end_date', '>=', now())
+            ->whereDate('start_date', '<=', today())
+            ->whereDate('end_date', '>=', today())
             ->latest()
             ->get();
 

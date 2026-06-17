@@ -3,12 +3,78 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class TokenController extends Controller
 {
+    public function loginTourist(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required', 'string'],
+            'token_name' => ['nullable', 'string', 'max:100'],
+            'abilities' => ['nullable', 'array'],
+            'abilities.*' => ['string', 'max:100'],
+        ]);
+
+        $user = User::where('email', $validated['email'])->first();
+
+        if (! $user || ! Hash::check($validated['password'], $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => __('auth.failed'),
+            ]);
+        }
+
+        if (! $user->isTourist() || $user->isGuest()) {
+            throw ValidationException::withMessages([
+                'email' => 'Only registered tourist accounts can create tourist API tokens.',
+            ]);
+        }
+
+        return $this->issueTokenResponse(
+            $user,
+            $validated['token_name'] ?? 'Tourist API Token',
+            $validated['abilities'] ?? ['tourist']
+        );
+    }
+
+    public function loginAdmin(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required', 'string'],
+            'token_name' => ['nullable', 'string', 'max:100'],
+            'abilities' => ['nullable', 'array'],
+            'abilities.*' => ['string', 'max:100'],
+        ]);
+
+        $admin = Admin::where('email', $validated['email'])->first();
+
+        if (! $admin || ! Hash::check($validated['password'], $admin->password)) {
+            throw ValidationException::withMessages([
+                'email' => __('auth.failed'),
+            ]);
+        }
+
+        if (($admin->role ?? 'admin') !== 'admin') {
+            throw ValidationException::withMessages([
+                'email' => 'Only admin accounts can create admin API tokens.',
+            ]);
+        }
+
+        return $this->issueTokenResponse(
+            $admin,
+            $validated['token_name'] ?? 'Admin API Token',
+            $validated['abilities'] ?? ['admin']
+        );
+    }
+
     /**
      * Create an API token for the authenticated user.
      * Tourists use the 'web' guard, admins use the 'admin' guard.
@@ -17,9 +83,11 @@ class TokenController extends Controller
     {
         $validated = $request->validate([
             'token_name' => ['required', 'string', 'max:100'],
+            'abilities' => ['nullable', 'array'],
+            'abilities.*' => ['string', 'max:100'],
         ]);
 
-        $user = auth('sanctum')->user();
+        $user = $request->user();
 
         if (!$user) {
             throw ValidationException::withMessages([
@@ -27,13 +95,17 @@ class TokenController extends Controller
             ]);
         }
 
-        $token = $user->createToken($validated['token_name']);
+        if ($user instanceof User && $user->isGuest()) {
+            throw ValidationException::withMessages([
+                'auth' => 'Guest accounts cannot create API tokens.',
+            ]);
+        }
 
-        return response()->json([
-            'message' => 'API token created successfully.',
-            'token' => $token->plainTextToken,
-            'token_name' => $validated['token_name'],
-        ], 201);
+        return $this->issueTokenResponse(
+            $user,
+            $validated['token_name'],
+            $validated['abilities'] ?? ['*']
+        );
     }
 
     /**
@@ -41,7 +113,7 @@ class TokenController extends Controller
      */
     public function listTokens(Request $request): JsonResponse
     {
-        $user = auth('sanctum')->user();
+        $user = $request->user();
 
         if (!$user) {
             throw ValidationException::withMessages([
@@ -49,7 +121,10 @@ class TokenController extends Controller
             ]);
         }
 
-        $tokens = $user->tokens()->select('id', 'name', 'last_used_at', 'created_at')->get();
+        $tokens = $user->tokens()
+            ->select('id', 'name', 'abilities', 'last_used_at', 'expires_at', 'created_at')
+            ->latest()
+            ->get();
 
         return response()->json([
             'message' => 'API tokens retrieved successfully.',
@@ -62,7 +137,7 @@ class TokenController extends Controller
      */
     public function revokeToken(Request $request, int $tokenId): JsonResponse
     {
-        $user = auth('sanctum')->user();
+        $user = $request->user();
 
         if (!$user) {
             throw ValidationException::withMessages([
@@ -90,7 +165,7 @@ class TokenController extends Controller
      */
     public function revokeAllTokens(Request $request): JsonResponse
     {
-        $user = auth('sanctum')->user();
+        $user = $request->user();
 
         if (!$user) {
             throw ValidationException::withMessages([
@@ -103,5 +178,38 @@ class TokenController extends Controller
         return response()->json([
             'message' => 'All API tokens revoked successfully.',
         ]);
+    }
+
+    public function logout(Request $request): JsonResponse
+    {
+        $token = $request->user()?->currentAccessToken();
+
+        if ($token instanceof PersonalAccessToken) {
+            $token->delete();
+        }
+
+        return response()->json([
+            'message' => 'Current API token revoked successfully.',
+        ]);
+    }
+
+    private function issueTokenResponse($user, string $tokenName, array $abilities): JsonResponse
+    {
+        $token = $user->createToken($tokenName, $abilities);
+
+        return response()->json([
+            'message' => 'API token created successfully.',
+            'token' => $token->plainTextToken,
+            'token_name' => $tokenName,
+            'abilities' => $abilities,
+            'token_type' => 'Bearer',
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'role' => $user->role ?? 'admin',
+                'type' => $user instanceof Admin ? 'admin' : 'tourist',
+            ],
+        ], 201);
     }
 }

@@ -26,12 +26,25 @@
                     </thead>
                     <tbody>
                         @foreach($payments as $payment)
+                            @php
+                                $displayStatus = $payment->status === 'unpaid' && ($payment->proof || $payment->reference_number)
+                                    ? 'For review'
+                                    : ucfirst($payment->status);
+                            @endphp
                             <tr>
                                 <td>{{ $payment->booking->booking_number ?? 'N/A' }}</td>
                                 <td>{{ $payment->booking->user->name ?? 'N/A' }}</td>
                                 <td>₱{{ number_format((float) $payment->amount, 2) }}</td>
-                                <td>{{ ucfirst($payment->status) }}</td>
-                                <td>{{ $payment->proof ? 'Attached' : 'None' }}</td>
+                                <td>{{ $displayStatus }}</td>
+                                <td>
+                                    @if($payment->proof_url)
+                                        <a href="{{ $payment->proof_url }}" target="_blank" rel="noopener">View proof</a>
+                                    @elseif($payment->proof)
+                                        <span title="{{ $payment->proof }}">Missing file</span>
+                                    @else
+                                        None
+                                    @endif
+                                </td>
                                 <td class="text-end">
                                     <a href="{{ route('admin.payments.edit', $payment) }}" class="btn btn-sm btn-outline-secondary">Review</a>
                                 </td>

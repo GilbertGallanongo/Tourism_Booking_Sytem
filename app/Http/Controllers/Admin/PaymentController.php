@@ -19,6 +19,8 @@ class PaymentController extends Controller
 
     public function edit(Payment $payment): View
     {
+        $payment->load(['booking.user']);
+
         return view('admin.payments.edit', compact('payment'));
     }
 
@@ -27,8 +29,15 @@ class PaymentController extends Controller
         $data = $request->validate([
             'status' => ['required', 'in:unpaid,paid,refunded'],
             'reference_number' => ['nullable', 'string', 'max:255'],
-            'proof' => ['nullable', 'string', 'max:255'],
         ]);
+
+        if ($data['status'] === 'paid' && ! $payment->paid_at) {
+            $data['paid_at'] = now();
+        }
+
+        if ($data['status'] === 'unpaid') {
+            $data['paid_at'] = null;
+        }
 
         $payment->update($data);
 

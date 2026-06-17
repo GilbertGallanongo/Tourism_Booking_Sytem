@@ -128,7 +128,9 @@ DB_USERNAME=${{ Postgres.PGUSER }}
 DB_PASSWORD=${{ Postgres.PGPASSWORD }}
 DB_SSLMODE=require
 
-FILESYSTEM_DISK=local
+FILESYSTEM_DISK=public
+# Recommended when using Railway Volumes for uploaded images:
+# PUBLIC_STORAGE_PATH=${{RAILWAY_VOLUME_MOUNT_PATH}}/storage/app/public
 QUEUE_CONNECTION=sync
 CACHE_STORE=database
 SESSION_DRIVER=database

@@ -176,7 +176,7 @@
                 @forelse($promoPackages->take(3) as $promo)
                     <article class="package-card">
                         @if($promo->image)
-                            <div class="package-card-media has-card-image" style="--card-image: url('{{ asset('storage/' . $promo->image) }}'); background-image: var(--card-image);"></div>
+                            <div class="package-card-media has-card-image" style="--card-image: url('{{ $promo->image_url }}'); background-image: var(--card-image);"></div>
                         @else
                             <div class="package-card-media" style="background: linear-gradient(135deg, rgba(76, 175, 80, 0.3) 0%, rgba(17, 24, 68, 0.5) 100%); display: flex; align-items: center; justify-content: center;">
                                 <div style="font-size: 4rem; opacity: 0.5;">🎉</div>

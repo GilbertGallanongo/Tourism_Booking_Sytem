@@ -31,7 +31,7 @@
                             <tr>
                                 <td>
                                     @if($promoPackage->image)
-                                        <img src="{{ asset('storage/' . $promoPackage->image) }}" alt="{{ $promoPackage->name }}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
+                                        <img src="{{ $promoPackage->image_url }}" alt="{{ $promoPackage->name }}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
                                     @else
                                         <span style="color: #8890a8; font-size: 0.875rem;">No image</span>
                                     @endif
@@ -41,7 +41,7 @@
                                 <td>{{ $promoPackage->start_date->format('M d, Y') }}</td>
                                 <td>{{ $promoPackage->end_date->format('M d, Y') }}</td>
                                 <td>
-                                    @if($promoPackage->isActive())
+                                    @if($promoPackage->is_active)
                                         <span class="badge bg-success">Active</span>
                                     @else
                                         <span class="badge bg-secondary">Inactive</span>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Destination;
 use App\Models\TourPackage;
+use App\Support\UploadedImage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -211,7 +212,7 @@ class PackageController extends Controller
             
             \Log::info('Package image updated in DB', ['image' => $package->image]);
 
-            $url = asset('storage/' . ltrim($package->image, '/'));
+            $url = UploadedImage::url($package->image);
             $timestamp = time();
             if (Storage::disk('public')->exists($package->image)) {
                 try {
@@ -408,7 +409,7 @@ class PackageController extends Controller
             // delete tmp chunks and cleanup directory
             Storage::disk('local')->deleteDirectory('uploads/tmp/' . $uploadId);
 
-            $url = asset('storage/' . ltrim($package->image, '/'));
+            $url = UploadedImage::url($package->image);
             return response()->json(['url' => $url, 'path' => $package->image], 200);
         } catch (\Throwable $e) {
             if (is_resource($out)) { fclose($out); }

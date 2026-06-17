@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\UploadedImage;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -24,16 +25,7 @@ class FamousTouristSpot extends Model
 
     private function normalizeImagePath(): string
     {
-        $imagePath = ltrim((string) $this->image, '/');
-
-        if ($imagePath === '') {
-            return '';
-        }
-
-        $imagePath = preg_replace('#^(public/|storage/)#i', '', $imagePath);
-        $imagePath = preg_replace('#^(public/storage/)#i', '', $imagePath);
-
-        return ltrim($imagePath, '/');
+        return UploadedImage::normalize($this->image);
     }
 
     private function publicFallbackImagePath(): ?string
@@ -72,15 +64,8 @@ class FamousTouristSpot extends Model
             return $this->publicFallbackImagePath() ?? asset('images/package-default.svg');
         }
 
-        $disk = config('filesystems.default') ?? env('FILESYSTEM_DISK', 'public');
-
-        // If the file exists on the configured disk (S3 or local), return its URL
-        try {
-            if (Storage::disk($disk)->exists($imagePath)) {
-                return Storage::disk($disk)->url($imagePath);
-            }
-        } catch (\Exception $e) {
-            // ignore and fall back to local public checks
+        if (Storage::disk('public')->exists($imagePath)) {
+            return UploadedImage::url($imagePath);
         }
 
         if (file_exists(public_path($imagePath))) {

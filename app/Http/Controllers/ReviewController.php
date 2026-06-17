@@ -14,7 +14,7 @@ class ReviewController extends Controller
     {
         $user = $request->user();
 
-        abort_unless($user && $user->isTourist(), 403, 'Only tourists may submit reviews.');
+        abort_unless($user && $user->isTourist() && ! $user->isGuest(), 403, 'Only tourist accounts may submit reviews.');
 
         $validated = $request->validate([
             'rating' => ['required', 'integer', 'between:1,5'],
@@ -36,9 +36,28 @@ class ReviewController extends Controller
             ->with('success', 'Review submitted successfully.');
     }
 
+    public function update(Request $request, Review $review): JsonResponse|RedirectResponse
+    {
+        abort_unless($review->canBeModifiedBy($request->user()), 403, 'Reviews can only be edited by the tourist who wrote them within 3 days.');
+
+        $validated = $request->validate([
+            'rating' => ['required', 'integer', 'between:1,5'],
+            'comment' => ['required', 'string', 'max:1000'],
+        ]);
+
+        $review->update($validated);
+
+        if ($request->expectsJson()) {
+            return response()->json(['data' => $review->refresh()->load('user')]);
+        }
+
+        return redirect()->route('packages.show', $review->tourPackage)
+            ->with('success', 'Review updated successfully.');
+    }
+
     public function destroy(Review $review): JsonResponse|RedirectResponse
     {
-        abort_unless(request()->user()?->id === $review->user_id, 403);
+        abort_unless($review->canBeModifiedBy(request()->user()), 403, 'Reviews can only be deleted by the tourist who wrote them within 3 days.');
 
         $tourPackage = $review->tourPackage;
         $review->delete();
