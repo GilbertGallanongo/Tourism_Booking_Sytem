@@ -143,14 +143,18 @@
     </div>
 
     <main class="content">
-        @if(session('error'))
-            <div class="alert alert-error">
-                {{ session('error') }}
-            </div>
-        @endif
-        @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
+        @if(session('error') || session('success'))
+            <div class="flash-messages" role="status" aria-live="polite">
+                @if(session('error'))
+                    <div class="alert alert-error">
+                        {{ session('error') }}
+                    </div>
+                @endif
+                @if(session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
             </div>
         @endif
         {{ $slot }}
