@@ -107,17 +107,15 @@
 
                 <div class="mb-3">
                     <label class="form-label">Proof of payment</label>
-                    @if($payment->proof)
+                    @if($payment->proof_url)
                         <div class="proof-panel">
                             <div class="proof-panel__header">
-                                <div class="proof-panel__path">{{ $payment->proof }}</div>
-                                @if($payment->proof_url)
-                                    <a href="{{ $payment->proof_url }}" class="btn btn-sm btn-outline-secondary" target="_blank" rel="noopener">Open proof</a>
-                                @endif
+                                <div class="proof-panel__path">{{ $payment->proof_display_name }}</div>
+                                <a href="{{ route('admin.payments.proof', $payment) }}" class="btn btn-sm btn-outline-secondary">Open proof</a>
                             </div>
                             <div class="proof-panel__body">
                                 @if($payment->proof_url && $payment->proof_is_image)
-                                    <a href="{{ $payment->proof_url }}" target="_blank" rel="noopener">
+                                    <a href="{{ route('admin.payments.proof', $payment) }}">
                                         <img src="{{ $payment->proof_url }}" alt="Proof of payment for {{ $payment->booking->booking_number }}">
                                     </a>
                                 @elseif($payment->proof_url)

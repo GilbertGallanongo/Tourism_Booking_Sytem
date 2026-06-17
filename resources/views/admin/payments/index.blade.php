@@ -27,7 +27,7 @@
                     <tbody>
                         @foreach($payments as $payment)
                             @php
-                                $displayStatus = $payment->status === 'unpaid' && ($payment->proof || $payment->reference_number)
+                                $displayStatus = $payment->status === 'unpaid' && ($payment->has_uploaded_proof || $payment->reference_number)
                                     ? 'For review'
                                     : ucfirst($payment->status);
                             @endphp
@@ -38,7 +38,7 @@
                                 <td>{{ $displayStatus }}</td>
                                 <td>
                                     @if($payment->proof_url)
-                                        <a href="{{ $payment->proof_url }}" target="_blank" rel="noopener">View proof</a>
+                                        <a href="{{ route('admin.payments.proof', $payment) }}">View proof</a>
                                     @elseif($payment->proof)
                                         <span title="{{ $payment->proof }}">Missing file</span>
                                     @else

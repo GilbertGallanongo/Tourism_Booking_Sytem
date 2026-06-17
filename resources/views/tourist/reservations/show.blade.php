@@ -578,8 +578,8 @@ body.page-shell .content:has(.reservation-page) {
         @php
             $payment = $booking->payment;
             $paymentStatus = $payment?->status ?? 'unpaid';
-            $paymentSubmittedForReview = $paymentStatus === 'unpaid' && ($payment?->proof || $payment?->reference_number);
-            $paymentDisplayStatus = $paymentStatus === 'unpaid' && ($payment?->proof || $payment?->reference_number)
+            $paymentSubmittedForReview = $paymentStatus === 'unpaid' && ($payment?->has_uploaded_proof || $payment?->reference_number);
+            $paymentDisplayStatus = $paymentStatus === 'unpaid' && ($payment?->has_uploaded_proof || $payment?->reference_number)
                 ? 'Submitted for review'
                 : ucfirst($paymentStatus);
             $tourHasEnded = $booking->isCompleted() || (bool) $booking->tour_ended_at;
@@ -625,11 +625,11 @@ body.page-shell .content:has(.reservation-page) {
                     @if($payment?->proof_url)
                         <div class="reservation-proof-preview">
                             @if($payment->proof_is_image)
-                                <a href="{{ $payment->proof_url }}" target="_blank" rel="noopener">
+                                <a href="{{ route('reservations.proof', $booking) }}">
                                     <img src="{{ $payment->proof_url }}" alt="Proof of payment for {{ $booking->booking_number }}">
                                 </a>
                             @else
-                                <a href="{{ $payment->proof_url }}" class="reservation-button" target="_blank" rel="noopener">Open proof of payment</a>
+                                <a href="{{ route('reservations.proof', $booking) }}" class="reservation-button">Open proof of payment</a>
                             @endif
                         </div>
                     @endif

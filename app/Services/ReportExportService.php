@@ -63,13 +63,13 @@ class ReportExportService
         ])->render();
 
         $pdf = Pdf::loadHTML($html)
-            ->setPaper('a4', 'landscape')
+            ->setPaper('a3', 'landscape')
             ->setOption('defaultFont', 'Arial')
-            ->setOption('font-size', 8)
-            ->setOption('margin-left', 10)
-            ->setOption('margin-right', 10)
-            ->setOption('margin-top', 15)
-            ->setOption('margin-bottom', 15);
+            ->setOption('font-size', 6)
+            ->setOption('margin-left', 8)
+            ->setOption('margin-right', 8)
+            ->setOption('margin-top', 10)
+            ->setOption('margin-bottom', 10);
         return $pdf->output();
     }
 
@@ -77,6 +77,7 @@ class ReportExportService
     {
         $xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
         $xml .= '<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">';
+        $xml .= '<cols><col min="1" max="' . count($headers) . '" width="18" customWidth="1"/></cols>';
         $xml .= '<sheetData>';
 
         $xml .= $this->sheetRow(1, $headers);

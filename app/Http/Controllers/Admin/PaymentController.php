@@ -24,6 +24,18 @@ class PaymentController extends Controller
         return view('admin.payments.edit', compact('payment'));
     }
 
+    public function proof(Payment $payment): View
+    {
+        $payment->load(['booking.user']);
+
+        return view('payments.proof', [
+            'payment' => $payment,
+            'booking' => $payment->booking,
+            'backUrl' => route('admin.payments.edit', $payment),
+            'backLabel' => 'Back to payment review',
+        ]);
+    }
+
     public function update(Request $request, Payment $payment): RedirectResponse
     {
         $data = $request->validate([

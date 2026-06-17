@@ -103,6 +103,10 @@ Route::get('/reservations/{booking}', [ReservationController::class, 'show'])
     ->middleware('auth')
     ->name('reservations.show');
 
+Route::get('/reservations/{booking}/proof', [ReservationController::class, 'proof'])
+    ->middleware('auth')
+    ->name('reservations.proof');
+
 Route::delete('/reservations/{booking}', [ReservationController::class, 'cancel'])
     ->middleware('auth')
     ->name('reservations.cancel');
@@ -180,6 +184,7 @@ Route::prefix('admin')
             ->name('reports.bookings');
 
         Route::resource('payments', \App\Http\Controllers\Admin\PaymentController::class)->only(['index', 'edit', 'update']);
+        Route::get('/payments/{payment}/proof', [\App\Http\Controllers\Admin\PaymentController::class, 'proof'])->name('payments.proof');
 
         Route::get('/bookings', [DashboardController::class, 'adminBookings'])->name('bookings.index');
         Route::get('/packages-stats', [DashboardController::class, 'adminPackages'])->name('packages-stats');

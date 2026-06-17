@@ -295,4 +295,3 @@ class BookingController extends Controller
         return $code;
     }
 }
-

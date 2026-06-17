@@ -28,6 +28,29 @@ class ReservationController extends Controller
         return view('tourist.reservations.show', compact('booking'));
     }
 
+    public function proof(Booking $booking)
+    {
+        abort_if($booking->user_id !== Auth::id(), 403);
+
+        $payment = $booking->payment()->firstOrCreate(
+            ['booking_id' => $booking->id],
+            [
+                'amount' => $booking->total_price,
+                'method' => 'cash',
+                'status' => 'unpaid',
+            ]
+        );
+
+        $payment->load(['booking.user']);
+
+        return view('payments.proof', [
+            'payment' => $payment,
+            'booking' => $booking,
+            'backUrl' => route('reservations.show', $booking),
+            'backLabel' => 'Back to reservation',
+        ]);
+    }
+
     public function cancel(Request $request, Booking $booking)
     {
         abort_if($booking->user_id !== Auth::id(), 403);
@@ -90,7 +113,7 @@ class ReservationController extends Controller
 
         abort_if($payment->status === 'paid', 403, 'This reservation is already paid.');
         abort_if(
-            $payment->status === 'unpaid' && ($payment->proof || $payment->reference_number),
+            $payment->status === 'unpaid' && ($payment->has_uploaded_proof || $payment->reference_number),
             403,
             'Your payment details have already been submitted for review.'
         );
@@ -110,7 +133,7 @@ class ReservationController extends Controller
         ];
 
         if ($request->hasFile('proof')) {
-            if ($payment->proof && ! str_starts_with($payment->proof, 'http')) {
+            if ($payment->has_uploaded_proof && ! str_starts_with($payment->proof, 'http')) {
                 Storage::disk('public')->delete(UploadedImage::normalize($payment->proof));
             }
 

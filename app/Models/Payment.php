@@ -12,6 +12,8 @@ class Payment extends Model
 {
     use HasFactory;
 
+    public const SAMPLE_PROOF_PATH = 'images/sample-proof-of-payment.png';
+
     protected $fillable = [
         'booking_id',
         'amount',
@@ -37,15 +39,17 @@ class Payment extends Model
 
     public function getProofUrlAttribute(): ?string
     {
-        if (! $this->proof) {
+        $proof = $this->effectiveProofPath();
+
+        if (! $proof) {
             return null;
         }
 
-        if (str_starts_with($this->proof, 'http')) {
-            return $this->proof;
+        if (str_starts_with($proof, 'http')) {
+            return $proof;
         }
 
-        $proofPath = UploadedImage::normalize($this->proof);
+        $proofPath = UploadedImage::normalize($proof);
 
         if ($proofPath === '') {
             return null;
@@ -68,12 +72,33 @@ class Payment extends Model
 
     public function getProofIsImageAttribute(): bool
     {
-        if (! $this->proof) {
+        $proof = $this->effectiveProofPath();
+
+        if (! $proof) {
             return false;
         }
 
-        $extension = strtolower(pathinfo(parse_url($this->proof, PHP_URL_PATH) ?: $this->proof, PATHINFO_EXTENSION));
+        $extension = strtolower(pathinfo(parse_url($proof, PHP_URL_PATH) ?: $proof, PATHINFO_EXTENSION));
 
         return in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp'], true);
+    }
+
+    public function getProofDisplayNameAttribute(): string
+    {
+        return $this->effectiveProofPath() ?: 'No proof of payment attached';
+    }
+
+    public function getHasUploadedProofAttribute(): bool
+    {
+        return (bool) $this->proof;
+    }
+
+    private function effectiveProofPath(): ?string
+    {
+        if ($this->proof) {
+            return $this->proof;
+        }
+
+        return $this->status === 'paid' ? self::SAMPLE_PROOF_PATH : null;
     }
 }
