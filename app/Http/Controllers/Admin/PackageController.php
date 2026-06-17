@@ -480,6 +480,11 @@ class PackageController extends Controller
             }
         }
 
+        // Ensure the images directory exists on the public disk
+        if (! Storage::disk('public')->exists('images')) {
+            Storage::disk('public')->makeDirectory('images');
+        }
+
         if (Storage::disk('public')->putFileAs('images', $file, $name)) {
             return $path;
         }
