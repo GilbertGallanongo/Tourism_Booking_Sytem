@@ -250,9 +250,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // if package exists, upload immediately to server
-        // Force chunked uploads for all files to avoid server-upload-limit issues.
-        // This makes uploads reliable regardless of PHP/NGINX limits.
-        const MAX_CLIENT_UPLOAD = 0; // 0 = always chunk
+        // Use chunked upload only when the file size exceeds the server limit.
+        const MAX_CLIENT_UPLOAD = {{ $phpMaxUpload }};
+        const CHUNK_SIZE = Math.min(MAX_CLIENT_UPLOAD, 5 * 1024 * 1024);
 
         const tokenInput = document.querySelector('input[name="_token"]');
         const csrf = tokenInput ? tokenInput.value : '';
@@ -284,7 +284,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         async function doChunkedUpload(file, uploadUrl) {
-            const CHUNK_SIZE = 5 * 1024 * 1024; // 5MB chunks for faster large file uploads
             const total = Math.ceil(file.size / CHUNK_SIZE);
             // use the persisted uploadId for all chunk requests
             const chunkUrl = uploadUrl.replace('/upload-image', '/upload-chunk');
