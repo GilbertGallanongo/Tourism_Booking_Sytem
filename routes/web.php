@@ -41,8 +41,9 @@ Route::middleware('guest:web')->group(function () {
 
     Route::post('/login', [AuthController::class, 'loginTourist'])->name('login.store');
     Route::post('/guest-login', [AuthController::class, 'guestLogin'])->name('guest.login');
-    Route::post('/register', [AuthController::class, 'register'])->name('register');
 });
+
+Route::post('/register', [AuthController::class, 'register'])->name('register');
 
 Route::middleware('guest:admin')->group(function () {
     Route::get('/admin/login', [AuthController::class, 'showAdminLoginForm'])->name('admin.login');

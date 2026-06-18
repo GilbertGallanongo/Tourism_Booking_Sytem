@@ -225,4 +225,10 @@ window.addEventListener('DOMContentLoaded', () => {
         const nextUrl = `${window.location.pathname}${nextQuery ? `?${nextQuery}` : ''}`;
         window.history.replaceState({}, document.title, nextUrl);
     }
+
+    const errorPanel = authModal.querySelector('.auth-pane .alert-error');
+    if (errorPanel && authModal.hasAttribute('hidden')) {
+        const pane = errorPanel.closest('.auth-pane');
+        openAuthModal(pane?.getAttribute('data-auth-pane') || 'signin');
+    }
 });

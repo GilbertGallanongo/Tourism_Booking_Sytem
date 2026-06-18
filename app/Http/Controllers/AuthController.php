@@ -122,6 +122,19 @@ class AuthController extends Controller
 
     public function register(Request $request): JsonResponse|RedirectResponse
     {
+        $currentUser = $request->user();
+
+        if ($currentUser && ! $currentUser->isGuest()) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'message' => 'You are already signed in.',
+                ], 409);
+            }
+
+            return redirect()->route('home')
+                ->with('error', 'You are already signed in. Please log out before creating another account.');
+        }
+
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
