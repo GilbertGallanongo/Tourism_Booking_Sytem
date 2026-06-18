@@ -210,10 +210,13 @@
                     <p>Need admin access? <a href="{{ route('admin.login') }}">Sign in here</a>.</p>
                     <p class="muted">Don't have an account? <a href="#" data-auth-open data-auth-mode="register">Create one now</a>.</p>
                 </div>
-                <form method="POST" action="{{ route('guest.login') }}" class="auth-form" style="margin-top:1rem">
+
+                <div class="auth-modal-divider"><span>or</span></div>
+
+                <form method="POST" action="{{ route('guest.login') }}" class="auth-form auth-guest-form">
                     @csrf
                     <button type="submit" class="btn-secondary">Continue as Guest</button>
-                    <p class="muted small mt-2">Guest access is view-only. Register or sign in with your account to make bookings.</p>
+                    <p class="auth-note">Guest access is view-only. Register or sign in with your account to make bookings.</p>
                 </form>
             </div>
 

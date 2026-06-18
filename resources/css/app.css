@@ -3445,7 +3445,7 @@ input:focus, textarea:focus, select:focus {
     display: grid;
     justify-items: center;
     align-items: start;
-    padding: 6rem 1rem 1rem;
+    padding: 5rem 1rem 1rem;
 }
 
 .auth-modal-backdrop {
@@ -3458,14 +3458,14 @@ input:focus, textarea:focus, select:focus {
 .auth-modal-panel {
     position: relative;
     z-index: 1;
-    width: min(100%, 36rem);
-    max-height: min(86vh, calc(100vh - 6rem));
+    width: min(100%, 34rem);
+    max-height: min(88vh, calc(100vh - 4rem));
     overflow-y: auto;
     border: 1px solid rgba(148, 163, 184, 0.22);
-    border-radius: 1.75rem;
-    padding: 2.25rem;
+    border-radius: 1.5rem;
+    padding: 2rem;
     background: #ffffff;
-    box-shadow: 0 35px 90px rgba(15, 23, 42, 0.18);
+    box-shadow: 0 2rem 5rem rgba(15, 23, 42, 0.28);
 }
 
 .auth-modal-register .auth-modal-panel {
@@ -3497,12 +3497,12 @@ input:focus, textarea:focus, select:focus {
 }
 
 .auth-modal-heading {
-    padding-right: 0;
-    margin-bottom: 1.25rem;
+    padding-right: 2.75rem;
+    margin-bottom: 1.35rem;
 }
 
 .auth-modal-heading h2 {
-    font-size: 2rem;
+    font-size: clamp(1.75rem, 4vw, 2.15rem);
 }
 
 .auth-tabs,
@@ -3518,23 +3518,26 @@ input:focus, textarea:focus, select:focus {
     place-items: center;
     width: 2.4rem;
     height: 2.4rem;
-    border: 1px solid rgba(15, 23, 42, 0.12);
+    border: 1px solid rgba(71, 85, 105, 0.22);
     border-radius: 9999px;
     background: #f8fafc;
-    color: rgba(15, 23, 42, 0.75);
+    color: #334155;
     font-weight: 700;
     cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 
-.auth-modal-heading {
-    margin-bottom: 1.5rem;
+.auth-modal-close:hover {
+    background: #eef2ff;
+    border-color: rgba(79, 70, 229, 0.28);
+    transform: translateY(-1px);
 }
 
 .auth-modal-heading p {
-    margin: 0 0 0.75rem;
-    color: rgba(99, 102, 241, 0.9);
+    margin: 0 0 0.65rem;
+    color: #4f46e5;
     font-size: 0.85rem;
-    font-weight: 700;
+    font-weight: 800;
     letter-spacing: 0.16em;
     text-transform: uppercase;
 }
@@ -3542,34 +3545,44 @@ input:focus, textarea:focus, select:focus {
 .auth-modal-heading h2 {
     margin: 0;
     color: #0f172a;
-    font-size: 2rem;
-    line-height: 1.05;
+    line-height: 1.15;
 }
 
 .auth-modal-panel .auth-form {
     display: grid;
-    gap: 1rem;
+    gap: 0.95rem;
 }
 
 .auth-modal-panel .auth-group label {
-    font-weight: 600;
-    color: #334155;
+    display: block;
+    margin-bottom: 0.45rem;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #1e293b;
 }
 
 .auth-modal-panel .auth-input {
+    min-height: 3.25rem;
     background: #f8fafc;
-    border: 1px solid rgba(148, 163, 184, 0.25);
+    border: 1px solid rgba(100, 116, 139, 0.28);
     color: #0f172a;
     border-radius: 0.85rem;
     box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.04);
 }
 
+.auth-modal-panel .auth-input::placeholder {
+    color: #94a3b8;
+}
+
 .auth-modal-panel .auth-input:focus {
-    outline: 2px solid rgba(99, 102, 241, 0.35);
-    outline-offset: 2px;
+    border-color: rgba(79, 70, 229, 0.55);
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.14);
+    outline: none;
 }
 
 .auth-modal-panel .btn-primary {
+    min-height: 3.25rem;
     border-radius: 0.95rem;
     background: linear-gradient(90deg, #4f46e5 0%, #2563eb 100%);
     color: #fff;
@@ -3577,10 +3590,17 @@ input:focus, textarea:focus, select:focus {
 }
 
 .auth-modal-panel .btn-secondary {
+    min-height: 3rem;
     border-radius: 0.95rem;
-    border: 1px solid rgba(99, 102, 241, 0.2);
+    border: 1px solid rgba(79, 70, 229, 0.24);
     background: #ffffff;
-    color: #334155;
+    color: #1e293b;
+    font-weight: 800;
+}
+
+.auth-modal-panel .btn-secondary:hover {
+    background: #eef2ff;
+    border-color: rgba(79, 70, 229, 0.38);
 }
 
 .auth-modal-panel .alert-error {
@@ -3593,23 +3613,71 @@ input:focus, textarea:focus, select:focus {
     display: flex;
     align-items: center;
     gap: 0.6rem;
-    font-size: 0.95rem;
-    color: #475569;
+    margin-top: -0.15rem;
+    font-size: 0.92rem;
+    color: #334155;
 }
 
 .auth-modal-panel .remember-row input {
     width: auto;
+    height: 1rem;
     accent-color: #4f46e5;
 }
 
 .auth-modal-panel .auth-helper {
-    margin-top: 1rem;
-    color: #475569;
+    display: grid;
+    gap: 0.35rem;
+    margin-top: 1.1rem;
+    color: #334155;
+    font-size: 0.92rem;
+    text-align: center;
+}
+
+.auth-modal-panel .auth-helper p {
+    margin: 0;
+}
+
+.auth-modal-panel .auth-helper .muted {
+    color: #64748b;
 }
 
 .auth-modal-panel .auth-helper a {
     color: #4f46e5;
+    font-weight: 700;
     text-decoration: underline;
+    text-underline-offset: 0.16em;
+}
+
+.auth-modal-divider {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin: 1.15rem 0;
+    color: #64748b;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.auth-modal-divider::before,
+.auth-modal-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: rgba(148, 163, 184, 0.28);
+}
+
+.auth-modal-panel .auth-guest-form {
+    gap: 0.75rem;
+}
+
+.auth-modal-panel .auth-note {
+    margin: 0;
+    color: #64748b;
+    font-size: 0.88rem;
+    line-height: 1.55;
+    text-align: center;
 }
 
 .auth-tab {
