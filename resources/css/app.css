@@ -3581,6 +3581,26 @@ input:focus, textarea:focus, select:focus {
     line-height: 1.15;
 }
 
+.auth-modal-subtitle {
+    display: block;
+    margin-top: 0.65rem;
+    max-width: 26rem;
+    color: #475569;
+    font-size: 0.95rem;
+    line-height: 1.55;
+}
+
+.auth-pane-note {
+    margin: -0.25rem 0 1rem;
+    border: 1px solid rgba(79, 70, 229, 0.12);
+    border-radius: 0.85rem;
+    padding: 0.8rem 0.95rem;
+    background: #f8fafc;
+    color: #475569;
+    font-size: 0.92rem;
+    line-height: 1.55;
+}
+
 .auth-modal-panel .auth-form {
     display: grid;
     gap: 0.95rem;

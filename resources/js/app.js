@@ -129,22 +129,57 @@ window.addEventListener('DOMContentLoaded', () => {
     const authPanes = authModal.querySelectorAll('[data-auth-pane]');
     const authOpenButtons = document.querySelectorAll('[data-auth-open]');
     const authCloseButtons = authModal.querySelectorAll('[data-auth-close]');
+    const authTitle = authModal.querySelector('#auth-modal-title');
+    const authSubtitle = authModal.querySelector('#auth-modal-subtitle');
+
+    const authCopy = {
+        signin: {
+            title: 'Sign in to your account',
+            subtitle: 'Access your bookings, reservations, and saved trip details.',
+        },
+        register: {
+            title: 'Create your account',
+            subtitle: 'Set up a tourist account before booking your Bolinao trip.',
+        },
+    };
+
+    const setAuthMode = (mode = 'signin') => {
+        const selectedMode = mode === 'register' ? 'register' : 'signin';
+
+        authModal.classList.toggle('auth-modal-register', selectedMode === 'register');
+
+        authPanes.forEach(pane => {
+            pane.classList.toggle('active', pane.getAttribute('data-auth-pane') === selectedMode);
+        });
+
+        if (authTitle) {
+            authTitle.textContent = authCopy[selectedMode].title;
+        }
+
+        if (authSubtitle) {
+            authSubtitle.textContent = authCopy[selectedMode].subtitle;
+        }
+    };
+
+    const openAuthModal = (mode = 'signin') => {
+        authModal.removeAttribute('hidden');
+        document.body.style.overflow = 'hidden';
+        setAuthMode(mode);
+        authModal.querySelector('.auth-pane.active input')?.focus();
+    };
+
+    const closeAuthModal = () => {
+        authModal.setAttribute('hidden', '');
+        document.body.style.overflow = '';
+        setAuthMode('signin');
+    };
 
     // Open modal
     authOpenButtons.forEach(button => {
         button.addEventListener('click', (e) => {
             e.preventDefault();
             const mode = button.getAttribute('data-auth-mode') || 'signin';
-            authModal.removeAttribute('hidden');
-            
-            // Switch to the specified pane
-            authPanes.forEach(pane => {
-                if (pane.getAttribute('data-auth-pane') === mode) {
-                    pane.classList.add('active');
-                } else {
-                    pane.classList.remove('active');
-                }
-            });
+            openAuthModal(mode);
         });
     });
 
@@ -152,7 +187,7 @@ window.addEventListener('DOMContentLoaded', () => {
     authCloseButtons.forEach(button => {
         button.addEventListener('click', (e) => {
             e.preventDefault();
-            authModal.setAttribute('hidden', '');
+            closeAuthModal();
         });
     });
 
@@ -161,7 +196,7 @@ window.addEventListener('DOMContentLoaded', () => {
     if (backdrop) {
         backdrop.addEventListener('click', (e) => {
             if (e.target === backdrop) {
-                authModal.setAttribute('hidden', '');
+                closeAuthModal();
             }
         });
     }
@@ -171,13 +206,23 @@ window.addEventListener('DOMContentLoaded', () => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
             const mode = link.getAttribute('data-auth-mode') || 'signin';
-            authPanes.forEach(pane => {
-                if (pane.getAttribute('data-auth-pane') === mode) {
-                    pane.classList.add('active');
-                } else {
-                    pane.classList.remove('active');
-                }
-            });
+            setAuthMode(mode);
         });
     });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !authModal.hasAttribute('hidden')) {
+            closeAuthModal();
+        }
+    });
+
+    const params = new URLSearchParams(window.location.search);
+    const requestedMode = params.get('auth');
+    if (requestedMode === 'signin' || requestedMode === 'register') {
+        openAuthModal(requestedMode);
+        params.delete('auth');
+        const nextQuery = params.toString();
+        const nextUrl = `${window.location.pathname}${nextQuery ? `?${nextQuery}` : ''}`;
+        window.history.replaceState({}, document.title, nextUrl);
+    }
 });

@@ -168,7 +168,8 @@
 
             <div class="auth-modal-heading">
                 <p>Bolinao Account</p>
-                <h2 id="auth-modal-title">Log in to your account</h2>
+                <h2 id="auth-modal-title">Sign in to your account</h2>
+                <span id="auth-modal-subtitle" class="auth-modal-subtitle">Access your bookings, reservations, and saved trip details.</span>
             </div>
 
             <div class="auth-pane active" data-auth-pane="signin">
@@ -233,6 +234,8 @@
                         </ul>
                     </div>
                 @endif
+
+                <p class="auth-pane-note">Create a tourist account to book packages, submit payments, and track your reservations.</p>
 
                 <form method="POST" action="{{ route('register') }}" class="auth-form">
                     @csrf
