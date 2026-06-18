@@ -172,15 +172,19 @@
                 <span id="auth-modal-subtitle" class="auth-modal-subtitle">Access your bookings, reservations, and saved trip details.</span>
             </div>
 
+            @php
+                $submittedAuthForm = old('auth_form');
+                $showRegisterErrors = $errors->any() && $submittedAuthForm === 'register';
+                $showSigninErrors = $errors->any() && ! $showRegisterErrors;
+            @endphp
+
             <div class="auth-pane active" data-auth-pane="signin">
-                @if ($errors->any() && old('auth_form', 'signin') === 'signin')
+                @if ($showSigninErrors)
                     <div class="alert alert-error">
                         <strong>Login Failed</strong>
                         <ul>
-                            @foreach ($errors->only(['email', 'password']) as $field => $messages)
-                                @foreach ($messages as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
                             @endforeach
                         </ul>
                     </div>
@@ -223,14 +227,12 @@
             </div>
 
             <div class="auth-pane" data-auth-pane="register">
-                @if ($errors->any() && old('auth_form') === 'register')
+                @if ($showRegisterErrors)
                     <div class="alert alert-error">
                         <strong>Registration Error</strong>
                         <ul>
-                            @foreach ($errors->only(['name', 'email', 'password']) as $field => $messages)
-                                @foreach ($messages as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
                             @endforeach
                         </ul>
                     </div>
