@@ -1,13 +1,12 @@
 <x-layout>
     <div class="auth-panel admin">
         <div class="auth-header">
-            <div class="auth-badge admin">
-                <svg style="width: 32px; height: 32px;" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M12 2a1 1 0 0 1 1 1v2a1 1 0 1 1-2 0V3a1 1 0 0 1 1-1zm0 14a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm-8-9a1 1 0 0 0-1 1v2a1 1 0 1 0 2 0V8a1 1 0 0 0-1-1zm16 0a1 1 0 0 0-1 1v2a1 1 0 1 0 2 0V8a1 1 0 0 0-1-1z" />
-                </svg>
+            <div class="admin-login-brand">
+                <span class="admin-login-logo">BOLINAO</span>
+                <span class="admin-login-label">Admin Portal</span>
             </div>
-            <h1 class="auth-title">Log in to your account</h1>
-            <p class="auth-lead">Sign in with your admin account to manage bookings, packages, and reports.</p>
+            <h1 class="auth-title">Sign in as admin</h1>
+            <p class="auth-lead">Manage bookings, packages, payments, reports, and tourist content.</p>
         </div>
 
         @if ($errors->any())
@@ -44,16 +43,16 @@
 
         <div class="divider">
             <div></div>
-            <span>Other Users</span>
+            <span>Not an admin?</span>
             <div></div>
         </div>
 
         <div class="auth-helper">
-            <p>If you do not have admin access, please log in as a regular user or continue as guest.</p>
+            <p>Use the tourist sign-in page, or continue browsing without an account.</p>
         </div>
 
         <div class="auth-links">
-            <a href="{{ route('login') }}" class="btn-secondary">Log in as Regular User</a>
+            <a href="{{ route('login') }}" class="btn-secondary">Tourist Sign In</a>
             <a href="{{ route('home') }}" class="btn-secondary">Continue as Guest</a>
         </div>
     </div>
