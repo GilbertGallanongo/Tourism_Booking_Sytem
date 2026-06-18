@@ -173,7 +173,7 @@
             </div>
 
             <div class="auth-pane active" data-auth-pane="signin">
-                @if ($errors->any() && ! old('name') && ! old('password_confirmation') && (isset($errors) && $errors->has(['email', 'password'])))
+                @if ($errors->any() && old('auth_form', 'signin') === 'signin')
                     <div class="alert alert-error">
                         <strong>Login Failed</strong>
                         <ul>
@@ -188,6 +188,7 @@
 
                 <form method="POST" action="{{ route('login.store') }}" class="auth-form">
                     @csrf
+                    <input type="hidden" name="auth_form" value="signin">
 
                     <div class="auth-group">
                         <label for="modal-login-email">Email Address</label>
@@ -222,7 +223,7 @@
             </div>
 
             <div class="auth-pane" data-auth-pane="register">
-                @if ($errors->any() && (old('name') || old('password_confirmation')) && (isset($errors) && $errors->has(['name', 'email', 'password'])))
+                @if ($errors->any() && old('auth_form') === 'register')
                     <div class="alert alert-error">
                         <strong>Registration Error</strong>
                         <ul>
@@ -239,6 +240,7 @@
 
                 <form method="POST" action="{{ route('register') }}" class="auth-form">
                     @csrf
+                    <input type="hidden" name="auth_form" value="register">
 
                     <div class="auth-group">
                         <label for="modal-register-name">Full name</label>
