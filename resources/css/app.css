@@ -3664,6 +3664,8 @@ input:focus, textarea:focus, select:focus {
     right: auto;
     transform: none;
     z-index: 1;
+    width: min(100%, 72rem);
+    margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
