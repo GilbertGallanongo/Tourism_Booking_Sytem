@@ -21,6 +21,29 @@
             flex-wrap: wrap;
         }
 
+        .proof-view-action {
+            min-width: auto;
+            white-space: nowrap;
+        }
+
+        .proof-view-back {
+            background: rgba(114, 136, 174, 0.18) !important;
+            border-color: rgba(114, 136, 174, 0.45) !important;
+            color: var(--palette-cream) !important;
+        }
+
+        .proof-view-open {
+            background: var(--palette-cream) !important;
+            color: var(--palette-ink) !important;
+        }
+
+        .proof-view-action-note {
+            flex-basis: 100%;
+            color: rgba(234, 224, 207, 0.66);
+            font-size: 0.82rem;
+            margin: -0.25rem 0 0;
+        }
+
         .proof-view-card {
             padding: 1rem;
             background: rgba(17, 24, 68, 0.38);
@@ -60,9 +83,14 @@
         </div>
 
         <div class="proof-view-actions">
-            <a href="{{ $backUrl }}" class="btn btn-outline-secondary">&larr; {{ $backLabel ?? 'Back' }}</a>
+            <a href="{{ $backUrl }}" class="btn btn-outline-secondary proof-view-action proof-view-back" title="{{ $backLabel ?? 'Back' }}">
+                &larr; Back
+            </a>
             @if($payment->proof_url)
-                <a href="{{ $payment->proof_url }}" class="btn btn-primary" target="_blank" rel="noopener">Open original</a>
+                <a href="{{ $payment->proof_url }}" class="btn btn-primary proof-view-action proof-view-open" target="_blank" rel="noopener">
+                    {{ $payment->proof_is_image ? 'View proof image' : 'Open proof file' }}
+                </a>
+                <p class="proof-view-action-note">The proof opens in a new tab.</p>
             @endif
         </div>
     </div>
@@ -72,7 +100,7 @@
             <img src="{{ $payment->proof_url }}" class="proof-view-image" alt="Proof of payment for {{ $bookingNumber }}">
         @elseif($payment->proof_url)
             <div class="proof-view-empty">
-                Proof is attached, but it is not an image preview. Use Open original to view it.
+                Proof is attached, but it is not an image preview. Use Open proof file to view it.
             </div>
         @else
             <div class="proof-view-empty">
