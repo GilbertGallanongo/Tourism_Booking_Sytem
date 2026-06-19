@@ -42,9 +42,8 @@ class DashboardController extends Controller
     public function home(): View
     {
         $topRatedPackages = TourPackage::active()
-            ->bolinao()
-            ->where('rating', '>=', 4)
             ->orderBy('rating', 'desc')
+            ->latest()
             ->limit(3)
             ->get();
 
@@ -60,8 +59,6 @@ class DashboardController extends Controller
             ->get();
 
         $promoPackages = PromoPackage::where('is_active', true)
-            ->whereDate('start_date', '<=', today())
-            ->whereDate('end_date', '>=', today())
             ->latest()
             ->limit(3)
             ->get();
@@ -108,8 +105,6 @@ class DashboardController extends Controller
     public function promoPackages(Request $request): View
     {
         $promoPackages = PromoPackage::where('is_active', true)
-            ->whereDate('start_date', '<=', today())
-            ->whereDate('end_date', '>=', today())
             ->latest()
             ->get();
 
@@ -163,7 +158,6 @@ class DashboardController extends Controller
         }
 
         $packages = TourPackage::active()
-            ->bolinao()
             ->when($request->search, fn($q) => $q->where(function($sub) use ($request) {
                 $sub->where('name', 'like', "%{$request->search}%")
                     ->orWhere('location', 'like', "%{$request->search}%")
@@ -497,7 +491,6 @@ class DashboardController extends Controller
 
         // Get top-rated packages
         $topRatedPackages = TourPackage::active()
-            ->bolinao()
             ->orderBy('rating', 'desc')
             ->limit(5)
             ->get();
@@ -525,7 +518,6 @@ class DashboardController extends Controller
 
         // Get most booked destinations
         $topDestinations = TourPackage::active()
-            ->bolinao()
             ->withCount('bookings')
             ->orderBy('bookings_count', 'desc')
             ->limit(5)
@@ -533,7 +525,7 @@ class DashboardController extends Controller
 
         return [
             'stats' => [
-                'packages' => TourPackage::active()->bolinao()->count(),
+                'packages' => TourPackage::active()->count(),
                 'bookings' => $bookingStats->total ?? 0,
                 'pending_bookings' => $bookingStats->pending ?? 0,
                 'paid_payments' => $paymentStats->paid_count ?? 0,
@@ -542,7 +534,6 @@ class DashboardController extends Controller
             ],
             'availablePackages' => TourPackage::query()
                 ->active()
-                ->bolinao()
                 ->latest()
                 ->get(),
             'topRatedPackages' => $topRatedPackages,

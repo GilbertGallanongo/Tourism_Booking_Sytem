@@ -36,7 +36,6 @@ class PackageController extends Controller
             : null;
 
         $packages = TourPackage::active()
-            ->bolinao()
             ->withAvg('reviews', 'rating')
             ->withCount('reviews')
             ->when($request->search, fn($q) =>

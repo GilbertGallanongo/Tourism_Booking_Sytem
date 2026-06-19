@@ -16,7 +16,7 @@ class TourPackageController extends Controller
     public function index(): JsonResponse
     {
         return response()->json([
-            'data' => TourPackage::active()->bolinao()->latest()->get(),
+            'data' => TourPackage::active()->latest()->get(),
         ]);
     }
 
