@@ -51,7 +51,9 @@
                   "  pm.response.to.have.status(201);",
                   "  const json = pm.response.json();",
                   "  pm.expect(json.token).to.be.a('string');",
+                  "  pm.expect(json.token_id).to.exist;",
                   "  pm.environment.set('token', json.token);",
+                  "  pm.environment.set('token_id', json.token_id);",
                   "  pm.environment.set('user_id', json.user.id);",
                   "});"
                 ]
@@ -103,7 +105,9 @@
                   "  pm.response.to.have.status(201);",
                   "  const json = pm.response.json();",
                   "  pm.expect(json.token).to.be.a('string');",
+                  "  pm.expect(json.token_id).to.exist;",
                   "  pm.environment.set('token', json.token);",
+                  "  pm.environment.set('token_id', json.token_id);",
                   "  pm.environment.set('admin_id', json.user.id);",
                   "});"
                 ]
@@ -146,6 +150,24 @@
         },
         {
           "name": "Create Extra Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Extra token is created and saved', function () {",
+                  "  pm.response.to.have.status(201);",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json.token).to.be.a('string');",
+                  "  pm.expect(json.token_id).to.exist;",
+                  "  pm.environment.set('extra_token', json.token);",
+                  "  pm.environment.set('token_id', json.token_id);",
+                  "});"
+                ]
+              }
+            }
+          ],
           "request": {
             "method": "POST",
             "header": [
@@ -177,6 +199,24 @@
         },
         {
           "name": "List Tokens",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Tokens are listed', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json.tokens).to.be.an('array');",
+                  "  if (json.tokens.length > 0) {",
+                  "    pm.environment.set('token_id', json.tokens[0].id);",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
           "request": {
             "method": "GET",
             "header": [

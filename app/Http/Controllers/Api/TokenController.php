@@ -232,6 +232,7 @@ class TokenController extends Controller
         return response()->json([
             'message' => 'API token created successfully.',
             'token' => $token->plainTextToken,
+            'token_id' => $token->accessToken->id,
             'token_name' => $tokenName,
             'abilities' => $abilities,
             'token_type' => 'Bearer',
