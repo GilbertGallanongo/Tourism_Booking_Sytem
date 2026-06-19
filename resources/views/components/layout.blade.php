@@ -77,6 +77,8 @@
             const forms = document.querySelectorAll('form');
             forms.forEach(form => {
                 form.addEventListener('submit', function(e) {
+                    if (this.dataset.skipSubmitLock === 'true') return;
+
                     const submitBtn = this.querySelector('button[type="submit"], input[type="submit"]');
                     if (submitBtn) {
                         submitBtn.disabled = true;

@@ -381,6 +381,11 @@ class PackageController extends Controller
         }
 
         $name = time() . '-' . uniqid() . '-' . preg_replace('/[^a-z0-9\-\.]/i', '-', $original);
+
+        if (! Storage::disk('public')->exists('images')) {
+            Storage::disk('public')->makeDirectory('images');
+        }
+
         $publicPath = Storage::disk('public')->path('images/' . $name);
         $imagePath = 'images/' . $name;
 

@@ -23,7 +23,7 @@
             $timeValue = fn ($value) => $value ? substr((string) $value, 0, 5) : '';
         @endphp
 
-        <form method="POST" action="{{ $action }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ $action }}" enctype="multipart/form-data" data-skip-submit-lock="true">
             @csrf
             @if(isset($method) && in_array(strtoupper($method), ['PUT', 'PATCH'], true))
                 @method(strtoupper($method))
@@ -474,10 +474,21 @@ document.addEventListener('DOMContentLoaded', function () {
     const form = input.closest('form');
     if (form) {
         form.addEventListener('submit', function (e) {
+            const submitBtn = form.querySelector('button[type="submit"], input[type="submit"]');
+            const originalSubmitText = submitBtn ? submitBtn.textContent : '';
+
+            function resetSubmitButton() {
+                if (!submitBtn) return;
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalSubmitText;
+                submitBtn.style.opacity = '';
+            }
+
             // Only block if user selected a file AND it's still uploading
             if (input.files && input.files.length > 0) {
                 if (uploadInProgress) {
                     e.preventDefault();
+                    resetSubmitButton();
                     const toast = document.getElementById('upload_toast');
                     if (toast) {
                         toast.textContent = 'Image upload still in progress...';
@@ -493,8 +504,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 if (window.packageImageProcessing) {
                     e.preventDefault();
+                    resetSubmitButton();
                     return false;
                 }
+            }
+
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Processing...';
+                submitBtn.style.opacity = '0.7';
             }
         });
     }
