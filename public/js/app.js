@@ -17,8 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (mode === 'register') {
             modalTitle.textContent = 'Create your Bolinao account';
-        } else if (mode === 'token') {
-            modalTitle.textContent = 'Continue with access token';
         } else {
             modalTitle.textContent = 'Log in to your account';
         }
@@ -28,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.hidden = false;
         document.body.style.overflow = 'hidden';
 
-        const selectedMode = ['signin', 'register', 'token'].includes(mode) ? mode : 'signin';
+        const selectedMode = mode === 'register' ? 'register' : 'signin';
 
         modal.classList.toggle('auth-modal-register', selectedMode === 'register');
         setModalTitle(selectedMode);
@@ -63,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const params = new URLSearchParams(window.location.search);
         const mode = params.get('auth');
 
-        if (['signin', 'register', 'token'].includes(mode)) {
+        if (mode === 'signin' || mode === 'register') {
             openModal(mode);
             params.delete('auth');
             const url = `${window.location.pathname}${params.toString() ? `?${params.toString()}` : ''}`;

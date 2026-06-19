@@ -44,7 +44,6 @@ Route::middleware('guest:web')->group(function () {
     Route::get('/register', function () { return redirect()->route('home', ['auth' => 'register']); });
 
     Route::post('/login', [AuthController::class, 'loginTourist'])->name('login.store');
-    Route::post('/token-login', [AuthController::class, 'loginWithToken'])->name('token.login');
     Route::post('/guest-login', [AuthController::class, 'guestLogin'])->name('guest.login');
 });
 

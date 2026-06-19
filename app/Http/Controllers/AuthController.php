@@ -121,55 +121,6 @@ class AuthController extends Controller
         return redirect()->intended(route('admin.dashboard'));
     }
 
-    public function loginWithToken(Request $request): JsonResponse|RedirectResponse
-    {
-        $validated = $request->validate([
-            'token' => ['required', 'string', 'max:255'],
-        ]);
-
-        $plainTextToken = trim($validated['token']);
-        $accessToken = PersonalAccessToken::findToken($plainTextToken);
-
-        if (! $accessToken || ! $accessToken->tokenable) {
-            throw ValidationException::withMessages([
-                'token' => 'Invalid access token. Please paste a valid personal access token.',
-            ]);
-        }
-
-        if ($accessToken->expires_at && $accessToken->expires_at->isPast()) {
-            throw ValidationException::withMessages([
-                'token' => 'This access token has expired. Please create a new token.',
-            ]);
-        }
-
-        $account = $accessToken->tokenable;
-        $remember = $request->boolean('remember');
-
-        if ($account instanceof Admin && ($account->role ?? 'admin') === 'admin') {
-            Auth::guard('admin')->login($account, $remember);
-            $redirectRoute = 'admin.dashboard';
-        } elseif ($account instanceof User && $account->isTourist() && ! $account->isGuest()) {
-            Auth::guard('web')->login($account, $remember);
-            $redirectRoute = 'home';
-        } else {
-            throw ValidationException::withMessages([
-                'token' => 'This access token does not belong to a valid website account.',
-            ]);
-        }
-
-        $accessToken->forceFill(['last_used_at' => now()])->save();
-        $request->session()->regenerate();
-
-        if ($request->expectsJson()) {
-            return response()->json([
-                'message' => 'Logged in with access token successfully.',
-                'user' => $account,
-            ]);
-        }
-
-        return redirect()->intended(route($redirectRoute));
-    }
-
     public function register(Request $request): JsonResponse|RedirectResponse
     {
         $currentUser = $request->user();

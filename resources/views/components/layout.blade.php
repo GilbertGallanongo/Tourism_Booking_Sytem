@@ -178,7 +178,6 @@
                 $submittedAuthForm = old('auth_form');
                 $showRegisterErrors = $errors->any() && $submittedAuthForm === 'register';
                 $showSigninErrors = $errors->any() && $submittedAuthForm === 'signin';
-                $showTokenErrors = $errors->any() && $submittedAuthForm === 'token';
             @endphp
 
             <div class="auth-pane active" data-auth-pane="signin">
@@ -222,7 +221,6 @@
 
                 <div class="auth-helper">
                     <p>Need admin access? <a href="{{ route('admin.login') }}">Sign in here</a>.</p>
-                    <p>Token only? <a href="#" data-auth-open data-auth-mode="token">Continue with token</a>.</p>
                     <p class="muted">Don't have an account? <a href="#" data-auth-open data-auth-mode="register">Create one now</a>.</p>
                 </div>
 
@@ -280,41 +278,6 @@
                 </div>
             </div>
 
-            <div class="auth-pane" data-auth-pane="token">
-                @if ($showTokenErrors)
-                    <div class="alert alert-error">
-                        <strong>Token Login Failed</strong>
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
-                <p class="auth-pane-note">Paste your personal access token to continue with your website account.</p>
-
-                <form method="POST" action="{{ route('token.login') }}" class="auth-form">
-                    @csrf
-                    <input type="hidden" name="auth_form" value="token">
-
-                    <div class="auth-group">
-                        <label for="modal-login-token">Personal Access Token</label>
-                        <input id="modal-login-token" name="token" type="password" placeholder="Paste your token here" class="auth-input" required autocomplete="off" />
-                    </div>
-
-                    <label class="remember-row">
-                        <input name="remember" type="checkbox" value="1">
-                        <span>Remember me</span>
-                    </label>
-
-                    <button type="submit" class="btn-primary">Continue with Token</button>
-                </form>
-
-                <div class="auth-helper">
-                    <p class="muted">Prefer email and password? <a href="#" data-auth-open data-auth-mode="signin">Sign in instead</a>.</p>
-                </div>
-            </div>
         </section>
     </div>
 </body>

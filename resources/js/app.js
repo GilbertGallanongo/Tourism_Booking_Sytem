@@ -141,14 +141,10 @@ window.addEventListener('DOMContentLoaded', () => {
             title: 'Create your account',
             subtitle: 'Set up a tourist account before booking your Bolinao trip.',
         },
-        token: {
-            title: 'Continue with access token',
-            subtitle: 'Paste your personal access token to open your website session.',
-        },
     };
 
     const setAuthMode = (mode = 'signin') => {
-        const selectedMode = ['signin', 'register', 'token'].includes(mode) ? mode : 'signin';
+        const selectedMode = mode === 'register' ? 'register' : 'signin';
 
         authModal.classList.toggle('auth-modal-register', selectedMode === 'register');
 
@@ -222,7 +218,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const params = new URLSearchParams(window.location.search);
     const requestedMode = params.get('auth');
-    if (['signin', 'register', 'token'].includes(requestedMode)) {
+    if (requestedMode === 'signin' || requestedMode === 'register') {
         openAuthModal(requestedMode);
         params.delete('auth');
         const nextQuery = params.toString();
