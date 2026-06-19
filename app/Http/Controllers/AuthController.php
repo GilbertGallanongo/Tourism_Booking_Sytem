@@ -36,6 +36,7 @@ class AuthController extends Controller
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required', 'string'],
+            'token' => ['required', 'string', 'max:255'],
         ]);
 
         $remember = $request->boolean('remember');
@@ -48,22 +49,21 @@ class AuthController extends Controller
             ]);
         }
 
-        if (! Auth::guard('web')->attempt($credentials, $remember)) {
+        if (! $this->passwordMatches($credentials['password'], $user->password)) {
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
             ]);
         }
-
-        $user = Auth::guard('web')->user();
 
         if (! $user || $user->role !== 'tourist') {
-            Auth::guard('web')->logout();
-
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
             ]);
         }
 
+        $this->validateAccountToken($credentials['token'], $user);
+
+        Auth::guard('web')->login($user, $remember);
         $request->session()->regenerate();
 
         if ($request->expectsJson()) {
@@ -81,6 +81,7 @@ class AuthController extends Controller
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required', 'string'],
+            'token' => ['required', 'string', 'max:255'],
         ]);
 
         $remember = $request->boolean('remember');
@@ -93,22 +94,21 @@ class AuthController extends Controller
             ]);
         }
 
-        if (! Auth::guard('admin')->attempt($credentials, $remember)) {
+        if (! $this->passwordMatches($credentials['password'], $admin->password)) {
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
             ]);
         }
-
-        $admin = Auth::guard('admin')->user();
 
         if (! $admin || $admin->role !== 'admin') {
-            Auth::guard('admin')->logout();
-
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
             ]);
         }
 
+        $this->validateAccountToken($credentials['token'], $admin);
+
+        Auth::guard('admin')->login($admin, $remember);
         $request->session()->regenerate();
 
         if ($request->expectsJson()) {
@@ -266,6 +266,25 @@ class AuthController extends Controller
         }
 
         return false;
+    }
+
+    private function validateAccountToken(string $plainTextToken, User|Admin $account): void
+    {
+        $accessToken = PersonalAccessToken::findToken(trim($plainTextToken));
+
+        if (! $accessToken || ! $accessToken->tokenable || ! $accessToken->tokenable->is($account)) {
+            throw ValidationException::withMessages([
+                'token' => 'Please enter a valid personal access token for this account.',
+            ]);
+        }
+
+        if ($accessToken->expires_at && $accessToken->expires_at->isPast()) {
+            throw ValidationException::withMessages([
+                'token' => 'This access token has expired. Please create a new token.',
+            ]);
+        }
+
+        $accessToken->forceFill(['last_used_at' => now()])->save();
     }
 
     private function isHashedPassword(string $password): bool

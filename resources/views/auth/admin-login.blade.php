@@ -39,6 +39,12 @@
             </div>
 
             <div class="auth-group">
+                <label for="access_token">Personal Access Token</label>
+                <input id="access_token" name="token" type="password" placeholder="Paste your admin token" class="auth-input" required autocomplete="off" />
+                @error('token')<p class="error-text">{{ $message }}</p>@enderror
+            </div>
+
+            <div class="auth-group">
                 <div class="form-check">
                     <input type="checkbox" name="remember" id="remember" class="form-check-input" {{ old('remember') ? 'checked' : '' }}>
                     <label class="form-check-label" for="remember">Remember me</label>

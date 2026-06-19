@@ -207,6 +207,11 @@
                         <input id="modal-login-password" name="password" type="password" placeholder="Password" class="auth-input" required />
                     </div>
 
+                    <div class="auth-group">
+                        <label for="modal-login-access-token">Personal Access Token</label>
+                        <input id="modal-login-access-token" name="token" type="password" placeholder="Paste your access token" class="auth-input" required autocomplete="off" />
+                    </div>
+
                     <label class="remember-row">
                         <input name="remember" type="checkbox" value="1">
                         <span>Remember me</span>
@@ -217,7 +222,7 @@
 
                 <div class="auth-helper">
                     <p>Need admin access? <a href="{{ route('admin.login') }}">Sign in here</a>.</p>
-                    <p>Have an access token? <a href="#" data-auth-open data-auth-mode="token">Use token instead</a>.</p>
+                    <p>Token only? <a href="#" data-auth-open data-auth-mode="token">Continue with token</a>.</p>
                     <p class="muted">Don't have an account? <a href="#" data-auth-open data-auth-mode="register">Create one now</a>.</p>
                 </div>
 
