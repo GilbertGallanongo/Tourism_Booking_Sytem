@@ -20,6 +20,7 @@ Route::middleware('auth:sanctum')->name('api.')->group(function () {
     Route::post('/tokens/revoke-all', [TokenController::class, 'revokeAllTokens'])->name('tokens.revoke-all');
 
     Route::post('/packages', [TourPackageController::class, 'store'])->name('packages.store');
+    Route::post('/packages/{package}/image', [TourPackageController::class, 'uploadImage'])->name('packages.image');
     Route::put('/packages/{package}', [TourPackageController::class, 'update'])->name('packages.update');
     Route::delete('/packages/{package}', [TourPackageController::class, 'destroy'])->name('packages.destroy');
 
@@ -34,5 +35,6 @@ Route::middleware('auth:sanctum')->name('api.')->group(function () {
     Route::post('/bookings/{booking}/payment-plan', [BookingController::class, 'setupPaymentPlan'])->name('bookings.payment-plan');
     Route::apiResource('bookings', BookingController::class);
 
+    Route::post('/payments/{payment}/proof', [PaymentController::class, 'uploadProof'])->name('payments.proof');
     Route::apiResource('payments', PaymentController::class);
 });

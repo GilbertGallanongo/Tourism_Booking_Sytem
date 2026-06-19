@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\TourPackage;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class TourPackageController extends Controller
@@ -16,7 +17,10 @@ class TourPackageController extends Controller
     public function index(): JsonResponse
     {
         return response()->json([
-            'data' => TourPackage::active()->latest()->get(),
+            'data' => TourPackage::active()
+                ->latest()
+                ->get()
+                ->map(fn (TourPackage $package) => $this->packagePayload($package)),
         ]);
     }
 
@@ -25,15 +29,20 @@ class TourPackageController extends Controller
         $this->requireAdmin($request);
 
         $validated = $this->validatePackage($request);
+        unset($validated['image_file']);
+
+        if ($request->hasFile('image_file')) {
+            $validated['image'] = $this->storeImage($request, 'image_file');
+        }
 
         $package = TourPackage::create($validated);
 
-        return response()->json(['data' => $package], 201);
+        return response()->json(['data' => $this->packagePayload($package)], 201);
     }
 
     public function show(TourPackage $package): JsonResponse
     {
-        return response()->json(['data' => $package->load('bookings')]);
+        return response()->json(['data' => $this->packagePayload($package->load('bookings'))]);
     }
 
     public function update(Request $request, TourPackage $package): JsonResponse
@@ -41,9 +50,33 @@ class TourPackageController extends Controller
         $this->requireAdmin($request);
 
         $validated = $this->validatePackage($request, $package->id);
+        unset($validated['image_file']);
+
+        if ($request->hasFile('image_file')) {
+            $this->deletePublicFile($package->image);
+            $validated['image'] = $this->storeImage($request, 'image_file');
+        }
+
         $package->update($validated);
 
-        return response()->json(['data' => $package->refresh()]);
+        return response()->json(['data' => $this->packagePayload($package->refresh())]);
+    }
+
+    public function uploadImage(Request $request, TourPackage $package): JsonResponse
+    {
+        $this->requireAdmin($request);
+
+        $request->validate([
+            'image_file' => ['required', 'image', 'max:10240'],
+        ]);
+
+        $this->deletePublicFile($package->image);
+
+        $package->update([
+            'image' => $this->storeImage($request, 'image_file'),
+        ]);
+
+        return response()->json(['data' => $this->packagePayload($package->refresh())]);
     }
 
     public function destroy(Request $request, TourPackage $package): JsonResponse
@@ -65,9 +98,34 @@ class TourPackageController extends Controller
             'duration_days' => ['sometimes', 'required', 'integer', 'min:1'],
             'max_guests' => ['sometimes', 'required', 'integer', 'min:1'],
             'image' => ['nullable', 'string', 'max:255'],
+            'image_file' => ['nullable', 'image', 'max:10240'],
             'status' => ['sometimes', 'required', 'in:active,inactive'],
             'rating' => ['nullable', 'numeric', 'between:0,5'],
         ]);
+    }
+
+    private function packagePayload(TourPackage $package): array
+    {
+        $data = $package->toArray();
+        $data['image_url'] = $package->image_url;
+        $data['has_image'] = $package->has_image;
+
+        return $data;
+    }
+
+    private function storeImage(Request $request, string $field): string
+    {
+        return $request->file($field)->store('images', 'public');
+    }
+
+    private function deletePublicFile(?string $path): void
+    {
+        $path = ltrim((string) $path, '/');
+        $path = preg_replace('#^(public/storage/|public/|storage/)#i', '', $path);
+
+        if ($path !== '' && ! str_starts_with($path, 'http') && Storage::disk('public')->exists($path)) {
+            Storage::disk('public')->delete($path);
+        }
     }
 
     private function uniqueSlug(string $title, ?int $ignoreId = null): string
