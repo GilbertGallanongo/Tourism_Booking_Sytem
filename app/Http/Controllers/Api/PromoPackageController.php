@@ -27,7 +27,7 @@ class PromoPackageController extends Controller
         $this->requireAdmin($request);
 
         $validated = $this->validatePromoPackage($request);
-        unset($validated['image_file']);
+        $validated = $this->prepareImageData($request, $validated);
 
         $validated['is_active'] = $request->boolean('is_active', $validated['is_active'] ?? true);
 
@@ -50,7 +50,7 @@ class PromoPackageController extends Controller
         $this->requireAdmin($request);
 
         $validated = $this->validatePromoPackage($request, true);
-        unset($validated['image_file']);
+        $validated = $this->prepareImageData($request, $validated);
 
         if ($request->has('is_active')) {
             $validated['is_active'] = $request->boolean('is_active');
@@ -121,6 +121,21 @@ class PromoPackageController extends Controller
     private function storeImage(Request $request): string
     {
         return $request->file('image_file')->store('promo-packages', 'public');
+    }
+
+    private function prepareImageData(Request $request, array $validated): array
+    {
+        unset($validated['image_file']);
+
+        if (! $request->hasFile('image_file') && array_key_exists('image', $validated)) {
+            $image = $validated['image'];
+
+            if ($image === null || trim((string) $image) === '') {
+                unset($validated['image']);
+            }
+        }
+
+        return $validated;
     }
 
     private function deletePublicFile(?string $path): void

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Api\Concerns\AuthorizesApiAccess;
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
+use App\Models\Payment;
 use App\Models\TourPackage;
 use App\Services\BookingService;
 use Illuminate\Http\JsonResponse;
@@ -32,7 +33,7 @@ class BookingController extends Controller
             ->get();
 
         return response()->json([
-            'data' => $bookings,
+            'data' => $bookings->map(fn (Booking $booking) => $this->bookingPayload($booking)),
         ]);
     }
 
@@ -75,14 +76,14 @@ class BookingController extends Controller
             'method' => 'cash',
         ]);
 
-        return response()->json(['data' => $booking->load(['user', 'package', 'payment'])], 201);
+        return response()->json(['data' => $this->bookingPayload($booking->load(['user', 'package', 'payment']))], 201);
     }
 
     public function show(Request $request, Booking $booking): JsonResponse
     {
         $this->authorizeBookingAccess($request, $booking);
 
-        return response()->json(['data' => $booking->load(['user', 'package', 'payment', 'approver'])]);
+        return response()->json(['data' => $this->bookingPayload($booking->load(['user', 'package', 'payment', 'approver']))]);
     }
 
     public function update(Request $request, Booking $booking): JsonResponse
@@ -109,7 +110,7 @@ class BookingController extends Controller
 
         $booking->update($validated);
 
-        return response()->json(['data' => $booking->refresh()->load(['user', 'package', 'payment'])]);
+        return response()->json(['data' => $this->bookingPayload($booking->refresh()->load(['user', 'package', 'payment']))]);
     }
 
     public function destroy(Request $request, Booking $booking): JsonResponse
@@ -345,6 +346,41 @@ class BookingController extends Controller
             'approved_by' => ['nullable', 'exists:admins,id'],
             'approved_at' => ['nullable', 'date'],
         ]);
+    }
+
+    private function bookingPayload(Booking $booking): array
+    {
+        $data = $booking->toArray();
+
+        if ($booking->relationLoaded('package') && $booking->package instanceof TourPackage) {
+            $data['package'] = $this->packagePayload($booking->package);
+        }
+
+        if ($booking->relationLoaded('payment') && $booking->payment instanceof Payment) {
+            $data['payment'] = $this->paymentPayload($booking->payment);
+        }
+
+        return $data;
+    }
+
+    private function packagePayload(TourPackage $package): array
+    {
+        $data = $package->toArray();
+        $data['image_url'] = $package->image_url;
+        $data['has_image'] = $package->has_image;
+
+        return $data;
+    }
+
+    private function paymentPayload(Payment $payment): array
+    {
+        $data = $payment->toArray();
+        $data['proof_url'] = $payment->proof_url;
+        $data['proof_is_image'] = $payment->proof_is_image;
+        $data['proof_display_name'] = $payment->proof_display_name;
+        $data['has_uploaded_proof'] = $payment->has_uploaded_proof;
+
+        return $data;
     }
 
     private function bookingNumber(): string

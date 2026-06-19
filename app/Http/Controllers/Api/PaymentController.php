@@ -47,7 +47,7 @@ class PaymentController extends Controller
             unset($validated['status'], $validated['paid_at']);
         }
 
-        unset($validated['proof_file']);
+        $validated = $this->prepareProofData($request, $validated);
 
         if ($request->hasFile('proof_file')) {
             $validated['proof'] = $this->storeProof($request);
@@ -87,7 +87,7 @@ class PaymentController extends Controller
             unset($validated['status'], $validated['paid_at']);
         }
 
-        unset($validated['proof_file']);
+        $validated = $this->prepareProofData($request, $validated);
 
         if ($request->hasFile('proof_file')) {
             $this->deletePublicFile($payment->proof);
@@ -159,6 +159,21 @@ class PaymentController extends Controller
     private function storeProof(Request $request): string
     {
         return $request->file('proof_file')->store('payment-proofs', 'public');
+    }
+
+    private function prepareProofData(Request $request, array $validated): array
+    {
+        unset($validated['proof_file']);
+
+        if (! $request->hasFile('proof_file') && array_key_exists('proof', $validated)) {
+            $proof = $validated['proof'];
+
+            if ($proof === null || trim((string) $proof) === '') {
+                unset($validated['proof']);
+            }
+        }
+
+        return $validated;
     }
 
     private function deletePublicFile(?string $path): void

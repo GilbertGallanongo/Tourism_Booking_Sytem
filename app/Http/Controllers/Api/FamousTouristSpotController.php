@@ -29,7 +29,7 @@ class FamousTouristSpotController extends Controller
         $this->requireAdmin($request);
 
         $validated = $this->validateSpot($request);
-        unset($validated['image_file']);
+        $validated = $this->prepareImageData($request, $validated);
 
         $validated['is_active'] = $request->boolean('is_active', $validated['is_active'] ?? true);
         $validated['sort_order'] = $validated['sort_order'] ?? 0;
@@ -53,7 +53,7 @@ class FamousTouristSpotController extends Controller
         $this->requireAdmin($request);
 
         $validated = $this->validateSpot($request, true);
-        unset($validated['image_file']);
+        $validated = $this->prepareImageData($request, $validated);
 
         if ($request->has('is_active')) {
             $validated['is_active'] = $request->boolean('is_active');
@@ -123,6 +123,21 @@ class FamousTouristSpotController extends Controller
     private function storeImage(Request $request): string
     {
         return $request->file('image_file')->store('famous-tourist-spots', 'public');
+    }
+
+    private function prepareImageData(Request $request, array $validated): array
+    {
+        unset($validated['image_file']);
+
+        if (! $request->hasFile('image_file') && array_key_exists('image', $validated)) {
+            $image = $validated['image'];
+
+            if ($image === null || trim((string) $image) === '') {
+                unset($validated['image']);
+            }
+        }
+
+        return $validated;
     }
 
     private function deletePublicFile(?string $path): void

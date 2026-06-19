@@ -29,7 +29,7 @@ class TourPackageController extends Controller
         $this->requireAdmin($request);
 
         $validated = $this->validatePackage($request);
-        unset($validated['image_file']);
+        $validated = $this->prepareImageData($request, $validated);
 
         if ($request->hasFile('image_file')) {
             $validated['image'] = $this->storeImage($request, 'image_file');
@@ -50,7 +50,7 @@ class TourPackageController extends Controller
         $this->requireAdmin($request);
 
         $validated = $this->validatePackage($request, $package->id);
-        unset($validated['image_file']);
+        $validated = $this->prepareImageData($request, $validated);
 
         if ($request->hasFile('image_file')) {
             $this->deletePublicFile($package->image);
@@ -116,6 +116,21 @@ class TourPackageController extends Controller
     private function storeImage(Request $request, string $field): string
     {
         return $request->file($field)->store('images', 'public');
+    }
+
+    private function prepareImageData(Request $request, array $validated): array
+    {
+        unset($validated['image_file']);
+
+        if (! $request->hasFile('image_file') && array_key_exists('image', $validated)) {
+            $image = $validated['image'];
+
+            if ($image === null || trim((string) $image) === '') {
+                unset($validated['image']);
+            }
+        }
+
+        return $validated;
     }
 
     private function deletePublicFile(?string $path): void
