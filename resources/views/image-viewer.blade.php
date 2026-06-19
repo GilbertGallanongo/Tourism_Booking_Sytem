@@ -23,14 +23,7 @@
             font-weight: 900;
         }
 
-        .image-viewer-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-        }
-
-        .image-viewer-back,
-        .image-viewer-open {
+        .image-viewer-back {
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -39,17 +32,8 @@
             border-radius: 0.7rem;
             text-decoration: none;
             font-weight: 900;
-        }
-
-        .image-viewer-back {
             color: #0f172a;
             background: #eae0cf;
-        }
-
-        .image-viewer-open {
-            color: #f8fafc;
-            border: 1px solid rgba(234, 224, 207, 0.25);
-            background: rgba(12, 24, 58, 0.86);
         }
 
         .image-viewer-card {
@@ -72,10 +56,7 @@
     <section class="image-viewer-page">
         <div class="image-viewer-header">
             <h1 class="image-viewer-title">{{ $title }}</h1>
-            <div class="image-viewer-actions">
-                <a href="{{ $backUrl }}" class="image-viewer-back">&larr; Back</a>
-                <a href="{{ $src }}" class="image-viewer-open" target="_blank" rel="noopener">Open original</a>
-            </div>
+            <a href="{{ $backUrl }}" class="image-viewer-back">&larr; Back</a>
         </div>
 
         <div class="image-viewer-card">
