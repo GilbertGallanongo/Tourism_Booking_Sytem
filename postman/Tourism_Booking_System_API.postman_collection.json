@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "0d7c3b7d-7c3a-4f4b-9ef8-43b6d9aa1f3c",
     "name": "Tourism Booking System API",
-    "description": "Postman collection for the Laravel Tourism Booking System API. Start with Tourist Login or Admin Login, then use the saved Bearer token for protected requests.",
+    "description": "Postman collection for the Laravel Tourism Booking System API. Start with Tourist Login or Admin Login. The login request saves `token` and `current_token_id`; protected requests use `Authorization: Bearer {{token}}`. Use Create Extra Token before Revoke Token by ID so `token_id` points to a separate token.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "auth": {
@@ -53,7 +53,9 @@
                   "  pm.expect(json.token).to.be.a('string');",
                   "  pm.expect(json.token_id).to.exist;",
                   "  pm.environment.set('token', json.token);",
-                  "  pm.environment.set('token_id', json.token_id);",
+                  "  pm.environment.set('current_token_id', json.token_id);",
+                  "  pm.environment.unset('token_id');",
+                  "  pm.environment.unset('extra_token');",
                   "  pm.environment.set('user_id', json.user.id);",
                   "});"
                 ]
@@ -89,7 +91,7 @@
                 "login"
               ]
             },
-            "description": "Creates a personal access token for a registered tourist account and saves it to the `token` environment variable."
+            "description": "Run this first for tourist API testing. It creates a personal access token and saves it as `token`; the current token id is saved as `current_token_id`."
           },
           "response": []
         },
@@ -107,7 +109,9 @@
                   "  pm.expect(json.token).to.be.a('string');",
                   "  pm.expect(json.token_id).to.exist;",
                   "  pm.environment.set('token', json.token);",
-                  "  pm.environment.set('token_id', json.token_id);",
+                  "  pm.environment.set('current_token_id', json.token_id);",
+                  "  pm.environment.unset('token_id');",
+                  "  pm.environment.unset('extra_token');",
                   "  pm.environment.set('admin_id', json.user.id);",
                   "});"
                 ]
@@ -144,7 +148,7 @@
                 "login"
               ]
             },
-            "description": "Creates a personal access token for an admin account and saves it to the `token` environment variable."
+            "description": "Run this first for admin API testing. It creates a personal access token and saves it as `token`; the current token id is saved as `current_token_id`."
           },
           "response": []
         },
@@ -195,6 +199,7 @@
               ]
             }
           },
+          "description": "Creates a second token using the currently saved Bearer token. This saves the new token id as `token_id`, which is the safe target for Revoke Token by ID.",
           "response": []
         },
         {
@@ -209,8 +214,9 @@
                   "  pm.response.to.have.status(200);",
                   "  const json = pm.response.json();",
                   "  pm.expect(json.tokens).to.be.an('array');",
-                  "  if (json.tokens.length > 0) {",
-                  "    pm.environment.set('token_id', json.tokens[0].id);",
+                  "  const extra = json.tokens.find(token => token.name === 'Extra Postman Token');",
+                  "  if (extra) {",
+                  "    pm.environment.set('token_id', extra.id);",
                   "  }",
                   "});"
                 ]
@@ -236,10 +242,28 @@
               ]
             }
           },
+          "description": "Lists personal access tokens for the current account. If an `Extra Postman Token` exists, its id is saved as `token_id` for revoke testing.",
           "response": []
         },
         {
           "name": "Revoke Token by ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Token is revoked by id', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json.message).to.include('revoked');",
+                  "  pm.environment.unset('token_id');",
+                  "  pm.environment.unset('extra_token');",
+                  "});"
+                ]
+              }
+            }
+          ],
           "request": {
             "method": "DELETE",
             "header": [
@@ -260,10 +284,28 @@
               ]
             }
           },
+          "description": "Revokes the token id stored in `token_id`. Recommended flow: Login -> Create Extra Token -> Revoke Token by ID. This avoids revoking your current login token by mistake.",
           "response": []
         },
         {
           "name": "Revoke All Tokens",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('All tokens are revoked', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  pm.environment.unset('token');",
+                  "  pm.environment.unset('current_token_id');",
+                  "  pm.environment.unset('token_id');",
+                  "  pm.environment.unset('extra_token');",
+                  "});"
+                ]
+              }
+            }
+          ],
           "request": {
             "method": "POST",
             "header": [
@@ -284,10 +326,26 @@
               ]
             }
           },
+          "description": "Revokes every token for the logged-in account. After this, run Login again before calling protected endpoints.",
           "response": []
         },
         {
           "name": "Logout - Revoke Current Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Current token is revoked', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  pm.environment.unset('token');",
+                  "  pm.environment.unset('current_token_id');",
+                  "});"
+                ]
+              }
+            }
+          ],
           "request": {
             "method": "POST",
             "header": [
@@ -307,6 +365,7 @@
               ]
             }
           },
+          "description": "Revokes only the current Bearer token. After this, run Login again before protected requests.",
           "response": []
         }
       ]
