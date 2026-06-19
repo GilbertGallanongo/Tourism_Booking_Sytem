@@ -160,7 +160,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"token_name\": \"Extra Postman Token\",\n  \"abilities\": [\"*\"]\n}"
+              "raw": "{\n  \"token_name\": \"Extra Postman Token\",\n  \"abilities\": [\"bookings:read\"]\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/tokens",

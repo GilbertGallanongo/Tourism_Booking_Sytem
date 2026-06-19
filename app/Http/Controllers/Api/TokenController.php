@@ -13,6 +13,36 @@ use Laravel\Sanctum\PersonalAccessToken;
 
 class TokenController extends Controller
 {
+    private const ADMIN_DEFAULT_ABILITIES = ['admin', '*'];
+
+    private const ADMIN_ALLOWED_ABILITIES = [
+        'admin',
+        '*',
+        'packages:read',
+        'packages:write',
+        'bookings:read',
+        'bookings:write',
+        'payments:read',
+        'payments:write',
+        'tokens:manage',
+    ];
+
+    private const TOURIST_DEFAULT_ABILITIES = [
+        'tourist',
+        'bookings:read',
+        'bookings:write',
+        'payments:read',
+        'payments:write',
+    ];
+
+    private const TOURIST_ALLOWED_ABILITIES = [
+        'tourist',
+        'bookings:read',
+        'bookings:write',
+        'payments:read',
+        'payments:write',
+    ];
+
     public function loginTourist(Request $request): JsonResponse
     {
         $validated = $request->validate([
@@ -40,7 +70,7 @@ class TokenController extends Controller
         return $this->issueTokenResponse(
             $user,
             $validated['token_name'] ?? 'Tourist API Token',
-            $validated['abilities'] ?? ['tourist']
+            $this->normalizeAbilities($validated['abilities'] ?? null, 'tourist')
         );
     }
 
@@ -71,7 +101,7 @@ class TokenController extends Controller
         return $this->issueTokenResponse(
             $admin,
             $validated['token_name'] ?? 'Admin API Token',
-            $validated['abilities'] ?? ['admin']
+            $this->normalizeAbilities($validated['abilities'] ?? null, 'admin')
         );
     }
 
@@ -101,10 +131,12 @@ class TokenController extends Controller
             ]);
         }
 
+        $role = $user instanceof Admin ? 'admin' : ($user->role ?? 'tourist');
+
         return $this->issueTokenResponse(
             $user,
             $validated['token_name'],
-            $validated['abilities'] ?? ['*']
+            $this->normalizeAbilities($validated['abilities'] ?? null, $role)
         );
     }
 
@@ -211,5 +243,39 @@ class TokenController extends Controller
                 'type' => $user instanceof Admin ? 'admin' : 'tourist',
             ],
         ], 201);
+    }
+
+    private function normalizeAbilities(?array $abilities, string $role): array
+    {
+        $defaults = $role === 'admin'
+            ? self::ADMIN_DEFAULT_ABILITIES
+            : self::TOURIST_DEFAULT_ABILITIES;
+
+        if (! $abilities) {
+            return $defaults;
+        }
+
+        $abilities = array_values(array_unique(array_filter(array_map(
+            fn ($ability) => trim((string) $ability),
+            $abilities
+        ))));
+
+        if (! $abilities) {
+            return $defaults;
+        }
+
+        $allowed = $role === 'admin'
+            ? self::ADMIN_ALLOWED_ABILITIES
+            : self::TOURIST_ALLOWED_ABILITIES;
+
+        $invalid = array_values(array_diff($abilities, $allowed));
+
+        if ($invalid) {
+            throw ValidationException::withMessages([
+                'abilities' => 'Invalid abilities for '.$role.' token: '.implode(', ', $invalid),
+            ]);
+        }
+
+        return $abilities;
     }
 }

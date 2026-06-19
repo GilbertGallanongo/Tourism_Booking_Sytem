@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Api\Concerns\AuthorizesApiAccess;
 use App\Http\Controllers\Controller;
 use App\Models\TourPackage;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class TourPackageController extends Controller
 {
+    use AuthorizesApiAccess;
+
     public function index(): JsonResponse
     {
         return response()->json([
@@ -20,6 +22,8 @@ class TourPackageController extends Controller
 
     public function store(Request $request): JsonResponse
     {
+        $this->requireAdmin($request);
+
         $validated = $this->validatePackage($request);
 
         $package = TourPackage::create($validated);
@@ -34,14 +38,18 @@ class TourPackageController extends Controller
 
     public function update(Request $request, TourPackage $package): JsonResponse
     {
+        $this->requireAdmin($request);
+
         $validated = $this->validatePackage($request, $package->id);
         $package->update($validated);
 
         return response()->json(['data' => $package->refresh()]);
     }
 
-    public function destroy(TourPackage $package): JsonResponse
+    public function destroy(Request $request, TourPackage $package): JsonResponse
     {
+        $this->requireAdmin($request);
+
         $package->delete();
 
         return response()->json(['message' => 'Package deleted successfully.']);
