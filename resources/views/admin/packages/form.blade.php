@@ -20,6 +20,7 @@
             // cap at 1GB
             $phpMaxUpload = min($uploadLimit, $postLimit, 1024 * 1024 * 1024);
             $maxUploadLabel = number_format($phpMaxUpload / 1024 / 1024, 2) . ' MB';
+            $timeValue = fn ($value) => $value ? substr((string) $value, 0, 5) : '';
         @endphp
 
         <form method="POST" action="{{ $action }}" enctype="multipart/form-data">
@@ -95,14 +96,14 @@
                 </div>
                 <div class="col-12 col-md-3">
                     <label class="form-label">Start time</label>
-                    <input type="time" name="time_start" value="{{ old('time_start', $package->time_start) }}" class="form-control @error('time_start') is-invalid @enderror">
+                    <input type="time" name="time_start" value="{{ $timeValue(old('time_start', $package->time_start)) }}" class="form-control @error('time_start') is-invalid @enderror">
                     @error('time_start')
                         <div class="text-danger small mt-1">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="col-12 col-md-3">
                     <label class="form-label">End time</label>
-                    <input type="time" name="time_end" value="{{ old('time_end', $package->time_end) }}" class="form-control @error('time_end') is-invalid @enderror">
+                    <input type="time" name="time_end" value="{{ $timeValue(old('time_end', $package->time_end)) }}" class="form-control @error('time_end') is-invalid @enderror">
                     @error('time_end')
                         <div class="text-danger small mt-1">{{ $message }}</div>
                     @enderror

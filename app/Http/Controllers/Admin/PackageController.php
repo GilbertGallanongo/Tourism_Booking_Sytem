@@ -503,6 +503,11 @@ class PackageController extends Controller
 
     private function validatePackage(Request $request, ?TourPackage $package = null): array
     {
+        $request->merge([
+            'time_start' => $this->normalizeTimeInput($request->input('time_start')),
+            'time_end' => $this->normalizeTimeInput($request->input('time_end')),
+        ]);
+
         return $request->validate([
             'destination_id' => ['nullable', 'exists:destinations,id'],
             'category' => ['nullable', Rule::in(['natural','cultural','recreational','accommodation','events','ecotourism'])],
@@ -519,6 +524,28 @@ class PackageController extends Controller
             'image_file' => ['nullable', 'image'],
             'status' => ['required', 'in:active,inactive'],
         ]);
+    }
+
+    private function normalizeTimeInput(mixed $value): ?string
+    {
+        if ($value === null || $value === '') {
+            return null;
+        }
+
+        $value = trim((string) $value);
+
+        if (! preg_match('/^(\d{1,2}):(\d{2})(?::\d{2})?$/', $value, $matches)) {
+            return $value;
+        }
+
+        $hours = (int) $matches[1];
+        $minutes = (int) $matches[2];
+
+        if ($hours > 23 || $minutes > 59) {
+            return $value;
+        }
+
+        return sprintf('%02d:%02d', $hours, $minutes);
     }
 
     private function uploadErrorMessage(int $errorCode): string

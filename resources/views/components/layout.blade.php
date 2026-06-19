@@ -175,7 +175,7 @@
             @php
                 $submittedAuthForm = old('auth_form');
                 $showRegisterErrors = $errors->any() && $submittedAuthForm === 'register';
-                $showSigninErrors = $errors->any() && ! $showRegisterErrors;
+                $showSigninErrors = $errors->any() && $submittedAuthForm === 'signin';
             @endphp
 
             <div class="auth-pane active" data-auth-pane="signin">
