@@ -125,7 +125,7 @@
                         @if($package->image)
                             <div class="mt-1" style="font-size:12px;">
                                 <strong>Saved image:</strong>
-                                <a id="image_debug_link" href="{{ $previewPath ?? asset($package->image) }}" target="_blank">Open image</a>
+                                <a id="image_debug_link" href="{{ route('images.view', ['src' => $previewPath ?? asset($package->image), 'title' => $package->name ?: 'Package image', 'back' => request()->fullUrl()]) }}">Open image</a>
                                 <span class="text-muted"> ({{ $package->image }})</span>
                             </div>
                         @endif
@@ -320,6 +320,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const tokenInput = document.querySelector('input[name="_token"]');
         const csrf = tokenInput ? tokenInput.value : '';
+        const imageViewerUrl = @json(route('images.view'));
 
         async function doSimpleUpload(file, uploadUrl) {
             const fd = new FormData();
@@ -407,7 +408,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     preview.src = data.url + '?v=' + ts;
                     const debugLink = document.getElementById('image_debug_link');
                     if (debugLink) {
-                        debugLink.href = data.url + '?v=' + ts;
+                        const viewerUrl = new URL(imageViewerUrl, window.location.origin);
+                        viewerUrl.searchParams.set('src', data.url + '?v=' + ts);
+                        viewerUrl.searchParams.set('title', @json($package->name ?: 'Package image'));
+                        viewerUrl.searchParams.set('back', window.location.href);
+                        debugLink.href = viewerUrl.toString();
                         debugLink.textContent = data.path;
                     }
                     const toast = document.getElementById('upload_toast');

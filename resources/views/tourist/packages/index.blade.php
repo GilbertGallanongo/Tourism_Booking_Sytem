@@ -507,9 +507,9 @@ body.packages-shell .content {
                 <div class="package-card-grid">
                     @foreach($packages as $package)
                         <article class="package-card destination-card">
-                            <div class="package-card-media" style="background-image: url('{{ $package->image_url }}');">
+                            <x-image-view-link :src="$package->image_url" :title="$package->name" class="package-card-media" style="background-image: url('{{ $package->image_url }}');">
                                 <div class="badge-rating">{{ number_format($package->average_rating,1) }} ★</div>
-                            </div>
+                            </x-image-view-link>
                             <div class="package-card-body">
                                 <div class="package-card-meta">
                                     <span>{{ $package->duration_days }} Day Tour</span>

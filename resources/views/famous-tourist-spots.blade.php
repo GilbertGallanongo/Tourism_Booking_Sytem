@@ -7,7 +7,7 @@
     <div class="package-card-grid" style="margin-top: 2rem;">
         @forelse($spots as $spot)
             <article class="package-card">
-                <div class="package-card-media" style="background-image: url('{{ $spot->image_url }}');"></div>
+                <x-image-view-link :src="$spot->image_url" :title="$spot->name" class="package-card-media" style="background-image: url('{{ $spot->image_url }}');"></x-image-view-link>
                 <div class="package-card-body">
                     <div class="package-card-meta">
                         <span>📍 {{ $spot->location }}</span>

@@ -26,7 +26,9 @@
                     @forelse($spots as $spot)
                         <tr style="border-bottom: 1px solid #3d3d5c;">
                             <td style="padding: 0.75rem;">
-                                <img src="{{ $spot->image_url }}" alt="{{ $spot->name }}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 0.25rem;">
+                                <x-image-view-link :src="$spot->image_url" :title="$spot->name" style="display:inline-block;">
+                                    <img src="{{ $spot->image_url }}" alt="{{ $spot->name }}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 0.25rem;">
+                                </x-image-view-link>
                             </td>
                             <td style="padding: 0.75rem;">{{ $spot->name }}</td>
                             <td style="padding: 0.75rem;">{{ $spot->location }}</td>

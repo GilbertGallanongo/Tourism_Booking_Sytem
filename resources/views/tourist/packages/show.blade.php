@@ -95,7 +95,9 @@
             <div class="package-detail-grid">
                 <div class="package-detail-media">
                     @if($tourPackage->image)
-                        <img src="{{ $tourPackage->image_url }}" alt="{{ $tourPackage->name }}">
+                        <x-image-view-link :src="$tourPackage->image_url" :title="$tourPackage->name" style="display:block;">
+                            <img src="{{ $tourPackage->image_url }}" alt="{{ $tourPackage->name }}">
+                        </x-image-view-link>
                     @else
                         <div class="package-detail-placeholder" aria-hidden="true">Bolinao</div>
                     @endif

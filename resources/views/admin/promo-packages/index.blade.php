@@ -31,7 +31,9 @@
                             <tr>
                                 <td>
                                     @if($promoPackage->image)
-                                        <img src="{{ $promoPackage->image_url }}" alt="{{ $promoPackage->name }}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
+                                        <x-image-view-link :src="$promoPackage->image_url" :title="$promoPackage->name" style="display:inline-block;">
+                                            <img src="{{ $promoPackage->image_url }}" alt="{{ $promoPackage->name }}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
+                                        </x-image-view-link>
                                     @else
                                         <span style="color: #8890a8; font-size: 0.875rem;">No image</span>
                                     @endif

@@ -52,7 +52,7 @@
                         <div class="package-card-grid">
                             @forelse($topRatedPackages as $package)
                                 <article class="package-card">
-                                    <div class="package-card-media has-card-image" style="--card-image: url('{{ $package->image_url }}'); background-image: var(--card-image);"></div>
+                                    <x-image-view-link :src="$package->image_url" :title="$package->name" class="package-card-media has-card-image" style="--card-image: url('{{ $package->image_url }}'); background-image: var(--card-image);"></x-image-view-link>
                                     <div class="package-card-body">
                                         <div class="package-card-meta">
                                             <span>{{ $package->duration_days }} Day Tour</span>
@@ -140,7 +140,7 @@
             <div class="package-card-grid">
                 @forelse($famousTouristSpots->take(3) as $spot)
                     <article class="package-card">
-                        <div class="package-card-media has-card-image" style="--card-image: url('{{ $spot->image_url }}'); background-image: var(--card-image);"></div>
+                        <x-image-view-link :src="$spot->image_url" :title="$spot->name" class="package-card-media has-card-image" style="--card-image: url('{{ $spot->image_url }}'); background-image: var(--card-image);"></x-image-view-link>
                         <div class="package-card-body">
                             <div class="package-card-meta">
                                 <span>📍 {{ $spot->location }}</span>
@@ -176,7 +176,7 @@
                 @forelse($promoPackages->take(3) as $promo)
                     <article class="package-card">
                         @if($promo->image)
-                            <div class="package-card-media has-card-image" style="--card-image: url('{{ $promo->image_url }}'); background-image: var(--card-image);"></div>
+                            <x-image-view-link :src="$promo->image_url" :title="$promo->name" class="package-card-media has-card-image" style="--card-image: url('{{ $promo->image_url }}'); background-image: var(--card-image);"></x-image-view-link>
                         @else
                             <div class="package-card-media" style="background: linear-gradient(135deg, rgba(76, 175, 80, 0.3) 0%, rgba(17, 24, 68, 0.5) 100%); display: flex; align-items: center; justify-content: center;">
                                 <div style="font-size: 4rem; opacity: 0.5;">🎉</div>

@@ -57,7 +57,9 @@
                         @forelse($packages as $package)
                             <tr>
                                 <td class="td">
-                                    <img src="{{ $package->image_url }}" alt="{{ $package->name }}" style="width:88px;height:56px;object-fit:cover;border-radius:6px;">
+                                    <x-image-view-link :src="$package->image_url" :title="$package->name" style="display:inline-block;">
+                                        <img src="{{ $package->image_url }}" alt="{{ $package->name }}" style="width:88px;height:56px;object-fit:cover;border-radius:6px;">
+                                    </x-image-view-link>
                                 </td>
                                 <td class="td">{{ $package->name }}</td>
                                 <td class="td">{{ $package->location }}</td>

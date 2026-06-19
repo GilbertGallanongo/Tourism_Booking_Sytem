@@ -36,7 +36,13 @@
                     @php
                         $previewPath = $promoPackage->image ? $promoPackage->image_url : null;
                     @endphp
-                    <img id="image_preview" src="{{ $previewPath ?? 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22 fill=%22%23e9ecef%22%3E%3Crect width=%22200%22 height=%22200%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2214%22 fill=%22%23999%22 text-anchor=%22middle%22 dominant-baseline=%22central%22%3ENo preview%3C/text%3E%3C/svg%3E' }}" alt="Preview" style="max-width: 160px; max-height: 120px; object-fit: cover; border-radius: 6px; display: {{ $previewPath ? 'inline-block' : 'none' }};">
+                    @if($previewPath)
+                        <x-image-view-link :src="$previewPath" :title="$promoPackage->name ?: 'Promo image'" style="display:inline-block;">
+                            <img id="image_preview" src="{{ $previewPath }}" alt="Preview" style="max-width: 160px; max-height: 120px; object-fit: cover; border-radius: 6px; display: inline-block;">
+                        </x-image-view-link>
+                    @else
+                        <img id="image_preview" src="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22 fill=%22%23e9ecef%22%3E%3Crect width=%22200%22 height=%22200%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2214%22 fill=%22%23999%22 text-anchor=%22middle%22 dominant-baseline=%22central%22%3ENo preview%3C/text%3E%3C/svg%3E" alt="Preview" style="max-width: 160px; max-height: 120px; object-fit: cover; border-radius: 6px; display: none;">
+                    @endif
                     @if($promoPackage->image)
                         <div class="form-text mt-2" id="current_image_info">
                             <strong>Current image:</strong> Leave blank to keep existing

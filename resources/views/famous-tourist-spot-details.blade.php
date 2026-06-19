@@ -7,7 +7,9 @@
 
     <div style="max-width: 1200px; margin: 2rem auto;">
         <div style="background: linear-gradient(135deg, rgba(75, 86, 148, 0.3) 0%, rgba(17, 24, 68, 0.5) 100%); border: 1px solid rgba(114, 136, 174, 0.3); border-radius: 1.25rem; overflow: hidden; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
-            <img src="{{ $spot->image_url }}" alt="{{ $spot->name }}" style="width: 100%; height: 500px; object-fit: cover;">
+            <x-image-view-link :src="$spot->image_url" :title="$spot->name" style="display:block;">
+                <img src="{{ $spot->image_url }}" alt="{{ $spot->name }}" style="width: 100%; height: 500px; object-fit: cover;">
+            </x-image-view-link>
 
             <div style="padding: 3rem;">
                 <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 2rem; color: var(--palette-secondary); font-size: 1.125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">

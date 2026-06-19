@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\PackageController;
 use App\Http\Controllers\Admin\FamousTouristSpotController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ImageViewerController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\Tourist\BookingController;
 use App\Http\Controllers\Tourist\PackageController as TouristPackageController;
@@ -29,6 +30,9 @@ Route::get('/uploads/{path}', function (string $path) {
         'Cache-Control' => 'public, max-age=31536000',
     ]);
 })->where('path', '.*')->name('uploads.show');
+
+Route::get('/image-viewer', [ImageViewerController::class, 'show'])
+    ->name('images.view');
 
 // Diagnostics endpoint (enabled only when FORCE_APP_DEBUG=true)
 use App\Http\Controllers\DiagnosticsController;

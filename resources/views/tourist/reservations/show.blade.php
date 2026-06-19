@@ -424,7 +424,9 @@ body.page-shell .content:has(.reservation-page) {
         <div class="reservation-grid">
             <div class="reservation-media">
                 @if($booking->tourPackage->image)
-                    <img src="{{ $booking->tourPackage->image_url }}" alt="{{ $booking->tourPackage->name }}">
+                    <x-image-view-link :src="$booking->tourPackage->image_url" :title="$booking->tourPackage->name" style="display:block;">
+                        <img src="{{ $booking->tourPackage->image_url }}" alt="{{ $booking->tourPackage->name }}">
+                    </x-image-view-link>
                 @else
                     <div class="reservation-placeholder" aria-hidden="true">Bolinao</div>
                 @endif

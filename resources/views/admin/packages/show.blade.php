@@ -15,11 +15,13 @@
             <div class="card-body">
                 <div class="row g-4">
                     <div class="col-12 col-md-5">
-                        <img
-                            src="{{ $package->image_url }}"
-                            alt="{{ $package->name }}"
-                            style="width:100%;max-height:320px;object-fit:cover;border-radius:8px;"
-                        >
+                        <x-image-view-link :src="$package->image_url" :title="$package->name" style="display:block;">
+                            <img
+                                src="{{ $package->image_url }}"
+                                alt="{{ $package->name }}"
+                                style="width:100%;max-height:320px;object-fit:cover;border-radius:8px;"
+                            >
+                        </x-image-view-link>
                     </div>
                     <div class="col-12 col-md-7">
                         <div class="tablewrap">
