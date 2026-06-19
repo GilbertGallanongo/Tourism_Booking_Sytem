@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "0d7c3b7d-7c3a-4f4b-9ef8-43b6d9aa1f3c",
     "name": "Tourism Booking System API",
-    "description": "Postman collection for the Laravel Tourism Booking System API. Start with Tourist Login or Admin Login. The login request saves `token` and `current_token_id`; protected requests use `Authorization: Bearer {{token}}`. Use Create Extra Token before Revoke Token by ID so `token_id` points to a separate token.",
+    "description": "Postman collection for the Laravel Tourism Booking System API. Start with Tourist Login or Admin Login. Login requests save a Bearer `token` for API calls and also save `tourist_access_token` or `admin_access_token` that you can paste into the website login token field. Use Create Extra Token before Revoke Token by ID so `token_id` points to a separate token.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "auth": {
@@ -53,6 +53,7 @@
                   "  pm.expect(json.token).to.be.a('string');",
                   "  pm.expect(json.token_id).to.exist;",
                   "  pm.environment.set('token', json.token);",
+                  "  pm.environment.set('tourist_access_token', json.token);",
                   "  pm.environment.set('current_token_id', json.token_id);",
                   "  pm.environment.unset('token_id');",
                   "  pm.environment.unset('extra_token');",
@@ -91,7 +92,7 @@
                 "login"
               ]
             },
-            "description": "Run this first for tourist API testing. It creates a personal access token and saves it as `token`; the current token id is saved as `current_token_id`."
+            "description": "Run this first for tourist API testing and website login. It saves the Bearer token as `token` for API requests and as `tourist_access_token` for the website login token field."
           },
           "response": []
         },
@@ -109,6 +110,7 @@
                   "  pm.expect(json.token).to.be.a('string');",
                   "  pm.expect(json.token_id).to.exist;",
                   "  pm.environment.set('token', json.token);",
+                  "  pm.environment.set('admin_access_token', json.token);",
                   "  pm.environment.set('current_token_id', json.token_id);",
                   "  pm.environment.unset('token_id');",
                   "  pm.environment.unset('extra_token');",
@@ -148,7 +150,7 @@
                 "login"
               ]
             },
-            "description": "Run this first for admin API testing. It creates a personal access token and saves it as `token`; the current token id is saved as `current_token_id`."
+            "description": "Run this first for admin API testing and website login. It saves the Bearer token as `token` for API requests and as `admin_access_token` for the admin website login token field."
           },
           "response": []
         },
