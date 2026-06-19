@@ -1,4 +1,10 @@
 <x-layout>
+    @php
+        $submittedAuthForm = old('auth_form');
+        $showAdminErrors = $errors->any() && $submittedAuthForm !== 'token';
+        $showTokenErrors = $errors->any() && $submittedAuthForm === 'token';
+    @endphp
+
     <div class="auth-panel admin">
         <div class="auth-header">
             <div class="admin-login-brand">
@@ -9,7 +15,7 @@
             <p class="auth-lead">Manage bookings, packages, payments, reports, and tourist content.</p>
         </div>
 
-        @if ($errors->any())
+        @if ($showAdminErrors)
             <div class="alert alert-error">
                 <strong>Admin login failed.</strong>
                 <div>Please verify your credentials and try again.</div>
@@ -18,6 +24,7 @@
 
         <form method="POST" action="{{ route('admin.login.store') }}" class="auth-form">
             @csrf
+            <input type="hidden" name="auth_form" value="admin">
 
             <div class="auth-group">
                 <label for="email">Email Address</label>
@@ -39,6 +46,39 @@
             </div>
 
             <button type="submit" class="btn-primary">Sign In</button>
+        </form>
+
+        <div class="divider">
+            <div></div>
+            <span>or use token</span>
+            <div></div>
+        </div>
+
+        @if ($showTokenErrors)
+            <div class="alert alert-error">
+                <strong>Token login failed.</strong>
+                <div>Please paste a valid admin personal access token.</div>
+                @error('token')<p class="error-text">{{ $message }}</p>@enderror
+            </div>
+        @endif
+
+        <form method="POST" action="{{ route('token.login') }}" class="auth-form">
+            @csrf
+            <input type="hidden" name="auth_form" value="token">
+
+            <div class="auth-group">
+                <label for="token">Personal Access Token</label>
+                <input id="token" name="token" type="password" placeholder="Paste your admin token" class="auth-input" required autocomplete="off" />
+            </div>
+
+            <div class="auth-group">
+                <div class="form-check">
+                    <input type="checkbox" name="remember" id="token_remember" class="form-check-input" {{ old('remember') ? 'checked' : '' }}>
+                    <label class="form-check-label" for="token_remember">Remember me</label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-secondary">Continue with Token</button>
         </form>
 
         <div class="divider">
