@@ -1,13 +1,19 @@
 <?php
 
 use App\Http\Controllers\Api\BookingController;
+use App\Http\Controllers\Api\FamousTouristSpotController;
 use App\Http\Controllers\Api\PaymentController;
+use App\Http\Controllers\Api\PromoPackageController;
 use App\Http\Controllers\Api\TourPackageController;
 use App\Http\Controllers\Api\TokenController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/packages', [TourPackageController::class, 'index']);
 Route::get('/packages/{package}', [TourPackageController::class, 'show']);
+Route::get('/promo-packages', [PromoPackageController::class, 'index']);
+Route::get('/promo-packages/{promoPackage}', [PromoPackageController::class, 'show']);
+Route::get('/tourist-spots', [FamousTouristSpotController::class, 'index']);
+Route::get('/tourist-spots/{famousTouristSpot}', [FamousTouristSpotController::class, 'show']);
 
 Route::post('/login', [TokenController::class, 'loginTourist'])->name('api.login');
 Route::post('/admin/login', [TokenController::class, 'loginAdmin'])->name('api.admin.login');
@@ -23,6 +29,16 @@ Route::middleware('auth:sanctum')->name('api.')->group(function () {
     Route::post('/packages/{package}/image', [TourPackageController::class, 'uploadImage'])->name('packages.image');
     Route::put('/packages/{package}', [TourPackageController::class, 'update'])->name('packages.update');
     Route::delete('/packages/{package}', [TourPackageController::class, 'destroy'])->name('packages.destroy');
+
+    Route::post('/promo-packages', [PromoPackageController::class, 'store'])->name('promo-packages.store');
+    Route::post('/promo-packages/{promoPackage}/image', [PromoPackageController::class, 'uploadImage'])->name('promo-packages.image');
+    Route::put('/promo-packages/{promoPackage}', [PromoPackageController::class, 'update'])->name('promo-packages.update');
+    Route::delete('/promo-packages/{promoPackage}', [PromoPackageController::class, 'destroy'])->name('promo-packages.destroy');
+
+    Route::post('/tourist-spots', [FamousTouristSpotController::class, 'store'])->name('tourist-spots.store');
+    Route::post('/tourist-spots/{famousTouristSpot}/image', [FamousTouristSpotController::class, 'uploadImage'])->name('tourist-spots.image');
+    Route::put('/tourist-spots/{famousTouristSpot}', [FamousTouristSpotController::class, 'update'])->name('tourist-spots.update');
+    Route::delete('/tourist-spots/{famousTouristSpot}', [FamousTouristSpotController::class, 'destroy'])->name('tourist-spots.destroy');
 
     Route::get('/bookings/reminders/due', [BookingController::class, 'getDueReminders'])->name('bookings.reminders.due');
     Route::post('/bookings/{booking}/confirm', [BookingController::class, 'confirm'])->name('bookings.confirm');

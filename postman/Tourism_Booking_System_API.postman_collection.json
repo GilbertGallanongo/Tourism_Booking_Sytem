@@ -429,6 +429,403 @@
       ]
     },
     {
+      "name": "Promo Packages",
+      "item": [
+        {
+          "name": "List Promo Packages",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/promo-packages",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "promo-packages"
+              ]
+            },
+            "description": "Public promo package list. Each record includes `image`, `image_url`, and `has_image`."
+          },
+          "response": []
+        },
+        {
+          "name": "Show Promo Package",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/promo-packages/{{promo_package_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "promo-packages",
+                "{{promo_package_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Promo Package with Image File",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Promo package with image is created', function () {",
+                  "  pm.response.to.have.status(201);",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json.data.image_url).to.be.a('string');",
+                  "  if (json.data && json.data.id) {",
+                  "    pm.environment.set('promo_package_id', json.data.id);",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "Postman Promo With Image",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "Promo package created from Postman with an uploaded image.",
+                  "type": "text"
+                },
+                {
+                  "key": "discount_percentage",
+                  "value": "15",
+                  "type": "text"
+                },
+                {
+                  "key": "start_date",
+                  "value": "2026-06-01",
+                  "type": "text"
+                },
+                {
+                  "key": "end_date",
+                  "value": "2026-12-31",
+                  "type": "text"
+                },
+                {
+                  "key": "is_active",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "image_file",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/promo-packages",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "promo-packages"
+              ]
+            },
+            "description": "Admin token required. Select a JPG/PNG/WebP file in `image_file` before sending."
+          },
+          "response": []
+        },
+        {
+          "name": "Upload Promo Package Image File",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image_file",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/promo-packages/{{promo_package_id}}/image",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "promo-packages",
+                "{{promo_package_id}}",
+                "image"
+              ]
+            },
+            "description": "Admin token required. Replaces the image for the promo package saved in `promo_package_id`."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Promo Package",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/promo-packages/{{promo_package_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "promo-packages",
+                "{{promo_package_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Tourist Spots",
+      "item": [
+        {
+          "name": "List Tourist Spots",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/tourist-spots",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "tourist-spots"
+              ]
+            },
+            "description": "Public tourist spot list. Each record includes `image`, `image_url`, and `has_image`."
+          },
+          "response": []
+        },
+        {
+          "name": "Show Tourist Spot",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/tourist-spots/{{tourist_spot_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "tourist-spots",
+                "{{tourist_spot_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Tourist Spot with Image File",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Tourist spot with image is created', function () {",
+                  "  pm.response.to.have.status(201);",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json.data.image_url).to.be.a('string');",
+                  "  if (json.data && json.data.id) {",
+                  "    pm.environment.set('tourist_spot_id', json.data.id);",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "Postman Tourist Spot With Image",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "Tourist spot created from Postman with an uploaded image.",
+                  "type": "text"
+                },
+                {
+                  "key": "location",
+                  "value": "Bolinao, Pangasinan",
+                  "type": "text"
+                },
+                {
+                  "key": "is_active",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "sort_order",
+                  "value": "0",
+                  "type": "text"
+                },
+                {
+                  "key": "image_file",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/tourist-spots",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "tourist-spots"
+              ]
+            },
+            "description": "Admin token required. Select a JPG/PNG/WebP file in `image_file` before sending."
+          },
+          "response": []
+        },
+        {
+          "name": "Upload Tourist Spot Image File",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image_file",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/tourist-spots/{{tourist_spot_id}}/image",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "tourist-spots",
+                "{{tourist_spot_id}}",
+                "image"
+              ]
+            },
+            "description": "Admin token required. Replaces the image for the tourist spot saved in `tourist_spot_id`."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Tourist Spot",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/tourist-spots/{{tourist_spot_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "tourist-spots",
+                "{{tourist_spot_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
       "name": "Tour Packages - Protected",
       "item": [
         {
