@@ -12,6 +12,7 @@ class HandleCsrfExceptions extends Middleware
      * @var array<int, string>
      */
     protected $except = [
+        'api/*',
         'logout',
         'admin/logout',
     ];
