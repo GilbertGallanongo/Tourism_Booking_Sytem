@@ -55,13 +55,31 @@ class TokenController extends Controller
 
         $user = User::where('email', $validated['email'])->first();
 
-        if (! $user || ! Hash::check($validated['password'], $user->password)) {
+        if (! $user) {
+            if (Admin::where('email', $validated['email'])->exists()) {
+                throw ValidationException::withMessages([
+                    'email' => 'This email belongs to an admin account. Please use the Admin Login token request.',
+                ]);
+            }
+
             throw ValidationException::withMessages([
-                'email' => __('auth.failed'),
+                'email' => 'No account exists for this email address. Please create an account first.',
             ]);
         }
 
-        if (! $user->isTourist() || $user->isGuest()) {
+        if (! $user->isTourist()) {
+            throw ValidationException::withMessages([
+                'email' => 'This email belongs to an admin account. Please use the Admin Login token request.',
+            ]);
+        }
+
+        if (! Hash::check($validated['password'], $user->password)) {
+            throw ValidationException::withMessages([
+                'password' => 'The password you entered is incorrect.',
+            ]);
+        }
+
+        if ($user->isGuest()) {
             throw ValidationException::withMessages([
                 'email' => 'Only registered tourist accounts can create tourist API tokens.',
             ]);
@@ -86,15 +104,29 @@ class TokenController extends Controller
 
         $admin = Admin::where('email', $validated['email'])->first();
 
-        if (! $admin || ! Hash::check($validated['password'], $admin->password)) {
+        if (! $admin) {
+            $user = User::where('email', $validated['email'])->first();
+
+            if ($user && $user->isTourist()) {
+                throw ValidationException::withMessages([
+                    'email' => 'This email belongs to a tourist account. Please use the Tourist Login token request.',
+                ]);
+            }
+
             throw ValidationException::withMessages([
-                'email' => __('auth.failed'),
+                'email' => 'No account exists for this email address. Please create an account first.',
             ]);
         }
 
         if (($admin->role ?? 'admin') !== 'admin') {
             throw ValidationException::withMessages([
-                'email' => 'Only admin accounts can create admin API tokens.',
+                'email' => 'This email belongs to a tourist account. Please use the Tourist Login token request.',
+            ]);
+        }
+
+        if (! Hash::check($validated['password'], $admin->password)) {
+            throw ValidationException::withMessages([
+                'password' => 'The password you entered is incorrect.',
             ]);
         }
 

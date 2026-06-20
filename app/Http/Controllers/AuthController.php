@@ -41,23 +41,28 @@ class AuthController extends Controller
 
         $remember = $request->boolean('remember');
 
-        // Check if user account exists
         $user = User::where('email', $credentials['email'])->first();
         if (! $user) {
+            if (Admin::where('email', $credentials['email'])->exists()) {
+                throw ValidationException::withMessages([
+                    'email' => 'This email belongs to an admin account. Please use the Admin Sign In page.',
+                ]);
+            }
+
             throw ValidationException::withMessages([
-                'email' => 'No user account found with this email address.',
+                'email' => 'No account exists for this email address. Please create an account first.',
+            ]);
+        }
+
+        if ($user->role !== 'tourist') {
+            throw ValidationException::withMessages([
+                'email' => 'This email belongs to an admin account. Please use the Admin Sign In page.',
             ]);
         }
 
         if (! $this->passwordMatches($credentials['password'], $user->password)) {
             throw ValidationException::withMessages([
-                'email' => __('auth.failed'),
-            ]);
-        }
-
-        if (! $user || $user->role !== 'tourist') {
-            throw ValidationException::withMessages([
-                'email' => __('auth.failed'),
+                'password' => 'The password you entered is incorrect.',
             ]);
         }
 
@@ -86,23 +91,30 @@ class AuthController extends Controller
 
         $remember = $request->boolean('remember');
 
-        // Check if admin account exists
         $admin = Admin::where('email', $credentials['email'])->first();
         if (! $admin) {
+            $user = User::where('email', $credentials['email'])->first();
+
+            if ($user && $user->role === 'tourist') {
+                throw ValidationException::withMessages([
+                    'email' => 'This email belongs to a tourist account. Please use the Tourist Sign In form.',
+                ]);
+            }
+
             throw ValidationException::withMessages([
-                'email' => 'No admin account found with this email address.',
+                'email' => 'No account exists for this email address. Please create an account first.',
+            ]);
+        }
+
+        if (($admin->role ?? 'admin') !== 'admin') {
+            throw ValidationException::withMessages([
+                'email' => 'This email belongs to a tourist account. Please use the Tourist Sign In form.',
             ]);
         }
 
         if (! $this->passwordMatches($credentials['password'], $admin->password)) {
             throw ValidationException::withMessages([
-                'email' => __('auth.failed'),
-            ]);
-        }
-
-        if (! $admin || $admin->role !== 'admin') {
-            throw ValidationException::withMessages([
-                'email' => __('auth.failed'),
+                'password' => 'The password you entered is incorrect.',
             ]);
         }
 
