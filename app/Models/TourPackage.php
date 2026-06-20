@@ -77,6 +77,10 @@ class TourPackage extends Model
     public function getImageUrlAttribute(): string
     {
         if (! $this->image) {
+            if ($packageImagePath = $this->publicPackageImagePath()) {
+                return asset($packageImagePath);
+            }
+
             return asset('images/package-default.svg');
         }
 
@@ -91,7 +95,7 @@ class TourPackage extends Model
         }
 
         // Optimize: Check most likely paths first and cache the result
-        $cacheKey = 'package_image_url_v2_' . $this->id . '_' . md5($imagePath . '|' . $this->name);
+        $cacheKey = 'package_image_url_v3_' . $this->id . '_' . md5($imagePath . '|' . $this->name);
         
         return cache()->remember($cacheKey, now()->addHours(24), function() use ($imagePath) {
             // Public storage root (storage/app/public) - most common
@@ -130,7 +134,7 @@ class TourPackage extends Model
     public function getHasImageAttribute(): bool
     {
         if (! $this->image) {
-            return false;
+            return $this->publicPackageImagePath() !== null;
         }
 
         if (str_starts_with($this->image, 'http')) {
