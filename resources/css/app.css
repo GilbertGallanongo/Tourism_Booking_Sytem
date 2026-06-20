@@ -1090,7 +1090,7 @@ input:focus, textarea:focus, select:focus {
 
 .featured-packages .package-card-media {
     height: 9.5rem;
-    background: #2a3d6b !important;
+    background-color: #2a3d6b !important;
     background-size: cover;
     background-position: center;
     position: relative;
@@ -1131,7 +1131,7 @@ input:focus, textarea:focus, select:focus {
 
 .featured-packages .package-card-media {
     position: relative;
-    background: #2a3d6b !important;
+    background-color: #2a3d6b !important;
 }
 
 .featured-packages .package-card-media::after {
