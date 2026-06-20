@@ -113,7 +113,7 @@
         "type": "text/javascript",
         "exec": [
           "if (!pm.collectionVariables.get('base_url')) pm.collectionVariables.set('base_url', 'https://tourism-booking-system-production-b0bb.up.railway.app');",
-          "if (pm.environment.name && !pm.environment.get('base_url')) pm.environment.set('base_url', 'https://tourism-booking-system-production-b0bb.up.railway.app');"
+          "try { if (!pm.environment.get('base_url')) pm.environment.set('base_url', 'https://tourism-booking-system-production-b0bb.up.railway.app'); } catch (e) {}"
         ]
       }
     },
@@ -143,11 +143,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -221,11 +221,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -300,11 +300,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -367,11 +367,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -426,11 +426,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -485,11 +485,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -542,11 +542,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -631,11 +631,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -690,11 +690,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -750,11 +750,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -809,11 +809,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -836,11 +836,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -917,7 +917,17 @@
               ],
               "protocol": "https"
             },
-            "description": "Admin token required. Choose a local image file for `image_file`."
+            "description": "Admin token required. Choose a local image file for `image_file`.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_access_token}}",
+                  "type": "string"
+                }
+              ]
+            }
           },
           "response": []
         },
@@ -957,7 +967,17 @@
               ],
               "protocol": "https"
             },
-            "description": "Admin token required. Choose a local image file for `image_file`."
+            "description": "Admin token required. Choose a local image file for `image_file`.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_access_token}}",
+                  "type": "string"
+                }
+              ]
+            }
           },
           "response": [],
           "event": [
@@ -970,11 +990,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -1026,7 +1046,17 @@
               ],
               "protocol": "https"
             },
-            "description": "Admin token required. Updates the promo package selected by `promo_package_id`."
+            "description": "Admin token required. Updates the promo package selected by `promo_package_id`.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_access_token}}",
+                  "type": "string"
+                }
+              ]
+            }
           },
           "event": [
             {
@@ -1038,11 +1068,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -1077,6 +1107,16 @@
                 "{{promo_package_id}}"
               ],
               "protocol": "https"
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_access_token}}",
+                  "type": "string"
+                }
+              ]
             }
           },
           "response": [],
@@ -1090,11 +1130,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -1150,11 +1190,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -1209,11 +1249,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -1236,11 +1276,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -1312,7 +1352,17 @@
               ],
               "protocol": "https"
             },
-            "description": "Admin token required. Choose a local image file for `image_file`."
+            "description": "Admin token required. Choose a local image file for `image_file`.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_access_token}}",
+                  "type": "string"
+                }
+              ]
+            }
           },
           "response": []
         },
@@ -1352,7 +1402,17 @@
               ],
               "protocol": "https"
             },
-            "description": "Admin token required. Choose a local image file for `image_file`."
+            "description": "Admin token required. Choose a local image file for `image_file`.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_access_token}}",
+                  "type": "string"
+                }
+              ]
+            }
           },
           "response": [],
           "event": [
@@ -1365,11 +1425,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -1421,7 +1481,17 @@
               ],
               "protocol": "https"
             },
-            "description": "Admin token required. Updates the tourist spot selected by `tourist_spot_id`."
+            "description": "Admin token required. Updates the tourist spot selected by `tourist_spot_id`.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_access_token}}",
+                  "type": "string"
+                }
+              ]
+            }
           },
           "event": [
             {
@@ -1433,11 +1503,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -1472,6 +1542,16 @@
                 "{{tourist_spot_id}}"
               ],
               "protocol": "https"
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_access_token}}",
+                  "type": "string"
+                }
+              ]
             }
           },
           "response": [],
@@ -1485,11 +1565,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -1517,11 +1597,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -1563,6 +1643,16 @@
                 "packages"
               ],
               "protocol": "https"
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_access_token}}",
+                  "type": "string"
+                }
+              ]
             }
           },
           "response": []
@@ -1579,11 +1669,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -1665,7 +1755,17 @@
               ],
               "protocol": "https"
             },
-            "description": "Admin token required. In Body > form-data, choose a local image file for `image_file` before sending. Do not manually set Content-Type for file uploads."
+            "description": "Admin token required. In Body > form-data, choose a local image file for `image_file` before sending. Do not manually set Content-Type for file uploads.\n\nIf this returns 401, send `Auth and Tokens / Admin Login - Create Token` first. This request uses `admin_access_token`.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_access_token}}",
+                  "type": "string"
+                }
+              ]
+            }
           },
           "response": []
         },
@@ -1681,11 +1781,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -1732,7 +1832,17 @@
               ],
               "protocol": "https"
             },
-            "description": "Admin token required. Choose a local image file for `image_file`."
+            "description": "Admin token required. Choose a local image file for `image_file`.\n\nIf this returns 401, send `Auth and Tokens / Admin Login - Create Token` first. This request uses `admin_access_token`.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_access_token}}",
+                  "type": "string"
+                }
+              ]
+            }
           },
           "response": []
         },
@@ -1768,6 +1878,16 @@
                 "{{package_id}}"
               ],
               "protocol": "https"
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_access_token}}",
+                  "type": "string"
+                }
+              ]
             }
           },
           "response": [],
@@ -1781,11 +1901,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -1820,6 +1940,16 @@
                 "{{package_id}}"
               ],
               "protocol": "https"
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_access_token}}",
+                  "type": "string"
+                }
+              ]
             }
           },
           "response": [],
@@ -1833,11 +1963,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -1889,11 +2019,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -1937,7 +2067,17 @@
               ],
               "protocol": "https"
             },
-            "description": "Admin token required. Lists bookings due for reminder."
+            "description": "Admin token required. Lists bookings due for reminder.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_access_token}}",
+                  "type": "string"
+                }
+              ]
+            }
           },
           "event": [
             {
@@ -1949,11 +2089,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -1990,7 +2130,17 @@
               ],
               "protocol": "https"
             },
-            "description": "Admin token required. Marks a booking reminder as sent."
+            "description": "Admin token required. Marks a booking reminder as sent.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_access_token}}",
+                  "type": "string"
+                }
+              ]
+            }
           },
           "event": [
             {
@@ -2002,11 +2152,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -2061,11 +2211,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -2118,11 +2268,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -2178,11 +2328,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -2226,6 +2376,16 @@
                 "confirm"
               ],
               "protocol": "https"
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_access_token}}",
+                  "type": "string"
+                }
+              ]
             }
           },
           "response": [],
@@ -2239,11 +2399,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -2300,11 +2460,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -2348,6 +2508,16 @@
                 "services"
               ],
               "protocol": "https"
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_access_token}}",
+                  "type": "string"
+                }
+              ]
             }
           },
           "response": [],
@@ -2361,11 +2531,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -2427,11 +2597,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -2475,6 +2645,16 @@
                 "discount"
               ],
               "protocol": "https"
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_access_token}}",
+                  "type": "string"
+                }
+              ]
             }
           },
           "response": [],
@@ -2488,11 +2668,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -2536,6 +2716,16 @@
                 "notes"
               ],
               "protocol": "https"
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_access_token}}",
+                  "type": "string"
+                }
+              ]
             }
           },
           "response": [],
@@ -2549,11 +2739,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -2597,6 +2787,16 @@
                 "payment-plan"
               ],
               "protocol": "https"
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_access_token}}",
+                  "type": "string"
+                }
+              ]
             }
           },
           "response": [],
@@ -2610,11 +2810,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -2649,6 +2849,16 @@
                 "{{booking_id}}"
               ],
               "protocol": "https"
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_access_token}}",
+                  "type": "string"
+                }
+              ]
             }
           },
           "response": [],
@@ -2662,11 +2872,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -2718,11 +2928,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -2749,11 +2959,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -2812,11 +3022,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -2904,11 +3114,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -2996,11 +3206,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -3043,6 +3253,16 @@
                 "{{payment_id}}"
               ],
               "protocol": "https"
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_access_token}}",
+                  "type": "string"
+                }
+              ]
             }
           },
           "response": [],
@@ -3056,11 +3276,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
@@ -3095,6 +3315,16 @@
                 "{{payment_id}}"
               ],
               "protocol": "https"
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_access_token}}",
+                  "type": "string"
+                }
+              ]
             }
           },
           "response": [],
@@ -3108,11 +3338,11 @@
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
-                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
                   "const clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
-                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
