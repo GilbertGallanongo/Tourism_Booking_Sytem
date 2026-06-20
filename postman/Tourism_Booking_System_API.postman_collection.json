@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "0d7c3b7d-7c3a-4f4b-9ef8-43b6d9aa1f3c",
     "name": "Tourism Booking System API",
-    "description": "Postman collection for the Laravel Tourism Booking System API.\n\nHow to use:\n1. Select the \"Tourism Booking System Production\" environment, or rely on the collection variables.\n2. Run \"Admin Login - Create Token\" for admin-only endpoints such as package, promo package, tourist spot, booking approval, and payment management.\n3. Run \"Tourist Login - Create Token\" for tourist booking/payment flows.\n4. Login requests automatically save Bearer `token`, `admin_access_token`, `tourist_access_token`, and current IDs.\n5. For file upload requests, choose a local file in the `image_file` or `proof_file` form-data row before sending.\n\nNote: Requests use the full Railway production URL directly, so they work even if no Postman environment is selected.",
+    "description": "Postman collection for the Laravel Tourism Booking System API.\n\nHow to use:\n1. Auth requests use the full Railway production URL and direct sample credentials, so they work even without selecting an environment.\n2. Run \"Admin Login - Create Token\" for admin-only endpoints such as package, promo package, tourist spot, booking approval, and payment management.\n3. Run \"Tourist Login - Create Token\" for tourist booking/payment flows.\n4. Login requests automatically save Bearer `token`, `admin_access_token`, `tourist_access_token`, and current IDs.\n5. For file upload requests, choose a local file in the `image_file` or `proof_file` form-data row before sending.\n\nNote: Requests use the full Railway production URL directly, so they work even if no Postman environment is selected.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "auth": {
@@ -185,7 +185,12 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"{{tourist_email}}\",\n  \"password\": \"{{tourist_password}}\",\n  \"token_name\": \"Postman Tourist Token\"\n}"
+              "raw": "{\n  \"email\": \"tourist@example.com\",\n  \"password\": \"password123\",\n  \"token_name\": \"Postman Tourist Token\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             },
             "url": {
               "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/login",
@@ -201,7 +206,7 @@
               ],
               "protocol": "https"
             },
-            "description": "Creates a tourist Sanctum personal access token. This request saves the token automatically as `token` and `tourist_access_token`. Run this before tourist booking/payment requests."
+            "description": "Creates a tourist personal access token using the sample tourist account. The token is automatically saved as `token` and `tourist_access_token` for protected tourist requests."
           },
           "response": []
         },
@@ -258,7 +263,12 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"{{admin_email}}\",\n  \"password\": \"{{admin_password}}\",\n  \"token_name\": \"Postman Admin Token\"\n}"
+              "raw": "{\n  \"email\": \"admin@tourph.com\",\n  \"password\": \"password123\",\n  \"token_name\": \"Postman Admin Token\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             },
             "url": {
               "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/admin/login",
@@ -275,7 +285,7 @@
               ],
               "protocol": "https"
             },
-            "description": "Creates an admin Sanctum personal access token. This request saves the token automatically as `token` and `admin_access_token`. Run this before admin-only requests."
+            "description": "Creates an admin personal access token using the sample admin account. The token is automatically saved as `token` and `admin_access_token` for admin-only requests."
           },
           "response": []
         },
@@ -340,7 +350,8 @@
                 "tokens"
               ],
               "protocol": "https"
-            }
+            },
+            "description": "Requires an existing saved Bearer token. Creates one extra token for the currently logged-in account and saves its id as `token_id` for Revoke Token by ID."
           },
           "description": "Creates a second token using the currently saved Bearer token. This saves the new token id as `token_id`, which is the safe target for Revoke Token by ID.",
           "response": []
@@ -398,7 +409,8 @@
                 "tokens"
               ],
               "protocol": "https"
-            }
+            },
+            "description": "Requires a saved Bearer token. Lists tokens for the currently logged-in account."
           },
           "description": "Lists personal access tokens for the current account. If an `Extra Postman Token` exists, its id is saved as `token_id` for revoke testing.",
           "response": []
@@ -456,7 +468,8 @@
                 "{{token_id}}"
               ],
               "protocol": "https"
-            }
+            },
+            "description": "Requires a saved Bearer token and `token_id`. Run Create Extra Token first, then this request."
           },
           "description": "Revokes the token id stored in `token_id`. Recommended flow: Login -> Create Extra Token -> Revoke Token by ID. This avoids revoking your current login token by mistake.",
           "response": []
@@ -569,7 +582,8 @@
                 "logout"
               ],
               "protocol": "https"
-            }
+            },
+            "description": "Requires a saved Bearer token. Revokes only the current token used by Postman."
           },
           "description": "Revokes only the current Bearer token. After this, run Login again before protected requests.",
           "response": []
