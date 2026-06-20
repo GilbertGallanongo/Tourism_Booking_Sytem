@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "0d7c3b7d-7c3a-4f4b-9ef8-43b6d9aa1f3c",
     "name": "Tourism Booking System API",
-    "description": "Postman collection for the Laravel Tourism Booking System API.\n\nHow to use:\n1. Select the \"Tourism Booking System Production\" environment, or rely on the collection variables.\n2. Run \"Admin Login - Create Token\" for admin-only endpoints such as package, promo package, tourist spot, booking approval, and payment management.\n3. Run \"Tourist Login - Create Token\" for tourist booking/payment flows.\n4. Login requests automatically save Bearer `token`, `admin_access_token`, `tourist_access_token`, and current IDs.\n5. For file upload requests, choose a local file in the `image_file` or `proof_file` form-data row before sending.",
+    "description": "Postman collection for the Laravel Tourism Booking System API.\n\nHow to use:\n1. Select the \"Tourism Booking System Production\" environment, or rely on the collection variables.\n2. Run \"Admin Login - Create Token\" for admin-only endpoints such as package, promo package, tourist spot, booking approval, and payment management.\n3. Run \"Tourist Login - Create Token\" for tourist booking/payment flows.\n4. Login requests automatically save Bearer `token`, `admin_access_token`, `tourist_access_token`, and current IDs.\n5. For file upload requests, choose a local file in the `image_file` or `proof_file` form-data row before sending.\n\nNote: Requests use the full Railway production URL directly, so they work even if no Postman environment is selected.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "auth": {
@@ -188,14 +188,18 @@
               "raw": "{\n  \"email\": \"{{tourist_email}}\",\n  \"password\": \"{{tourist_password}}\",\n  \"token_name\": \"Postman Tourist Token\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/login",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/login",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "login"
-              ]
+              ],
+              "protocol": "https"
             },
             "description": "Creates a tourist Sanctum personal access token. This request saves the token automatically as `token` and `tourist_access_token`. Run this before tourist booking/payment requests."
           },
@@ -257,15 +261,19 @@
               "raw": "{\n  \"email\": \"{{admin_email}}\",\n  \"password\": \"{{admin_password}}\",\n  \"token_name\": \"Postman Admin Token\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/admin/login",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/admin/login",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "admin",
                 "login"
-              ]
+              ],
+              "protocol": "https"
             },
             "description": "Creates an admin Sanctum personal access token. This request saves the token automatically as `token` and `admin_access_token`. Run this before admin-only requests."
           },
@@ -320,14 +328,18 @@
               "raw": "{\n  \"token_name\": \"Extra Postman Token\",\n  \"abilities\": [\"bookings:read\"]\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/tokens",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/tokens",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "tokens"
-              ]
+              ],
+              "protocol": "https"
             }
           },
           "description": "Creates a second token using the currently saved Bearer token. This saves the new token id as `token_id`, which is the safe target for Revoke Token by ID.",
@@ -374,14 +386,18 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/tokens",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/tokens",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "tokens"
-              ]
+              ],
+              "protocol": "https"
             }
           },
           "description": "Lists personal access tokens for the current account. If an `Extra Postman Token` exists, its id is saved as `token_id` for revoke testing.",
@@ -427,15 +443,19 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/tokens/{{token_id}}",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/tokens/{{token_id}}",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "tokens",
                 "{{token_id}}"
-              ]
+              ],
+              "protocol": "https"
             }
           },
           "description": "Revokes the token id stored in `token_id`. Recommended flow: Login -> Create Extra Token -> Revoke Token by ID. This avoids revoking your current login token by mistake.",
@@ -479,15 +499,19 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/tokens/revoke-all",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/tokens/revoke-all",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "tokens",
                 "revoke-all"
-              ]
+              ],
+              "protocol": "https"
             },
             "description": "Danger: revokes every token for the currently authenticated account. Run login again after this."
           },
@@ -533,14 +557,18 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/logout",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/logout",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "logout"
-              ]
+              ],
+              "protocol": "https"
             }
           },
           "description": "Revokes only the current Bearer token. After this, run Login again before protected requests.",
@@ -565,14 +593,18 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/packages",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/packages",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "packages"
-              ]
+              ],
+              "protocol": "https"
             }
           },
           "response": [],
@@ -619,15 +651,19 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/packages/{{package_id}}",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/packages/{{package_id}}",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "packages",
                 "{{package_id}}"
-              ]
+              ],
+              "protocol": "https"
             }
           },
           "response": [],
@@ -675,14 +711,18 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/promo-packages",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/promo-packages",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "promo-packages"
-              ]
+              ],
+              "protocol": "https"
             },
             "description": "Public promo package list. Each record includes `image`, `image_url`, and `has_image`."
           },
@@ -730,15 +770,19 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/promo-packages/{{promo_package_id}}",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/promo-packages/{{promo_package_id}}",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "promo-packages",
                 "{{promo_package_id}}"
-              ]
+              ],
+              "protocol": "https"
             }
           },
           "response": [],
@@ -847,14 +891,18 @@
               ]
             },
             "url": {
-              "raw": "{{base_url}}/api/promo-packages",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/promo-packages",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "promo-packages"
-              ]
+              ],
+              "protocol": "https"
             },
             "description": "Admin token required. Choose a local image file for `image_file`."
           },
@@ -881,16 +929,20 @@
               ]
             },
             "url": {
-              "raw": "{{base_url}}/api/promo-packages/{{promo_package_id}}/image",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/promo-packages/{{promo_package_id}}/image",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "promo-packages",
                 "{{promo_package_id}}",
                 "image"
-              ]
+              ],
+              "protocol": "https"
             },
             "description": "Admin token required. Choose a local image file for `image_file`."
           },
@@ -947,15 +999,19 @@
               }
             },
             "url": {
-              "raw": "{{base_url}}/api/promo-packages/{{promo_package_id}}",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/promo-packages/{{promo_package_id}}",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "promo-packages",
                 "{{promo_package_id}}"
-              ]
+              ],
+              "protocol": "https"
             },
             "description": "Admin token required. Updates the promo package selected by `promo_package_id`."
           },
@@ -995,15 +1051,19 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/promo-packages/{{promo_package_id}}",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/promo-packages/{{promo_package_id}}",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "promo-packages",
                 "{{promo_package_id}}"
-              ]
+              ],
+              "protocol": "https"
             }
           },
           "response": [],
@@ -1051,14 +1111,18 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/tourist-spots",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/tourist-spots",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "tourist-spots"
-              ]
+              ],
+              "protocol": "https"
             },
             "description": "Public tourist spot list. Each record includes `image`, `image_url`, and `has_image`."
           },
@@ -1106,15 +1170,19 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/tourist-spots/{{tourist_spot_id}}",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/tourist-spots/{{tourist_spot_id}}",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "tourist-spots",
                 "{{tourist_spot_id}}"
-              ]
+              ],
+              "protocol": "https"
             }
           },
           "response": [],
@@ -1218,14 +1286,18 @@
               ]
             },
             "url": {
-              "raw": "{{base_url}}/api/tourist-spots",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/tourist-spots",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "tourist-spots"
-              ]
+              ],
+              "protocol": "https"
             },
             "description": "Admin token required. Choose a local image file for `image_file`."
           },
@@ -1252,16 +1324,20 @@
               ]
             },
             "url": {
-              "raw": "{{base_url}}/api/tourist-spots/{{tourist_spot_id}}/image",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/tourist-spots/{{tourist_spot_id}}/image",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "tourist-spots",
                 "{{tourist_spot_id}}",
                 "image"
-              ]
+              ],
+              "protocol": "https"
             },
             "description": "Admin token required. Choose a local image file for `image_file`."
           },
@@ -1318,15 +1394,19 @@
               }
             },
             "url": {
-              "raw": "{{base_url}}/api/tourist-spots/{{tourist_spot_id}}",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/tourist-spots/{{tourist_spot_id}}",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "tourist-spots",
                 "{{tourist_spot_id}}"
-              ]
+              ],
+              "protocol": "https"
             },
             "description": "Admin token required. Updates the tourist spot selected by `tourist_spot_id`."
           },
@@ -1366,15 +1446,19 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/tourist-spots/{{tourist_spot_id}}",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/tourist-spots/{{tourist_spot_id}}",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "tourist-spots",
                 "{{tourist_spot_id}}"
-              ]
+              ],
+              "protocol": "https"
             }
           },
           "response": [],
@@ -1454,14 +1538,18 @@
               "raw": "{\n  \"name\": \"Sample Bolinao Tour\",\n  \"location\": \"Bolinao, Pangasinan\",\n  \"description\": \"Sample package created from Postman.\",\n  \"price\": 1500,\n  \"duration_days\": 1,\n  \"max_guests\": 10,\n  \"status\": \"active\",\n  \"rating\": 0\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/packages",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/packages",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "packages"
-              ]
+              ],
+              "protocol": "https"
             }
           },
           "response": []
@@ -1551,14 +1639,18 @@
               ]
             },
             "url": {
-              "raw": "{{base_url}}/api/packages",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/packages",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "packages"
-              ]
+              ],
+              "protocol": "https"
             },
             "description": "Admin token required. In Body > form-data, choose a local image file for `image_file` before sending. Do not manually set Content-Type for file uploads."
           },
@@ -1612,16 +1704,20 @@
               ]
             },
             "url": {
-              "raw": "{{base_url}}/api/packages/{{package_id}}/image",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/packages/{{package_id}}/image",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "packages",
                 "{{package_id}}",
                 "image"
-              ]
+              ],
+              "protocol": "https"
             },
             "description": "Admin token required. Choose a local image file for `image_file`."
           },
@@ -1646,15 +1742,19 @@
               "raw": "{\n  \"name\": \"Updated Bolinao Tour\",\n  \"price\": 1800,\n  \"duration_days\": 1,\n  \"max_guests\": 12,\n  \"status\": \"active\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/packages/{{package_id}}",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/packages/{{package_id}}",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "packages",
                 "{{package_id}}"
-              ]
+              ],
+              "protocol": "https"
             }
           },
           "response": [],
@@ -1694,15 +1794,19 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/packages/{{package_id}}",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/packages/{{package_id}}",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "packages",
                 "{{package_id}}"
-              ]
+              ],
+              "protocol": "https"
             }
           },
           "response": [],
@@ -1747,14 +1851,18 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/bookings",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/bookings",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "bookings"
-              ]
+              ],
+              "protocol": "https"
             }
           },
           "response": [],
@@ -1801,16 +1909,20 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/bookings/reminders/due",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/bookings/reminders/due",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "bookings",
                 "reminders",
                 "due"
-              ]
+              ],
+              "protocol": "https"
             },
             "description": "Admin token required. Lists bookings due for reminder."
           },
@@ -1850,16 +1962,20 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/bookings/{{booking_id}}/reminder-sent",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/bookings/{{booking_id}}/reminder-sent",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "bookings",
                 "{{booking_id}}",
                 "reminder-sent"
-              ]
+              ],
+              "protocol": "https"
             },
             "description": "Admin token required. Marks a booking reminder as sent."
           },
@@ -1907,14 +2023,18 @@
               "raw": "{\n  \"tour_package_id\": {{package_id}},\n  \"tour_date\": \"2026-07-01\",\n  \"tour_start_date\": \"2026-07-01\",\n  \"tour_end_date\": \"2026-07-02\",\n  \"num_guests\": 2,\n  \"num_adults\": 2,\n  \"num_children\": 0,\n  \"num_seniors\": 0,\n  \"special_requests\": \"Created from Postman\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/bookings",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/bookings",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "bookings"
-              ]
+              ],
+              "protocol": "https"
             }
           },
           "response": [],
@@ -1959,15 +2079,19 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/bookings/{{booking_id}}",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/bookings/{{booking_id}}",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "bookings",
                 "{{booking_id}}"
-              ]
+              ],
+              "protocol": "https"
             }
           },
           "response": [],
@@ -2015,15 +2139,19 @@
               "raw": "{\n  \"tour_package_id\": {{package_id}},\n  \"tour_date\": \"2026-07-03\",\n  \"tour_start_date\": \"2026-07-03\",\n  \"tour_end_date\": \"2026-07-04\",\n  \"num_guests\": 3,\n  \"status\": \"pending\",\n  \"special_requests\": \"Updated from Postman\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/bookings/{{booking_id}}",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/bookings/{{booking_id}}",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "bookings",
                 "{{booking_id}}"
-              ]
+              ],
+              "protocol": "https"
             }
           },
           "response": [],
@@ -2071,16 +2199,20 @@
               "raw": "{\n  \"admin_notes\": \"Confirmed from Postman\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/bookings/{{booking_id}}/confirm",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/bookings/{{booking_id}}/confirm",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "bookings",
                 "{{booking_id}}",
                 "confirm"
-              ]
+              ],
+              "protocol": "https"
             }
           },
           "response": [],
@@ -2128,16 +2260,20 @@
               "raw": "{\n  \"reason\": \"Cancelled from Postman\",\n  \"refund_percentage\": 100\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/bookings/{{booking_id}}/cancel",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/bookings/{{booking_id}}/cancel",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "bookings",
                 "{{booking_id}}",
                 "cancel"
-              ]
+              ],
+              "protocol": "https"
             }
           },
           "response": [],
@@ -2185,16 +2321,20 @@
               "raw": "{\n  \"services\": [\n    {\n      \"name\": \"Meal plan\",\n      \"price\": 650,\n      \"description\": \"Lunch package\"\n    }\n  ]\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/bookings/{{booking_id}}/services",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/bookings/{{booking_id}}/services",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "bookings",
                 "{{booking_id}}",
                 "services"
-              ]
+              ],
+              "protocol": "https"
             }
           },
           "response": [],
@@ -2247,16 +2387,20 @@
               }
             },
             "url": {
-              "raw": "{{base_url}}/api/bookings/{{booking_id}}/guests",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/bookings/{{booking_id}}/guests",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "bookings",
                 "{{booking_id}}",
                 "guests"
-              ]
+              ],
+              "protocol": "https"
             },
             "description": "Authenticated booking owner or admin token required. Updates guest details."
           },
@@ -2304,16 +2448,20 @@
               "raw": "{\n  \"discount_code\": \"POSTMAN100\",\n  \"discount_amount\": 100\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/bookings/{{booking_id}}/discount",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/bookings/{{booking_id}}/discount",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "bookings",
                 "{{booking_id}}",
                 "discount"
-              ]
+              ],
+              "protocol": "https"
             }
           },
           "response": [],
@@ -2361,16 +2509,20 @@
               "raw": "{\n  \"type\": \"admin\",\n  \"note\": \"Note from Postman\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/bookings/{{booking_id}}/notes",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/bookings/{{booking_id}}/notes",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "bookings",
                 "{{booking_id}}",
                 "notes"
-              ]
+              ],
+              "protocol": "https"
             }
           },
           "response": [],
@@ -2418,16 +2570,20 @@
               "raw": "{\n  \"plan_type\": \"installment\",\n  \"installments\": 3\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/bookings/{{booking_id}}/payment-plan",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/bookings/{{booking_id}}/payment-plan",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "bookings",
                 "{{booking_id}}",
                 "payment-plan"
-              ]
+              ],
+              "protocol": "https"
             }
           },
           "response": [],
@@ -2467,15 +2623,19 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/bookings/{{booking_id}}",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/bookings/{{booking_id}}",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "bookings",
                 "{{booking_id}}"
-              ]
+              ],
+              "protocol": "https"
             }
           },
           "response": [],
@@ -2520,14 +2680,18 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/payments",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/payments",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "payments"
-              ]
+              ],
+              "protocol": "https"
             }
           },
           "response": [],
@@ -2607,14 +2771,18 @@
               "raw": "{\n  \"booking_id\": {{booking_id}},\n  \"amount\": 1500,\n  \"method\": \"gcash\",\n  \"reference_number\": \"GCASH-POSTMAN-001\",\n  \"proof\": \"payment-proofs/sample.jpg\",\n  \"status\": \"unpaid\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/payments",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/payments",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "payments"
-              ]
+              ],
+              "protocol": "https"
             }
           },
           "response": []
@@ -2694,14 +2862,18 @@
               ]
             },
             "url": {
-              "raw": "{{base_url}}/api/payments",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/payments",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "payments"
-              ]
+              ],
+              "protocol": "https"
             },
             "description": "Authenticated user required. Choose a local jpg/png/webp/gif/pdf file for `proof_file`."
           },
@@ -2755,16 +2927,20 @@
               ]
             },
             "url": {
-              "raw": "{{base_url}}/api/payments/{{payment_id}}/proof",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/payments/{{payment_id}}/proof",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "payments",
                 "{{payment_id}}",
                 "proof"
-              ]
+              ],
+              "protocol": "https"
             },
             "description": "Authenticated user required. Choose a local jpg/png/webp/gif/pdf file for `proof_file`."
           },
@@ -2781,15 +2957,19 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/payments/{{payment_id}}",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/payments/{{payment_id}}",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "payments",
                 "{{payment_id}}"
-              ]
+              ],
+              "protocol": "https"
             }
           },
           "response": [],
@@ -2837,15 +3017,19 @@
               "raw": "{\n  \"booking_id\": {{booking_id}},\n  \"amount\": 1500,\n  \"method\": \"gcash\",\n  \"reference_number\": \"GCASH-POSTMAN-001\",\n  \"status\": \"paid\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/payments/{{payment_id}}",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/payments/{{payment_id}}",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "payments",
                 "{{payment_id}}"
-              ]
+              ],
+              "protocol": "https"
             }
           },
           "response": [],
@@ -2885,15 +3069,19 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/payments/{{payment_id}}",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/payments/{{payment_id}}",
               "host": [
-                "{{base_url}}"
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
               ],
               "path": [
                 "api",
                 "payments",
                 "{{payment_id}}"
-              ]
+              ],
+              "protocol": "https"
             }
           },
           "response": [],
