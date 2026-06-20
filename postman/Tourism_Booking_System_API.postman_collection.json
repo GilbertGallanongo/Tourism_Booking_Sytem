@@ -1,8 +1,8 @@
 {
   "info": {
-    "_postman_id": "0d7c3b7d-7c3a-4f4b-9ef8-43b6d9aa1f3c",
-    "name": "Tourism Booking System API",
-    "description": "Postman collection for the Laravel Tourism Booking System API.\n\nHow to use:\n1. Auth requests use the full Railway production URL and direct sample credentials, so they work even without selecting an environment.\n2. Run \"Admin Login - Create Token\" for admin-only endpoints such as package, promo package, tourist spot, booking approval, and payment management.\n3. Run \"Tourist Login - Create Token\" for tourist booking/payment flows.\n4. Login requests automatically save Bearer `token`, `admin_access_token`, `tourist_access_token`, and current IDs.\n5. For file upload requests, choose a local file in the `image_file` or `proof_file` form-data row before sending.\n\nNote: Requests use the full Railway production URL directly, so they work even if no Postman environment is selected.",
+    "_postman_id": "a4d6233a-1b1d-4b37-9781-directurls001",
+    "name": "Tourism Booking System API - Direct URLs",
+    "description": "Postman collection for the Laravel Tourism Booking System API.\n\nHow to use:\n1. Auth requests use the full Railway production URL and direct sample credentials, so they work even without selecting an environment.\n2. Run \"Admin Login - Create Token\" for admin-only endpoints such as package, promo package, tourist spot, booking approval, and payment management.\n3. Run \"Tourist Login - Create Token\" for tourist booking/payment flows.\n4. Login requests automatically save Bearer `token`, `admin_access_token`, `tourist_access_token`, and current IDs.\n5. For file upload requests, choose a local file in the `image_file` or `proof_file` form-data row before sending.\n\nNote: Requests use the full Railway production URL directly, so they work even if no Postman environment is selected.\n\nImport this as a new collection and run this \"Direct URLs\" copy. Old imported Postman tabs/runs may still show `{{base_url}}`; close or delete the old collection to avoid using cached requests.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "auth": {
