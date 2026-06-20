@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "0d7c3b7d-7c3a-4f4b-9ef8-43b6d9aa1f3c",
     "name": "Tourism Booking System API",
-    "description": "Postman collection for the Laravel Tourism Booking System API. Start with Tourist Login or Admin Login. Login requests save a Bearer `token` for API calls and also save `tourist_access_token` or `admin_access_token` that you can paste into the website login token field. Use Create Extra Token before Revoke Token by ID so `token_id` points to a separate token.",
+    "description": "Postman collection for the Laravel Tourism Booking System API.\n\nHow to use:\n1. Select the \"Tourism Booking System Production\" environment, or rely on the collection variables.\n2. Run \"Admin Login - Create Token\" for admin-only endpoints such as package, promo package, tourist spot, booking approval, and payment management.\n3. Run \"Tourist Login - Create Token\" for tourist booking/payment flows.\n4. Login requests automatically save Bearer `token`, `admin_access_token`, `tourist_access_token`, and current IDs.\n5. For file upload requests, choose a local file in the `image_file` or `proof_file` form-data row before sending.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "auth": {
@@ -15,13 +15,106 @@
       }
     ]
   },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://tourism-booking-system-production-b0bb.up.railway.app",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "current_token_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "tourist_access_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "admin_access_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "extra_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "token_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "tourist_email",
+      "value": "tourist@example.com",
+      "type": "string"
+    },
+    {
+      "key": "tourist_password",
+      "value": "password123",
+      "type": "string"
+    },
+    {
+      "key": "admin_email",
+      "value": "admin@tourph.com",
+      "type": "string"
+    },
+    {
+      "key": "admin_password",
+      "value": "password123",
+      "type": "string"
+    },
+    {
+      "key": "user_id",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "admin_id",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "package_id",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "promo_package_id",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "tourist_spot_id",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "booking_id",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "payment_id",
+      "value": "1",
+      "type": "string"
+    }
+  ],
   "event": [
     {
       "listen": "prerequest",
       "script": {
         "type": "text/javascript",
         "exec": [
-          ""
+          "if (!pm.collectionVariables.get('base_url')) pm.collectionVariables.set('base_url', 'https://tourism-booking-system-production-b0bb.up.railway.app');",
+          "if (pm.environment.name && !pm.environment.get('base_url')) pm.environment.set('base_url', 'https://tourism-booking-system-production-b0bb.up.railway.app');"
         ]
       }
     },
@@ -47,17 +140,29 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('Login returns token', function () {",
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "pm.test('Tourist login returns token', function () {",
                   "  pm.response.to.have.status(201);",
-                  "  const json = pm.response.json();",
-                  "  pm.expect(json.token).to.be.a('string');",
-                  "  pm.expect(json.token_id).to.exist;",
-                  "  pm.environment.set('token', json.token);",
-                  "  pm.environment.set('tourist_access_token', json.token);",
-                  "  pm.environment.set('current_token_id', json.token_id);",
-                  "  pm.environment.unset('token_id');",
-                  "  pm.environment.unset('extra_token');",
-                  "  pm.environment.set('user_id', json.user.id);",
+                  "  const body = json();",
+                  "  pm.expect(body.token).to.be.a('string');",
+                  "  saveVar('token', body.token);",
+                  "  saveVar('tourist_access_token', body.token);",
+                  "  saveVar('current_token_id', body.token_id);",
+                  "  saveVar('user_id', body.user && body.user.id);",
+                  "  clearVar('token_id');",
+                  "  clearVar('extra_token');",
                   "});"
                 ]
               }
@@ -92,7 +197,7 @@
                 "login"
               ]
             },
-            "description": "Run this first for tourist API testing and website login. It saves the Bearer token as `token` for API requests and as `tourist_access_token` for the website login token field."
+            "description": "Creates a tourist Sanctum personal access token. This request saves the token automatically as `token` and `tourist_access_token`. Run this before tourist booking/payment requests."
           },
           "response": []
         },
@@ -104,17 +209,29 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Admin login returns token', function () {",
                   "  pm.response.to.have.status(201);",
-                  "  const json = pm.response.json();",
-                  "  pm.expect(json.token).to.be.a('string');",
-                  "  pm.expect(json.token_id).to.exist;",
-                  "  pm.environment.set('token', json.token);",
-                  "  pm.environment.set('admin_access_token', json.token);",
-                  "  pm.environment.set('current_token_id', json.token_id);",
-                  "  pm.environment.unset('token_id');",
-                  "  pm.environment.unset('extra_token');",
-                  "  pm.environment.set('admin_id', json.user.id);",
+                  "  const body = json();",
+                  "  pm.expect(body.token).to.be.a('string');",
+                  "  saveVar('token', body.token);",
+                  "  saveVar('admin_access_token', body.token);",
+                  "  saveVar('current_token_id', body.token_id);",
+                  "  saveVar('admin_id', body.user && body.user.id);",
+                  "  clearVar('token_id');",
+                  "  clearVar('extra_token');",
                   "});"
                 ]
               }
@@ -150,7 +267,7 @@
                 "login"
               ]
             },
-            "description": "Run this first for admin API testing and website login. It saves the Bearer token as `token` for API requests and as `admin_access_token` for the admin website login token field."
+            "description": "Creates an admin Sanctum personal access token. This request saves the token automatically as `token` and `admin_access_token`. Run this before admin-only requests."
           },
           "response": []
         },
@@ -162,13 +279,25 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Extra token is created and saved', function () {",
                   "  pm.response.to.have.status(201);",
-                  "  const json = pm.response.json();",
-                  "  pm.expect(json.token).to.be.a('string');",
-                  "  pm.expect(json.token_id).to.exist;",
-                  "  pm.environment.set('extra_token', json.token);",
-                  "  pm.environment.set('token_id', json.token_id);",
+                  "  const body = json();",
+                  "  pm.expect(body.token).to.be.a('string');",
+                  "  saveVar('extra_token', body.token);",
+                  "  saveVar('token_id', body.token_id);",
                   "});"
                 ]
               }
@@ -212,14 +341,25 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Tokens are listed', function () {",
                   "  pm.response.to.have.status(200);",
-                  "  const json = pm.response.json();",
-                  "  pm.expect(json.tokens).to.be.an('array');",
-                  "  const extra = json.tokens.find(token => token.name === 'Extra Postman Token');",
-                  "  if (extra) {",
-                  "    pm.environment.set('token_id', extra.id);",
-                  "  }",
+                  "  const body = json();",
+                  "  pm.expect(body.tokens).to.be.an('array');",
+                  "  const extra = body.tokens.find(token => token.name === 'Extra Postman Token');",
+                  "  if (extra) saveVar('token_id', extra.id);",
                   "});"
                 ]
               }
@@ -255,12 +395,24 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Token is revoked by id', function () {",
                   "  pm.response.to.have.status(200);",
-                  "  const json = pm.response.json();",
-                  "  pm.expect(json.message).to.include('revoked');",
-                  "  pm.environment.unset('token_id');",
-                  "  pm.environment.unset('extra_token');",
+                  "  pm.expect(json().message).to.include('revoked');",
+                  "  clearVar('token_id');",
+                  "  clearVar('extra_token');",
                   "});"
                 ]
               }
@@ -297,12 +449,22 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('All tokens are revoked', function () {",
                   "  pm.response.to.have.status(200);",
-                  "  pm.environment.unset('token');",
-                  "  pm.environment.unset('current_token_id');",
-                  "  pm.environment.unset('token_id');",
-                  "  pm.environment.unset('extra_token');",
+                  "  ['token', 'current_token_id', 'token_id', 'extra_token', 'admin_access_token', 'tourist_access_token'].forEach(clearVar);",
                   "});"
                 ]
               }
@@ -326,7 +488,8 @@
                 "tokens",
                 "revoke-all"
               ]
-            }
+            },
+            "description": "Danger: revokes every token for the currently authenticated account. Run login again after this."
           },
           "description": "Revokes every token for the logged-in account. After this, run Login again before calling protected endpoints.",
           "response": []
@@ -339,10 +502,23 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Current token is revoked', function () {",
                   "  pm.response.to.have.status(200);",
-                  "  pm.environment.unset('token');",
-                  "  pm.environment.unset('current_token_id');",
+                  "  clearVar('token');",
+                  "  clearVar('current_token_id');",
                   "});"
                 ]
               }
@@ -399,7 +575,35 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "pm.test('Public packages are listed', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  const item = first(data());",
+                  "  if (item && item.id) saveVar('package_id', item.id);",
+                  "});"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Show Public Package",
@@ -426,7 +630,31 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "pm.test('Public package is returned', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
         }
       ]
     },
@@ -458,7 +686,35 @@
             },
             "description": "Public promo package list. Each record includes `image`, `image_url`, and `has_image`."
           },
-          "response": []
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "pm.test('Promo packages are listed', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  const item = first(data());",
+                  "  if (item && item.id) saveVar('promo_package_id', item.id);",
+                  "});"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Show Promo Package",
@@ -485,7 +741,31 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "pm.test('Promo package is returned', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Create Promo Package with Image File",
@@ -495,13 +775,24 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Promo package with image is created', function () {",
                   "  pm.response.to.have.status(201);",
-                  "  const json = pm.response.json();",
-                  "  pm.expect(json.data.image_url).to.be.a('string');",
-                  "  if (json.data && json.data.id) {",
-                  "    pm.environment.set('promo_package_id', json.data.id);",
-                  "  }",
+                  "  const item = data();",
+                  "  saveVar('promo_package_id', item && item.id);",
+                  "  pm.expect(item.image_url).to.be.a('string');",
                   "});"
                 ]
               }
@@ -565,7 +856,7 @@
                 "promo-packages"
               ]
             },
-            "description": "Admin token required. Select a JPG/PNG/WebP file in `image_file` before sending."
+            "description": "Admin token required. Choose a local image file for `image_file`."
           },
           "response": []
         },
@@ -601,9 +892,97 @@
                 "image"
               ]
             },
-            "description": "Admin token required. Replaces the image for the promo package saved in `promo_package_id`."
+            "description": "Admin token required. Choose a local image file for `image_file`."
           },
-          "response": []
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "pm.test('Promo package image is uploaded', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  pm.expect(data().image_url).to.be.a('string');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Promo Package",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Postman Promo\",\n  \"description\": \"Updated from Postman.\",\n  \"discount_percentage\": 20,\n  \"start_date\": \"2026-06-01\",\n  \"end_date\": \"2026-12-31\",\n  \"is_active\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/promo-packages/{{promo_package_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "promo-packages",
+                "{{promo_package_id}}"
+              ]
+            },
+            "description": "Admin token required. Updates the promo package selected by `promo_package_id`."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "pm.test('Promo package is updated', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Delete Promo Package",
@@ -627,7 +1006,31 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "pm.test('Promo package is deleted', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
         }
       ]
     },
@@ -659,7 +1062,35 @@
             },
             "description": "Public tourist spot list. Each record includes `image`, `image_url`, and `has_image`."
           },
-          "response": []
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "pm.test('Tourist spots are listed', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  const item = first(data());",
+                  "  if (item && item.id) saveVar('tourist_spot_id', item.id);",
+                  "});"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Show Tourist Spot",
@@ -686,7 +1117,31 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "pm.test('Tourist spot is returned', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Create Tourist Spot with Image File",
@@ -696,13 +1151,24 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Tourist spot with image is created', function () {",
                   "  pm.response.to.have.status(201);",
-                  "  const json = pm.response.json();",
-                  "  pm.expect(json.data.image_url).to.be.a('string');",
-                  "  if (json.data && json.data.id) {",
-                  "    pm.environment.set('tourist_spot_id', json.data.id);",
-                  "  }",
+                  "  const item = data();",
+                  "  saveVar('tourist_spot_id', item && item.id);",
+                  "  pm.expect(item.image_url).to.be.a('string');",
                   "});"
                 ]
               }
@@ -761,7 +1227,7 @@
                 "tourist-spots"
               ]
             },
-            "description": "Admin token required. Select a JPG/PNG/WebP file in `image_file` before sending."
+            "description": "Admin token required. Choose a local image file for `image_file`."
           },
           "response": []
         },
@@ -797,9 +1263,97 @@
                 "image"
               ]
             },
-            "description": "Admin token required. Replaces the image for the tourist spot saved in `tourist_spot_id`."
+            "description": "Admin token required. Choose a local image file for `image_file`."
           },
-          "response": []
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "pm.test('Tourist spot image is uploaded', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  pm.expect(data().image_url).to.be.a('string');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Tourist Spot",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Postman Tourist Spot\",\n  \"description\": \"Updated from Postman.\",\n  \"location\": \"Bolinao, Pangasinan\",\n  \"is_active\": true,\n  \"sort_order\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/tourist-spots/{{tourist_spot_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "tourist-spots",
+                "{{tourist_spot_id}}"
+              ]
+            },
+            "description": "Admin token required. Updates the tourist spot selected by `tourist_spot_id`."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "pm.test('Tourist spot is updated', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Delete Tourist Spot",
@@ -823,7 +1377,31 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "pm.test('Tourist spot is deleted', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
         }
       ]
     },
@@ -838,12 +1416,22 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Package is created', function () {",
                   "  pm.response.to.have.status(201);",
-                  "  const json = pm.response.json();",
-                  "  if (json.data && json.data.id) {",
-                  "    pm.environment.set('package_id', json.data.id);",
-                  "  }",
+                  "  saveVar('package_id', data() && data().id);",
                   "});"
                 ]
               }
@@ -886,13 +1474,24 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Package with image is created', function () {",
                   "  pm.response.to.have.status(201);",
-                  "  const json = pm.response.json();",
-                  "  pm.expect(json.data.image_url).to.be.a('string');",
-                  "  if (json.data && json.data.id) {",
-                  "    pm.environment.set('package_id', json.data.id);",
-                  "  }",
+                  "  const item = data();",
+                  "  saveVar('package_id', item && item.id);",
+                  "  pm.expect(item.image_url).to.be.a('string');",
                   "});"
                 ]
               }
@@ -961,7 +1560,7 @@
                 "packages"
               ]
             },
-            "description": "Select a JPG/PNG/WebP file in the `image_file` row before sending. The API returns `image`, `image_url`, and `has_image`."
+            "description": "Admin token required. In Body > form-data, choose a local image file for `image_file` before sending. Do not manually set Content-Type for file uploads."
           },
           "response": []
         },
@@ -973,10 +1572,22 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Package image is uploaded', function () {",
                   "  pm.response.to.have.status(200);",
-                  "  const json = pm.response.json();",
-                  "  pm.expect(json.data.image_url).to.be.a('string');",
+                  "  pm.expect(data().image_url).to.be.a('string');",
                   "});"
                 ]
               }
@@ -1012,7 +1623,7 @@
                 "image"
               ]
             },
-            "description": "Uploads or replaces the image for the package saved in `package_id`. Select a file in `image_file` before sending."
+            "description": "Admin token required. Choose a local image file for `image_file`."
           },
           "response": []
         },
@@ -1046,7 +1657,31 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "pm.test('Package is updated', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Delete Package",
@@ -1070,7 +1705,31 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "pm.test('Package is deleted', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
         }
       ]
     },
@@ -1098,7 +1757,136 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "pm.test('Bookings are listed', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  const item = first(data());",
+                  "  if (item && item.id) {",
+                  "    saveVar('booking_id', item.id);",
+                  "    if (item.payment && item.payment.id) saveVar('payment_id', item.payment.id);",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "List Due Booking Reminders",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/bookings/reminders/due",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "bookings",
+                "reminders",
+                "due"
+              ]
+            },
+            "description": "Admin token required. Lists bookings due for reminder."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "pm.test('Due reminders are listed', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Mark Booking Reminder Sent",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/bookings/{{booking_id}}/reminder-sent",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "bookings",
+                "{{booking_id}}",
+                "reminder-sent"
+              ]
+            },
+            "description": "Admin token required. Marks a booking reminder as sent."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "pm.test('Reminder is marked as sent', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Create Booking",
@@ -1129,7 +1917,36 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "pm.test('Booking is created', function () {",
+                  "  pm.response.to.have.status(201);",
+                  "  const item = data();",
+                  "  saveVar('booking_id', item && item.id);",
+                  "  if (item && item.payment && item.payment.id) saveVar('payment_id', item.payment.id);",
+                  "});"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Show Booking",
@@ -1153,7 +1970,31 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "pm.test('Booking is returned', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Update Booking",
@@ -1185,7 +2026,31 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "pm.test('Booking is updated', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Confirm Booking",
@@ -1218,7 +2083,31 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "pm.test('Booking is confirmed', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Cancel Booking",
@@ -1251,7 +2140,31 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "pm.test('Booking is cancelled', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Add Booking Services",
@@ -1284,7 +2197,93 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "pm.test('Booking services are added', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Booking Guests",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"guests\": [\n    {\n      \"name\": \"Juan Dela Cruz\",\n      \"email\": \"juan@example.com\",\n      \"phone\": \"09171234567\",\n      \"age\": 30\n    },\n    {\n      \"name\": \"Maria Dela Cruz\",\n      \"email\": \"maria@example.com\",\n      \"phone\": \"09179876543\",\n      \"age\": 28\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/bookings/{{booking_id}}/guests",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "bookings",
+                "{{booking_id}}",
+                "guests"
+              ]
+            },
+            "description": "Authenticated booking owner or admin token required. Updates guest details."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "pm.test('Guest details are updated', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Apply Booking Discount",
@@ -1317,7 +2316,31 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "pm.test('Booking discount is applied', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Add Booking Note",
@@ -1350,7 +2373,31 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "pm.test('Booking note is added', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Setup Payment Plan",
@@ -1383,7 +2430,31 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "pm.test('Payment plan is configured', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Delete Booking",
@@ -1407,7 +2478,31 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "pm.test('Booking is deleted', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
         }
       ]
     },
@@ -1435,7 +2530,35 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "pm.test('Payments are listed', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  const item = first(data());",
+                  "  if (item && item.id) saveVar('payment_id', item.id);",
+                  "});"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Create or Update Payment by Booking",
@@ -1445,12 +2568,23 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Payment is created or updated', function () {",
                   "  pm.response.to.have.status(201);",
-                  "  const json = pm.response.json();",
-                  "  if (json.data && json.data.id) {",
-                  "    pm.environment.set('payment_id', json.data.id);",
-                  "  }",
+                  "  const item = data();",
+                  "  saveVar('payment_id', item && item.id);",
                   "});"
                 ]
               }
@@ -1493,13 +2627,24 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Payment proof file is uploaded', function () {",
                   "  pm.response.to.have.status(201);",
-                  "  const json = pm.response.json();",
-                  "  pm.expect(json.data.proof_url).to.be.a('string');",
-                  "  if (json.data && json.data.id) {",
-                  "    pm.environment.set('payment_id', json.data.id);",
-                  "  }",
+                  "  const item = data();",
+                  "  saveVar('payment_id', item && item.id);",
+                  "  pm.expect(item.proof_url).to.be.a('string');",
                   "});"
                 ]
               }
@@ -1558,7 +2703,7 @@
                 "payments"
               ]
             },
-            "description": "Select a JPG/PNG/WebP/PDF proof file in `proof_file` before sending. The API returns `proof`, `proof_url`, `proof_is_image`, and `has_uploaded_proof`."
+            "description": "Authenticated user required. Choose a local jpg/png/webp/gif/pdf file for `proof_file`."
           },
           "response": []
         },
@@ -1570,10 +2715,22 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Payment proof is uploaded', function () {",
                   "  pm.response.to.have.status(200);",
-                  "  const json = pm.response.json();",
-                  "  pm.expect(json.data.proof_url).to.be.a('string');",
+                  "  pm.expect(data().proof_url).to.be.a('string');",
                   "});"
                 ]
               }
@@ -1609,7 +2766,7 @@
                 "proof"
               ]
             },
-            "description": "Uploads or replaces proof of payment for the payment saved in `payment_id`. Select a file in `proof_file` before sending."
+            "description": "Authenticated user required. Choose a local jpg/png/webp/gif/pdf file for `proof_file`."
           },
           "response": []
         },
@@ -1635,7 +2792,31 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "pm.test('Payment is returned', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Mark Payment Paid",
@@ -1667,7 +2848,31 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "pm.test('Payment is marked paid', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Delete Payment",
@@ -1691,7 +2896,31 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  if (pm.environment.name) pm.environment.set(key, text);",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  if (pm.environment.name) pm.environment.unset(key);",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "pm.test('Payment is deleted', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
         }
       ]
     }
