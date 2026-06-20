@@ -52,7 +52,7 @@
                         <div class="package-card-grid">
                             @forelse($topRatedPackages as $package)
                                 <article class="package-card">
-                                    <x-image-view-link :src="$package->image_url" :title="$package->name" class="package-card-media has-card-image" style="--card-image: url('{{ $package->image_url }}'); background-image: var(--card-image);"></x-image-view-link>
+                                    <x-image-view-link :src="$package->image_url" :title="$package->name" class="package-card-media has-card-image" style="--card-image: url('{{ $package->image_url }}'); background-image: var(--card-image) !important;"></x-image-view-link>
                                     <div class="package-card-body">
                                         <div class="package-card-meta">
                                             <span>{{ $package->duration_days }} Day Tour</span>
