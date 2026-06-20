@@ -651,6 +651,67 @@
           ]
         },
         {
+          "name": "Search Public Packages",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/packages?search=church",
+              "host": [
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
+              ],
+              "path": [
+                "api",
+                "packages"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "church",
+                  "description": "Search by package name, location, description, category, or destination."
+                },
+                {
+                  "key": "category",
+                  "value": "cultural",
+                  "disabled": true
+                },
+                {
+                  "key": "capacity",
+                  "value": "2",
+                  "disabled": true
+                }
+              ],
+              "protocol": "https"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Search request works', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  pm.expect(pm.response.json().data).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
           "name": "Show Public Package",
           "request": {
             "auth": {

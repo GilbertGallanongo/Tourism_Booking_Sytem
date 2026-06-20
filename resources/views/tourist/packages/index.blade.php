@@ -443,7 +443,7 @@ body.packages-shell .content {
                     <label for="search">Search tours</label>
                     <div class="search-input-wrap">
                         <span class="search-input-icon" aria-hidden="true"></span>
-                        <input id="search" name="search" type="search" value="{{ request('search') }}" placeholder="Search by name, location, or experience" class="form-control" />
+                        <input id="search" name="search" type="search" value="{{ $search ?? request('search', request('q')) }}" placeholder="Search by name, location, or experience" class="form-control" />
                     </div>
                 </div>
 

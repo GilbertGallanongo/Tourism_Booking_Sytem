@@ -182,6 +182,44 @@ class TourPackage extends Model
         ];
     }
 
+    public function scopeSearch(Builder $query, ?string $search): Builder
+    {
+        $search = trim((string) preg_replace('/\s+/', ' ', (string) $search));
+
+        if ($search === '') {
+            return $query;
+        }
+
+        $terms = array_values(array_filter(explode(' ', $search)));
+
+        return $query->where(function (Builder $outer) use ($search, $terms) {
+            $outer
+                ->where(fn (Builder $phrase) => $this->applySearchTerm($phrase, $search))
+                ->orWhere(function (Builder $allTerms) use ($terms) {
+                    foreach ($terms as $term) {
+                        $allTerms->where(fn (Builder $termQuery) => $this->applySearchTerm($termQuery, $term));
+                    }
+                });
+        });
+    }
+
+    private function applySearchTerm(Builder $query, string $term): Builder
+    {
+        $like = '%' . $term . '%';
+
+        return $query
+            ->where('name', 'like', $like)
+            ->orWhere('location', 'like', $like)
+            ->orWhere('description', 'like', $like)
+            ->orWhere('category', 'like', $like)
+            ->orWhereHas('destination', function (Builder $destination) use ($like) {
+                $destination
+                    ->where('name', 'like', $like)
+                    ->orWhere('location', 'like', $like)
+                    ->orWhere('description', 'like', $like);
+            });
+    }
+
     public function getCategoryLabelAttribute(): string
     {
         return self::categoryLabels()[$this->category] ?? 'Uncategorized';

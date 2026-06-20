@@ -14,10 +14,16 @@ class TourPackageController extends Controller
 {
     use AuthorizesApiAccess;
 
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
+        $search = trim((string) $request->query('search', $request->query('q', '')));
+
         return response()->json([
             'data' => TourPackage::active()
+                ->search($search)
+                ->when($request->filled('category'), fn ($query) => $query->where('category', $request->query('category')))
+                ->when($request->integer('capacity') > 0, fn ($query) => $query->where('max_guests', '>=', $request->integer('capacity')))
+                ->when($request->integer('max_price') > 0, fn ($query) => $query->where('price', '<=', $request->integer('max_price')))
                 ->latest()
                 ->get()
                 ->map(fn (TourPackage $package) => $this->packagePayload($package)),

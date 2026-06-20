@@ -15,7 +15,7 @@
                         <input
                             type="search"
                             name="search"
-                            value="{{ request('search') }}"
+                            value="{{ $search ?? request('search', request('q')) }}"
                             placeholder="Search packages by name, location, or description"
                             class="form-control"
                         />
@@ -29,7 +29,7 @@
 
                         <div class="d-flex gap-2">
                             <button type="submit" class="btn btn-primary">Search</button>
-                            @if(request('search') || request('category'))
+                            @if(($search ?? request('search', request('q'))) || request('category'))
                                 <a href="{{ route('admin.packages.index') }}" class="btn btn-outline-secondary">Clear</a>
                             @endif
                         </div>

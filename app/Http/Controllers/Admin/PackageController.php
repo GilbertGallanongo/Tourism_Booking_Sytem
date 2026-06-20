@@ -19,14 +19,10 @@ class PackageController extends Controller
 {
     public function index(Request $request): View
     {
+        $search = trim((string) $request->query('search', $request->query('q', '')));
+
         $packages = TourPackage::latest()
-            ->when($request->search, function ($query) use ($request) {
-                $query->where(function ($sub) use ($request) {
-                    $sub->where('name', 'like', '%' . $request->search . '%')
-                        ->orWhere('location', 'like', '%' . $request->search . '%')
-                        ->orWhere('description', 'like', '%' . $request->search . '%');
-                });
-            })
+            ->search($search)
             ->when($request->category, function ($query) use ($request) {
                 $query->where('category', $request->category);
             })
@@ -35,7 +31,7 @@ class PackageController extends Controller
 
         $categories = TourPackage::categoryLabels();
 
-        return view('admin.packages.index', compact('packages', 'categories'));
+        return view('admin.packages.index', compact('packages', 'categories', 'search'));
     }
 
     public function create(): View

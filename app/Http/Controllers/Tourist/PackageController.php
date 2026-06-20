@@ -19,6 +19,7 @@ class PackageController extends Controller
             'events' => ['label' => 'Events & Festivals', 'keywords' => ['festival','event','parade','competition','celebration']],
             'ecotourism' => ['label' => 'Ecotourism & Conservation Areas', 'keywords' => ['mangrove','park','reserve','ecolodge','protected','sanctuary']],
         ];
+        $search = trim((string) $request->query('search', $request->query('q', '')));
         $selectedDuration = $request->input('duration', 'all');
 
         if (! in_array($selectedDuration, ['all', '1', '2_4'], true)) {
@@ -38,13 +39,7 @@ class PackageController extends Controller
         $packages = TourPackage::active()
             ->withAvg('reviews', 'rating')
             ->withCount('reviews')
-            ->when($request->search, fn($q) =>
-                $q->where(function($sub) use ($request) {
-                    $sub->where('name', 'like', "%{$request->search}%")
-                        ->orWhere('location', 'like', "%{$request->search}%")
-                        ->orWhere('description', 'like', "%{$request->search}%");
-                })
-            )
+            ->search($search)
             ->when($request->category && array_key_exists($request->category, $categoryMap), function($q) use ($request, $categoryMap) {
                 $q->where(function($sub) use ($request, $categoryMap) {
                     $sub->where('category', $request->category);
@@ -76,7 +71,7 @@ class PackageController extends Controller
             ->paginate(18)
             ->withQueryString();
 
-        return view('tourist.packages.index', compact('packages', 'categoryMap', 'selectedDuration', 'capacity'));
+        return view('tourist.packages.index', compact('packages', 'categoryMap', 'selectedDuration', 'capacity', 'search'));
     }
 
     public function show(TourPackage $tourPackage)

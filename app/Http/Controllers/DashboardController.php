@@ -129,6 +129,7 @@ class DashboardController extends Controller
             'ecotourism' => ['label' => 'Ecotourism & Conservation Areas', 'keywords' => ['mangrove','park','reserve','ecolodge','protected','sanctuary']],
         ];
 
+        $search = trim((string) $request->query('search', $request->query('q', '')));
         $selectedDuration = $request->input('duration', 'all');
 
         if (! in_array($selectedDuration, ['all', '1', '2_4'], true)) {
@@ -158,12 +159,7 @@ class DashboardController extends Controller
         }
 
         $packages = TourPackage::active()
-            ->when($request->search, fn($q) => $q->where(function($sub) use ($request) {
-                $sub->where('name', 'like', "%{$request->search}%")
-                    ->orWhere('location', 'like', "%{$request->search}%")
-                    ->orWhere('description', 'like', "%{$request->search}%");
-            })
-            )
+            ->search($search)
             ->when($request->destination, fn($q) => $q->where('destination_id', $request->destination))
             ->when($request->category && array_key_exists($request->category, $categoryMap), function($q) use ($request, $categoryMap) {
                 $q->where(function($sub) use ($request, $categoryMap) {
@@ -198,7 +194,7 @@ class DashboardController extends Controller
 
         $destinations = Destination::orderBy('name')->get();
 
-        $data = compact('packages', 'destinations', 'categoryMap', 'selectedDuration', 'capacity', 'selectedPromo');
+        $data = compact('packages', 'destinations', 'categoryMap', 'selectedDuration', 'capacity', 'selectedPromo', 'search');
 
         if ($request->user()) {
             $data = array_merge($this->touristData($request), $data);
@@ -371,14 +367,10 @@ class DashboardController extends Controller
         $activePackages = TourPackage::where('status', 'active')->count();
         $inactivePackages = TourPackage::where('status', '!=', 'active')->count();
 
+        $search = trim((string) $request->query('search', $request->query('q', '')));
+
         $query = TourPackage::latest()
-            ->when($request->search, function ($query) use ($request) {
-                $query->where(function ($sub) use ($request) {
-                    $sub->where('name', 'like', '%' . $request->search . '%')
-                        ->orWhere('location', 'like', '%' . $request->search . '%')
-                        ->orWhere('description', 'like', '%' . $request->search . '%');
-                });
-            })
+            ->search($search)
             ->when($request->category, function ($query) use ($request) {
                 $query->where('category', $request->category);
             });
@@ -394,6 +386,7 @@ class DashboardController extends Controller
             ],
             'packages' => $packages,
             'categories' => $categories,
+            'search' => $search,
         ];
 
         if ($request->expectsJson()) {
