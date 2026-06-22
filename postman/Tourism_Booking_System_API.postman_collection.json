@@ -415,7 +415,7 @@
           "response": []
         },
         {
-          "name": "Revoke Token by ID",
+          "name": "Delete Token by ID",
           "event": [
             {
               "listen": "test",
@@ -468,13 +468,13 @@
               ],
               "protocol": "https"
             },
-            "description": "Requires a saved Bearer token and `token_id`. Run Create Extra Token first, then this request."
+            "description": "Deletes/revokes one personal access token by token ID."
           },
           "description": "Revokes the token id stored in `token_id`. Recommended flow: Login -> Create Extra Token -> Revoke Token by ID. This avoids revoking your current login token by mistake.",
           "response": []
         },
         {
-          "name": "Revoke All Tokens",
+          "name": "Delete All Tokens",
           "event": [
             {
               "listen": "test",
@@ -525,13 +525,13 @@
               ],
               "protocol": "https"
             },
-            "description": "Danger: revokes every token for the currently authenticated account. Run login again after this."
+            "description": "Deletes/revokes all personal access tokens for the current authenticated account."
           },
           "description": "Revokes every token for the logged-in account. After this, run Login again before calling protected endpoints.",
           "response": []
         },
         {
-          "name": "Logout - Revoke Current Token",
+          "name": "Logout - Delete Current Token",
           "event": [
             {
               "listen": "test",
@@ -582,7 +582,7 @@
               ],
               "protocol": "https"
             },
-            "description": "Requires a saved Bearer token. Revokes only the current token used by Postman."
+            "description": "Logs out by deleting/revoking only the current Bearer token."
           },
           "description": "Revokes only the current Bearer token. After this, run Login again before protected requests.",
           "response": []
@@ -590,7 +590,7 @@
       ]
     },
     {
-      "name": "Public Packages",
+      "name": "Public Packages - Read Only",
       "item": [
         {
           "name": "List Public Packages",
@@ -724,7 +724,8 @@
             }
           ]
         }
-      ]
+      ],
+      "description": "Public browsing endpoints only. These are GET requests because guests/tourists can only view public package data here. Use `Tour Packages - Protected` for create, update, delete, and delete all."
     },
     {
       "name": "Promo Packages",
