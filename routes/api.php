@@ -49,6 +49,7 @@ Route::middleware('auth:sanctum')->name('api.')->group(function () {
     Route::post('/bookings/{booking}/guests', [BookingController::class, 'updateGuests'])->name('bookings.guests');
     Route::post('/bookings/{booking}/reminder-sent', [BookingController::class, 'markReminderSent'])->name('bookings.reminder-sent');
     Route::post('/bookings/{booking}/payment-plan', [BookingController::class, 'setupPaymentPlan'])->name('bookings.payment-plan');
+    Route::delete('/bookings/delete-all', [BookingController::class, 'destroyAll'])->name('bookings.destroy-all');
     Route::apiResource('bookings', BookingController::class);
 
     Route::post('/payments/{payment}/proof', [PaymentController::class, 'uploadProof'])->name('payments.proof');

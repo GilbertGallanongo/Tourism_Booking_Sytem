@@ -10,6 +10,7 @@ use App\Models\TourPackage;
 use App\Services\BookingService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class BookingController extends Controller
@@ -120,6 +121,27 @@ class BookingController extends Controller
         $booking->delete();
 
         return response()->json(['message' => 'Booking deleted successfully.']);
+    }
+
+    public function destroyAll(Request $request): JsonResponse
+    {
+        $this->requireAdmin($request);
+
+        $request->validate([
+            'confirm' => ['required', 'in:DELETE ALL BOOKINGS'],
+        ]);
+
+        $deletedCount = Booking::count();
+
+        DB::transaction(function () {
+            Payment::whereIn('booking_id', Booking::query()->select('id'))->delete();
+            Booking::query()->delete();
+        });
+
+        return response()->json([
+            'message' => 'All bookings deleted successfully.',
+            'deleted_count' => $deletedCount,
+        ]);
     }
 
     // Enhanced Booking Management Methods
