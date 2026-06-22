@@ -28,16 +28,19 @@ Route::middleware('auth:sanctum')->name('api.')->group(function () {
     Route::post('/packages', [TourPackageController::class, 'store'])->name('packages.store');
     Route::post('/packages/{package}/image', [TourPackageController::class, 'uploadImage'])->name('packages.image');
     Route::put('/packages/{package}', [TourPackageController::class, 'update'])->name('packages.update');
+    Route::delete('/packages/delete-all', [TourPackageController::class, 'destroyAll'])->name('packages.destroy-all');
     Route::delete('/packages/{package}', [TourPackageController::class, 'destroy'])->name('packages.destroy');
 
     Route::post('/promo-packages', [PromoPackageController::class, 'store'])->name('promo-packages.store');
     Route::post('/promo-packages/{promoPackage}/image', [PromoPackageController::class, 'uploadImage'])->name('promo-packages.image');
     Route::put('/promo-packages/{promoPackage}', [PromoPackageController::class, 'update'])->name('promo-packages.update');
+    Route::delete('/promo-packages/delete-all', [PromoPackageController::class, 'destroyAll'])->name('promo-packages.destroy-all');
     Route::delete('/promo-packages/{promoPackage}', [PromoPackageController::class, 'destroy'])->name('promo-packages.destroy');
 
     Route::post('/tourist-spots', [FamousTouristSpotController::class, 'store'])->name('tourist-spots.store');
     Route::post('/tourist-spots/{famousTouristSpot}/image', [FamousTouristSpotController::class, 'uploadImage'])->name('tourist-spots.image');
     Route::put('/tourist-spots/{famousTouristSpot}', [FamousTouristSpotController::class, 'update'])->name('tourist-spots.update');
+    Route::delete('/tourist-spots/delete-all', [FamousTouristSpotController::class, 'destroyAll'])->name('tourist-spots.destroy-all');
     Route::delete('/tourist-spots/{famousTouristSpot}', [FamousTouristSpotController::class, 'destroy'])->name('tourist-spots.destroy');
 
     Route::get('/bookings/reminders/due', [BookingController::class, 'getDueReminders'])->name('bookings.reminders.due');
@@ -53,5 +56,6 @@ Route::middleware('auth:sanctum')->name('api.')->group(function () {
     Route::apiResource('bookings', BookingController::class);
 
     Route::post('/payments/{payment}/proof', [PaymentController::class, 'uploadProof'])->name('payments.proof');
+    Route::delete('/payments/delete-all', [PaymentController::class, 'destroyAll'])->name('payments.destroy-all');
     Route::apiResource('payments', PaymentController::class);
 });

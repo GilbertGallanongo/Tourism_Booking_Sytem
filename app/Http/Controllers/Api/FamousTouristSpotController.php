@@ -96,6 +96,31 @@ class FamousTouristSpotController extends Controller
         return response()->json(['message' => 'Tourist spot deleted successfully.']);
     }
 
+    public function destroyAll(Request $request): JsonResponse
+    {
+        $this->requireAdmin($request);
+
+        $request->validate([
+            'confirm' => ['required', 'in:DELETE ALL TOURIST SPOTS'],
+        ]);
+
+        $deletedCount = FamousTouristSpot::count();
+
+        FamousTouristSpot::query()
+            ->select(['id', 'image'])
+            ->chunkById(100, function ($touristSpots) {
+                foreach ($touristSpots as $touristSpot) {
+                    $this->deletePublicFile($touristSpot->image);
+                    $touristSpot->delete();
+                }
+            });
+
+        return response()->json([
+            'message' => 'All tourist spots deleted successfully.',
+            'deleted_count' => $deletedCount,
+        ]);
+    }
+
     private function validateSpot(Request $request, bool $isUpdate = false): array
     {
         $required = $isUpdate ? 'sometimes' : 'required';

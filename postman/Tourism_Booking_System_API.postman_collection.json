@@ -1118,6 +1118,71 @@
               }
             }
           ]
+        },
+        {
+          "name": "Delete All Promo Packages",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"confirm\": \"DELETE ALL PROMO PACKAGES\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/promo-packages/delete-all",
+              "host": [
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
+              ],
+              "path": [
+                "api",
+                "promo-packages",
+                "delete-all"
+              ],
+              "protocol": "https"
+            },
+            "description": "Admin token required. Deletes all promo package records. Keep `confirm` exactly as `DELETE ALL PROMO PACKAGES` to avoid accidental deletion.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_access_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('All promo packages are deleted', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
         }
       ]
     },
@@ -1499,6 +1564,71 @@
                   "const data = () => json().data;",
                   "const first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Tourist spot is deleted', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete All Tourist Spots",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"confirm\": \"DELETE ALL TOURIST SPOTS\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/tourist-spots/delete-all",
+              "host": [
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
+              ],
+              "path": [
+                "api",
+                "tourist-spots",
+                "delete-all"
+              ],
+              "protocol": "https"
+            },
+            "description": "Admin token required. Deletes all tourist spot records. Keep `confirm` exactly as `DELETE ALL TOURIST SPOTS` to avoid accidental deletion.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_access_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('All tourist spots are deleted', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});"
                 ]
               }
             }
@@ -1898,6 +2028,71 @@
                   "const data = () => json().data;",
                   "const first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Package is deleted', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete All Packages",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"confirm\": \"DELETE ALL PACKAGES\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/packages/delete-all",
+              "host": [
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
+              ],
+              "path": [
+                "api",
+                "packages",
+                "delete-all"
+              ],
+              "protocol": "https"
+            },
+            "description": "Admin token required. Deletes all tour package records. Keep `confirm` exactly as `DELETE ALL PACKAGES` to avoid accidental deletion.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_access_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('All packages are deleted', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});"
                 ]
               }
             }
@@ -2610,6 +2805,71 @@
                   "const data = () => json().data;",
                   "const first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Payment is deleted', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete All Payments",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"confirm\": \"DELETE ALL PAYMENTS\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/payments/delete-all",
+              "host": [
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
+              ],
+              "path": [
+                "api",
+                "payments",
+                "delete-all"
+              ],
+              "protocol": "https"
+            },
+            "description": "Admin token required. Deletes all payment records. Keep `confirm` exactly as `DELETE ALL PAYMENTS` to avoid accidental deletion.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_access_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('All payments are deleted', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});"
                 ]
               }
             }

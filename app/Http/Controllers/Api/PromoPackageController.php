@@ -93,6 +93,31 @@ class PromoPackageController extends Controller
         return response()->json(['message' => 'Promo package deleted successfully.']);
     }
 
+    public function destroyAll(Request $request): JsonResponse
+    {
+        $this->requireAdmin($request);
+
+        $request->validate([
+            'confirm' => ['required', 'in:DELETE ALL PROMO PACKAGES'],
+        ]);
+
+        $deletedCount = PromoPackage::count();
+
+        PromoPackage::query()
+            ->select(['id', 'image'])
+            ->chunkById(100, function ($promoPackages) {
+                foreach ($promoPackages as $promoPackage) {
+                    $this->deletePublicFile($promoPackage->image);
+                    $promoPackage->delete();
+                }
+            });
+
+        return response()->json([
+            'message' => 'All promo packages deleted successfully.',
+            'deleted_count' => $deletedCount,
+        ]);
+    }
+
     private function validatePromoPackage(Request $request, bool $isUpdate = false): array
     {
         $required = $isUpdate ? 'sometimes' : 'required';

@@ -89,9 +89,35 @@ class TourPackageController extends Controller
     {
         $this->requireAdmin($request);
 
+        $this->deletePublicFile($package->image);
         $package->delete();
 
         return response()->json(['message' => 'Package deleted successfully.']);
+    }
+
+    public function destroyAll(Request $request): JsonResponse
+    {
+        $this->requireAdmin($request);
+
+        $request->validate([
+            'confirm' => ['required', 'in:DELETE ALL PACKAGES'],
+        ]);
+
+        $deletedCount = TourPackage::count();
+
+        TourPackage::query()
+            ->select(['id', 'image'])
+            ->chunkById(100, function ($packages) {
+                foreach ($packages as $package) {
+                    $this->deletePublicFile($package->image);
+                    $package->delete();
+                }
+            });
+
+        return response()->json([
+            'message' => 'All tour packages deleted successfully.',
+            'deleted_count' => $deletedCount,
+        ]);
     }
 
     private function validatePackage(Request $request, ?int $ignoreId = null): array

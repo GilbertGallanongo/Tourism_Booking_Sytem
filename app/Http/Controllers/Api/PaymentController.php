@@ -124,9 +124,35 @@ class PaymentController extends Controller
     {
         $this->requireAdmin($request);
 
+        $this->deletePublicFile($payment->proof);
         $payment->delete();
 
         return response()->json(['message' => 'Payment deleted successfully.']);
+    }
+
+    public function destroyAll(Request $request): JsonResponse
+    {
+        $this->requireAdmin($request);
+
+        $request->validate([
+            'confirm' => ['required', 'in:DELETE ALL PAYMENTS'],
+        ]);
+
+        $deletedCount = Payment::count();
+
+        Payment::query()
+            ->select(['id', 'proof'])
+            ->chunkById(100, function ($payments) {
+                foreach ($payments as $payment) {
+                    $this->deletePublicFile($payment->proof);
+                    $payment->delete();
+                }
+            });
+
+        return response()->json([
+            'message' => 'All payments deleted successfully.',
+            'deleted_count' => $deletedCount,
+        ]);
     }
 
     private function validatePayment(Request $request, ?int $ignoreId = null, bool $isUpdate = false): array
