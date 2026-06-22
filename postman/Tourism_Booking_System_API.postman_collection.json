@@ -1552,6 +1552,121 @@
       "name": "Tour Packages - Protected",
       "item": [
         {
+          "name": "List Tour Packages",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/packages",
+              "host": [
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
+              ],
+              "path": [
+                "api",
+                "packages"
+              ],
+              "protocol": "https"
+            },
+            "description": "No token required. Public tour package request included here for a complete package workflow."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "pm.test('Tour packages are listed', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  const item = first(data());",
+                  "  if (item && item.id) saveVar('package_id', item.id);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Show Tour Package",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/packages/{{package_id}}",
+              "host": [
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
+              ],
+              "path": [
+                "api",
+                "packages",
+                "{{package_id}}"
+              ],
+              "protocol": "https"
+            },
+            "description": "No token required. Public tour package request included here for a complete package workflow."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const saveVar = (key, value) => {",
+                  "  if (value === undefined || value === null) return;",
+                  "  const text = String(value);",
+                  "  pm.collectionVariables.set(key, text);",
+                  "  try { pm.environment.set(key, text); } catch (e) {}",
+                  "};",
+                  "const clearVar = (key) => {",
+                  "  pm.collectionVariables.unset(key);",
+                  "  try { pm.environment.unset(key); } catch (e) {}",
+                  "};",
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "pm.test('Tour package is returned', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
           "name": "Create Package",
           "event": [
             {
