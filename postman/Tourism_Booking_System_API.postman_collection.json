@@ -1669,78 +1669,6 @@
                   "const first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Package is created', function () {",
                   "  pm.response.to.have.status(201);",
-                  "  saveVar('package_id', data() && data().id);",
-                  "});"
-                ]
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Sample Bolinao Tour\",\n  \"location\": \"Bolinao, Pangasinan\",\n  \"description\": \"Sample package created from Postman.\",\n  \"price\": 1500,\n  \"duration_days\": 1,\n  \"max_guests\": 10,\n  \"status\": \"active\",\n  \"rating\": 0\n}"
-            },
-            "url": {
-              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/packages",
-              "host": [
-                "tourism-booking-system-production-b0bb",
-                "up",
-                "railway",
-                "app"
-              ],
-              "path": [
-                "api",
-                "packages"
-              ],
-              "protocol": "https"
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{admin_access_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Create Package with Image File",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "const saveVar = (key, value) => {",
-                  "  if (value === undefined || value === null) return;",
-                  "  const text = String(value);",
-                  "  pm.collectionVariables.set(key, text);",
-                  "  try { pm.environment.set(key, text); } catch (e) {}",
-                  "};",
-                  "const clearVar = (key) => {",
-                  "  pm.collectionVariables.unset(key);",
-                  "  try { pm.environment.unset(key); } catch (e) {}",
-                  "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
-                  "pm.test('Package with image is created', function () {",
-                  "  pm.response.to.have.status(201);",
                   "  const item = data();",
                   "  saveVar('package_id', item && item.id);",
                   "  pm.expect(item.image_url).to.be.a('string');",
@@ -1816,84 +1744,7 @@
               ],
               "protocol": "https"
             },
-            "description": "Admin token required. In Body > form-data, choose a local image file for `image_file` before sending. Do not manually set Content-Type for file uploads.\n\nIf this returns 401, send `Auth and Tokens / Admin Login - Create Token` first. This request uses `admin_access_token`.",
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{admin_access_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Upload Package Image File",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "const saveVar = (key, value) => {",
-                  "  if (value === undefined || value === null) return;",
-                  "  const text = String(value);",
-                  "  pm.collectionVariables.set(key, text);",
-                  "  try { pm.environment.set(key, text); } catch (e) {}",
-                  "};",
-                  "const clearVar = (key) => {",
-                  "  pm.collectionVariables.unset(key);",
-                  "  try { pm.environment.unset(key); } catch (e) {}",
-                  "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
-                  "pm.test('Package image is uploaded', function () {",
-                  "  pm.response.to.have.status(200);",
-                  "  pm.expect(data().image_url).to.be.a('string');",
-                  "});"
-                ]
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "image_file",
-                  "type": "file",
-                  "src": []
-                }
-              ]
-            },
-            "url": {
-              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/packages/{{package_id}}/image",
-              "host": [
-                "tourism-booking-system-production-b0bb",
-                "up",
-                "railway",
-                "app"
-              ],
-              "path": [
-                "api",
-                "packages",
-                "{{package_id}}",
-                "image"
-              ],
-              "protocol": "https"
-            },
-            "description": "Admin token required. Choose a local image file for `image_file`.\n\nIf this returns 401, send `Auth and Tokens / Admin Login - Create Token` first. This request uses `admin_access_token`.",
+            "description": "Admin token required. Use Body > form-data. To include an image, choose a local file for `image_file`; leave it empty for text-only create. Do not manually set Content-Type for file uploads.\n\nIf this returns 401, send `Auth and Tokens / Admin Login - Create Token` first. This request uses `admin_access_token`.",
             "auth": {
               "type": "bearer",
               "bearer": [
@@ -1909,77 +1760,6 @@
         },
         {
           "name": "Update Package",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Updated Bolinao Tour\",\n  \"price\": 1800,\n  \"duration_days\": 1,\n  \"max_guests\": 12,\n  \"status\": \"active\"\n}"
-            },
-            "url": {
-              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/packages/{{package_id}}",
-              "host": [
-                "tourism-booking-system-production-b0bb",
-                "up",
-                "railway",
-                "app"
-              ],
-              "path": [
-                "api",
-                "packages",
-                "{{package_id}}"
-              ],
-              "protocol": "https"
-            },
-            "description": "Text-only package update using raw JSON. Raw JSON cannot upload real image files. To update package details and image together, use `Update Package with Image File`.",
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{admin_access_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "const saveVar = (key, value) => {",
-                  "  if (value === undefined || value === null) return;",
-                  "  const text = String(value);",
-                  "  pm.collectionVariables.set(key, text);",
-                  "  try { pm.environment.set(key, text); } catch (e) {}",
-                  "};",
-                  "const clearVar = (key) => {",
-                  "  pm.collectionVariables.unset(key);",
-                  "  try { pm.environment.unset(key); } catch (e) {}",
-                  "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
-                  "pm.test('Package is updated', function () { pm.response.to.have.status(200); });"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "Update Package with Image File",
           "request": {
             "method": "POST",
             "header": [
@@ -2053,7 +1833,7 @@
               ],
               "protocol": "https"
             },
-            "description": "Admin token required. Use Body > form-data and choose a local image file for `image_file`.\n\nThis request uses POST with `_method=PUT` because real image uploads must use multipart form-data. Do not use raw JSON for file uploads, and do not manually add `Content-Type: multipart/form-data`; Postman sets the boundary automatically.\n\nIf this returns 401, send `Auth and Tokens / Admin Login - Create Token` first.",
+            "description": "Admin token required. Use Body > form-data. To replace the image, choose a local file for `image_file`; leave it empty for text-only update.\n\nThis request uses POST with `_method=PUT` because multipart form-data works reliably for optional image uploads. Do not manually add `Content-Type: multipart/form-data`; Postman sets the boundary automatically.\n\nIf this returns 401, send `Auth and Tokens / Admin Login - Create Token` first.",
             "auth": {
               "type": "bearer",
               "bearer": [
@@ -2074,7 +1854,7 @@
                 "exec": [
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
-                  "pm.test('Package is updated with image', function () {",
+                  "pm.test('Package is updated', function () {",
                   "  pm.response.to.have.status(200);",
                   "  pm.expect(data().image_url).to.be.a('string');",
                   "});"
