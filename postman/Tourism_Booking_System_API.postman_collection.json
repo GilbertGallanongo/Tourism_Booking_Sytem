@@ -356,7 +356,7 @@
           "response": []
         },
         {
-          "name": "List Tokens",
+          "name": "List All Tokens",
           "event": [
             {
               "listen": "test",
@@ -593,7 +593,7 @@
       "name": "Public Packages - Read Only",
       "item": [
         {
-          "name": "List Public Packages",
+          "name": "List All Public Packages",
           "request": {
             "auth": {
               "type": "noauth"
@@ -670,7 +670,7 @@
           ]
         },
         {
-          "name": "Show Public Package",
+          "name": "Show Public Package by ID",
           "request": {
             "auth": {
               "type": "noauth"
@@ -731,7 +731,7 @@
       "name": "Promo Packages",
       "item": [
         {
-          "name": "List Promo Packages",
+          "name": "List All Promo Packages",
           "request": {
             "auth": {
               "type": "noauth"
@@ -790,7 +790,7 @@
           ]
         },
         {
-          "name": "Show Promo Package",
+          "name": "Show Promo Package by ID",
           "request": {
             "auth": {
               "type": "noauth"
@@ -952,7 +952,7 @@
           "response": []
         },
         {
-          "name": "Update Promo Package",
+          "name": "Update Promo Package by ID",
           "request": {
             "method": "POST",
             "header": [
@@ -1059,7 +1059,7 @@
           ]
         },
         {
-          "name": "Delete Promo Package",
+          "name": "Delete Promo Package by ID",
           "request": {
             "method": "DELETE",
             "header": [
@@ -1191,7 +1191,7 @@
       "name": "Tourist Spots",
       "item": [
         {
-          "name": "List Tourist Spots",
+          "name": "List All Tourist Spots",
           "request": {
             "auth": {
               "type": "noauth"
@@ -1250,7 +1250,7 @@
           ]
         },
         {
-          "name": "Show Tourist Spot",
+          "name": "Show Tourist Spot by ID",
           "request": {
             "auth": {
               "type": "noauth"
@@ -1407,7 +1407,7 @@
           "response": []
         },
         {
-          "name": "Update Tourist Spot",
+          "name": "Update Tourist Spot by ID",
           "request": {
             "method": "POST",
             "header": [
@@ -1509,7 +1509,7 @@
           ]
         },
         {
-          "name": "Delete Tourist Spot",
+          "name": "Delete Tourist Spot by ID",
           "request": {
             "method": "DELETE",
             "header": [
@@ -1641,7 +1641,7 @@
       "name": "Tour Packages - Protected",
       "item": [
         {
-          "name": "List Tour Packages",
+          "name": "List All Tour Packages",
           "request": {
             "auth": {
               "type": "noauth"
@@ -1700,7 +1700,7 @@
           ]
         },
         {
-          "name": "Show Tour Package",
+          "name": "Show Tour Package by ID",
           "request": {
             "auth": {
               "type": "noauth"
@@ -1868,7 +1868,7 @@
           "response": []
         },
         {
-          "name": "Update Package",
+          "name": "Update Package by ID",
           "request": {
             "method": "POST",
             "header": [
@@ -1973,7 +1973,7 @@
           ]
         },
         {
-          "name": "Delete Package",
+          "name": "Delete Package by ID",
           "request": {
             "method": "DELETE",
             "header": [
@@ -2105,7 +2105,7 @@
       "name": "Bookings",
       "item": [
         {
-          "name": "List Bookings",
+          "name": "List All Bookings",
           "request": {
             "method": "GET",
             "header": [
@@ -2227,7 +2227,7 @@
           ]
         },
         {
-          "name": "Show Booking",
+          "name": "Show Booking by ID",
           "request": {
             "method": "GET",
             "header": [
@@ -2279,7 +2279,7 @@
           ]
         },
         {
-          "name": "Update Booking",
+          "name": "Update Booking by ID",
           "request": {
             "method": "PUT",
             "header": [
@@ -2339,7 +2339,7 @@
           ]
         },
         {
-          "name": "Delete Booking",
+          "name": "Delete Booking by ID",
           "request": {
             "method": "DELETE",
             "header": [
@@ -2471,7 +2471,7 @@
       "name": "Payments",
       "item": [
         {
-          "name": "List Payments",
+          "name": "List All Payments",
           "request": {
             "method": "GET",
             "header": [
@@ -2628,7 +2628,7 @@
           "response": []
         },
         {
-          "name": "Show Payment",
+          "name": "Show Payment by ID",
           "request": {
             "method": "GET",
             "header": [
@@ -2680,7 +2680,7 @@
           ]
         },
         {
-          "name": "Mark Payment Paid",
+          "name": "Mark Payment Paid by ID",
           "request": {
             "method": "PUT",
             "header": [
@@ -2750,7 +2750,7 @@
           ]
         },
         {
-          "name": "Delete Payment",
+          "name": "Delete Payment by ID",
           "request": {
             "method": "DELETE",
             "header": [
