@@ -1940,6 +1940,7 @@
               ],
               "protocol": "https"
             },
+            "description": "Text-only package update using raw JSON. Raw JSON cannot upload real image files. To update package details and image together, use `Update Package with Image File`.",
             "auth": {
               "type": "bearer",
               "bearer": [
@@ -1972,6 +1973,111 @@
                   "const data = () => json().data;",
                   "const first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Package is updated', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Package with Image File",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "_method",
+                  "value": "PUT",
+                  "type": "text"
+                },
+                {
+                  "key": "name",
+                  "value": "Updated Bolinao Tour With Image",
+                  "type": "text"
+                },
+                {
+                  "key": "location",
+                  "value": "Bolinao, Pangasinan",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "Updated package details and image from Postman.",
+                  "type": "text"
+                },
+                {
+                  "key": "price",
+                  "value": "1800",
+                  "type": "text"
+                },
+                {
+                  "key": "duration_days",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "max_guests",
+                  "value": "12",
+                  "type": "text"
+                },
+                {
+                  "key": "status",
+                  "value": "active",
+                  "type": "text"
+                },
+                {
+                  "key": "image_file",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/packages/{{package_id}}",
+              "host": [
+                "tourism-booking-system-production-b0bb",
+                "up",
+                "railway",
+                "app"
+              ],
+              "path": [
+                "api",
+                "packages",
+                "{{package_id}}"
+              ],
+              "protocol": "https"
+            },
+            "description": "Admin token required. Use Body > form-data and choose a local image file for `image_file`.\n\nThis request uses POST with `_method=PUT` because real image uploads must use multipart form-data. Do not use raw JSON for file uploads, and do not manually add `Content-Type: multipart/form-data`; Postman sets the boundary automatically.\n\nIf this returns 401, send `Auth and Tokens / Admin Login - Create Token` first.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_access_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = () => pm.response.json();",
+                  "const data = () => json().data;",
+                  "pm.test('Package is updated with image', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  pm.expect(data().image_url).to.be.a('string');",
+                  "});"
                 ]
               }
             }
