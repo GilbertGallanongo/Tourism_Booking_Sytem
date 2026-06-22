@@ -22,6 +22,7 @@ Route::middleware('auth:sanctum')->name('api.')->group(function () {
     Route::post('/logout', [TokenController::class, 'logout'])->name('tokens.logout');
     Route::post('/tokens', [TokenController::class, 'createToken'])->name('tokens.create');
     Route::get('/tokens', [TokenController::class, 'listTokens'])->name('tokens.list');
+    Route::delete('/tokens/delete-all', [TokenController::class, 'deleteAllTokens'])->name('tokens.delete-all');
     Route::delete('/tokens/{tokenId}', [TokenController::class, 'revokeToken'])->name('tokens.revoke');
     Route::post('/tokens/revoke-all', [TokenController::class, 'revokeAllTokens'])->name('tokens.revoke-all');
 

@@ -229,6 +229,11 @@ class TokenController extends Controller
      */
     public function revokeAllTokens(Request $request): JsonResponse
     {
+        return $this->deleteAllTokens($request);
+    }
+
+    public function deleteAllTokens(Request $request): JsonResponse
+    {
         $user = $request->user();
 
         if (!$user) {
@@ -240,7 +245,7 @@ class TokenController extends Controller
         $user->tokens()->delete();
 
         return response()->json([
-            'message' => 'All API tokens revoked successfully.',
+            'message' => 'All API tokens deleted successfully.',
         ]);
     }
 

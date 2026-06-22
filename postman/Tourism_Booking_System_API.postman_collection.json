@@ -503,7 +503,7 @@
             }
           ],
           "request": {
-            "method": "POST",
+            "method": "DELETE",
             "header": [
               {
                 "key": "Accept",
@@ -511,7 +511,7 @@
               }
             ],
             "url": {
-              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/tokens/revoke-all",
+              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/tokens/delete-all",
               "host": [
                 "tourism-booking-system-production-b0bb",
                 "up",
@@ -521,11 +521,11 @@
               "path": [
                 "api",
                 "tokens",
-                "revoke-all"
+                "delete-all"
               ],
               "protocol": "https"
             },
-            "description": "Deletes/revokes all personal access tokens for the current authenticated account."
+            "description": "Deletes all personal access tokens for the current authenticated account. Uses DELETE /api/tokens/delete-all. The old POST /api/tokens/revoke-all route still works as a compatibility alias."
           },
           "description": "Revokes every token for the logged-in account. After this, run Login again before calling protected endpoints.",
           "response": []
