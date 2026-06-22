@@ -886,7 +886,7 @@
           ]
         },
         {
-          "name": "Create Promo Package with Image File",
+          "name": "Create Promo Package",
           "event": [
             {
               "listen": "test",
@@ -906,7 +906,7 @@
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
                   "const first = (value) => Array.isArray(value) ? value[0] : null;",
-                  "pm.test('Promo package with image is created', function () {",
+                  "pm.test('Promo package is created', function () {",
                   "  pm.response.to.have.status(201);",
                   "  const item = data();",
                   "  saveVar('promo_package_id', item && item.id);",
@@ -929,12 +929,17 @@
               "formdata": [
                 {
                   "key": "name",
-                  "value": "Postman Promo With Image",
+                  "value": "Postman Promo",
                   "type": "text"
                 },
                 {
+                  "key": "image_file",
+                  "type": "file",
+                  "src": ""
+                },
+                {
                   "key": "description",
-                  "value": "Promo package created from Postman with an uploaded image.",
+                  "value": "Promo package created from Postman.",
                   "type": "text"
                 },
                 {
@@ -956,11 +961,6 @@
                   "key": "is_active",
                   "value": "1",
                   "type": "text"
-                },
-                {
-                  "key": "image_file",
-                  "type": "file",
-                  "src": []
                 }
               ]
             },
@@ -978,7 +978,7 @@
               ],
               "protocol": "https"
             },
-            "description": "Admin token required. Choose a local image file for `image_file`.",
+            "description": "Admin token required. Use Body > form-data. To include an image, choose a local file for `image_file`; leave it empty for text-only create. Do not manually set Content-Type for file uploads.",
             "auth": {
               "type": "bearer",
               "bearer": [
@@ -993,7 +993,7 @@
           "response": []
         },
         {
-          "name": "Upload Promo Package Image File",
+          "name": "Update Promo Package",
           "request": {
             "method": "POST",
             "header": [
@@ -1006,91 +1006,46 @@
               "mode": "formdata",
               "formdata": [
                 {
+                  "key": "_method",
+                  "value": "PUT",
+                  "type": "text"
+                },
+                {
+                  "key": "name",
+                  "value": "Updated Postman Promo",
+                  "type": "text"
+                },
+                {
                   "key": "image_file",
                   "type": "file",
-                  "src": []
-                }
-              ]
-            },
-            "url": {
-              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/promo-packages/{{promo_package_id}}/image",
-              "host": [
-                "tourism-booking-system-production-b0bb",
-                "up",
-                "railway",
-                "app"
-              ],
-              "path": [
-                "api",
-                "promo-packages",
-                "{{promo_package_id}}",
-                "image"
-              ],
-              "protocol": "https"
-            },
-            "description": "Admin token required. Choose a local image file for `image_file`.",
-            "auth": {
-              "type": "bearer",
-              "bearer": [
+                  "src": ""
+                },
                 {
-                  "key": "token",
-                  "value": "{{admin_access_token}}",
-                  "type": "string"
+                  "key": "description",
+                  "value": "Updated from Postman.",
+                  "type": "text"
+                },
+                {
+                  "key": "discount_percentage",
+                  "value": "20",
+                  "type": "text"
+                },
+                {
+                  "key": "start_date",
+                  "value": "2026-06-01",
+                  "type": "text"
+                },
+                {
+                  "key": "end_date",
+                  "value": "2026-12-31",
+                  "type": "text"
+                },
+                {
+                  "key": "is_active",
+                  "value": "1",
+                  "type": "text"
                 }
               ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "const saveVar = (key, value) => {",
-                  "  if (value === undefined || value === null) return;",
-                  "  const text = String(value);",
-                  "  pm.collectionVariables.set(key, text);",
-                  "  try { pm.environment.set(key, text); } catch (e) {}",
-                  "};",
-                  "const clearVar = (key) => {",
-                  "  pm.collectionVariables.unset(key);",
-                  "  try { pm.environment.unset(key); } catch (e) {}",
-                  "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
-                  "pm.test('Promo package image is uploaded', function () {",
-                  "  pm.response.to.have.status(200);",
-                  "  pm.expect(data().image_url).to.be.a('string');",
-                  "});"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "Update Promo Package",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Updated Postman Promo\",\n  \"description\": \"Updated from Postman.\",\n  \"discount_percentage\": 20,\n  \"start_date\": \"2026-06-01\",\n  \"end_date\": \"2026-12-31\",\n  \"is_active\": true\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
             },
             "url": {
               "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/promo-packages/{{promo_package_id}}",
@@ -1107,7 +1062,7 @@
               ],
               "protocol": "https"
             },
-            "description": "Admin token required. Updates the promo package selected by `promo_package_id`.",
+            "description": "Admin token required. Use Body > form-data. To replace the image, choose a local file for `image_file`; leave it empty for text-only update. Uses POST with `_method=PUT` for multipart uploads.",
             "auth": {
               "type": "bearer",
               "bearer": [
@@ -1326,7 +1281,7 @@
           ]
         },
         {
-          "name": "Create Tourist Spot with Image File",
+          "name": "Create Tourist Spot",
           "event": [
             {
               "listen": "test",
@@ -1346,7 +1301,7 @@
                   "const json = () => pm.response.json();",
                   "const data = () => json().data;",
                   "const first = (value) => Array.isArray(value) ? value[0] : null;",
-                  "pm.test('Tourist spot with image is created', function () {",
+                  "pm.test('Tourist spot is created', function () {",
                   "  pm.response.to.have.status(201);",
                   "  const item = data();",
                   "  saveVar('tourist_spot_id', item && item.id);",
@@ -1369,12 +1324,17 @@
               "formdata": [
                 {
                   "key": "name",
-                  "value": "Postman Tourist Spot With Image",
+                  "value": "Postman Tourist Spot",
                   "type": "text"
                 },
                 {
+                  "key": "image_file",
+                  "type": "file",
+                  "src": ""
+                },
+                {
                   "key": "description",
-                  "value": "Tourist spot created from Postman with an uploaded image.",
+                  "value": "Tourist spot created from Postman.",
                   "type": "text"
                 },
                 {
@@ -1391,11 +1351,6 @@
                   "key": "sort_order",
                   "value": "0",
                   "type": "text"
-                },
-                {
-                  "key": "image_file",
-                  "type": "file",
-                  "src": []
                 }
               ]
             },
@@ -1413,7 +1368,7 @@
               ],
               "protocol": "https"
             },
-            "description": "Admin token required. Choose a local image file for `image_file`.",
+            "description": "Admin token required. Use Body > form-data. To include an image, choose a local file for `image_file`; leave it empty for text-only create. Do not manually set Content-Type for file uploads.",
             "auth": {
               "type": "bearer",
               "bearer": [
@@ -1428,7 +1383,7 @@
           "response": []
         },
         {
-          "name": "Upload Tourist Spot Image File",
+          "name": "Update Tourist Spot",
           "request": {
             "method": "POST",
             "header": [
@@ -1441,91 +1396,41 @@
               "mode": "formdata",
               "formdata": [
                 {
+                  "key": "_method",
+                  "value": "PUT",
+                  "type": "text"
+                },
+                {
+                  "key": "name",
+                  "value": "Updated Postman Tourist Spot",
+                  "type": "text"
+                },
+                {
                   "key": "image_file",
                   "type": "file",
-                  "src": []
-                }
-              ]
-            },
-            "url": {
-              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/tourist-spots/{{tourist_spot_id}}/image",
-              "host": [
-                "tourism-booking-system-production-b0bb",
-                "up",
-                "railway",
-                "app"
-              ],
-              "path": [
-                "api",
-                "tourist-spots",
-                "{{tourist_spot_id}}",
-                "image"
-              ],
-              "protocol": "https"
-            },
-            "description": "Admin token required. Choose a local image file for `image_file`.",
-            "auth": {
-              "type": "bearer",
-              "bearer": [
+                  "src": ""
+                },
                 {
-                  "key": "token",
-                  "value": "{{admin_access_token}}",
-                  "type": "string"
+                  "key": "description",
+                  "value": "Updated from Postman.",
+                  "type": "text"
+                },
+                {
+                  "key": "location",
+                  "value": "Bolinao, Pangasinan",
+                  "type": "text"
+                },
+                {
+                  "key": "is_active",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "sort_order",
+                  "value": "1",
+                  "type": "text"
                 }
               ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "const saveVar = (key, value) => {",
-                  "  if (value === undefined || value === null) return;",
-                  "  const text = String(value);",
-                  "  pm.collectionVariables.set(key, text);",
-                  "  try { pm.environment.set(key, text); } catch (e) {}",
-                  "};",
-                  "const clearVar = (key) => {",
-                  "  pm.collectionVariables.unset(key);",
-                  "  try { pm.environment.unset(key); } catch (e) {}",
-                  "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
-                  "pm.test('Tourist spot image is uploaded', function () {",
-                  "  pm.response.to.have.status(200);",
-                  "  pm.expect(data().image_url).to.be.a('string');",
-                  "});"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "Update Tourist Spot",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Updated Postman Tourist Spot\",\n  \"description\": \"Updated from Postman.\",\n  \"location\": \"Bolinao, Pangasinan\",\n  \"is_active\": true,\n  \"sort_order\": 1\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
             },
             "url": {
               "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/tourist-spots/{{tourist_spot_id}}",
@@ -1542,7 +1447,7 @@
               ],
               "protocol": "https"
             },
-            "description": "Admin token required. Updates the tourist spot selected by `tourist_spot_id`.",
+            "description": "Admin token required. Use Body > form-data. To replace the image, choose a local file for `image_file`; leave it empty for text-only update. Uses POST with `_method=PUT` for multipart uploads.",
             "auth": {
               "type": "bearer",
               "bearer": [
@@ -1694,6 +1599,11 @@
                   "type": "text"
                 },
                 {
+                  "key": "image_file",
+                  "type": "file",
+                  "src": ""
+                },
+                {
                   "key": "location",
                   "value": "Bolinao, Pangasinan",
                   "type": "text"
@@ -1722,11 +1632,6 @@
                   "key": "status",
                   "value": "active",
                   "type": "text"
-                },
-                {
-                  "key": "image_file",
-                  "type": "file",
-                  "src": []
                 }
               ]
             },
@@ -1782,6 +1687,11 @@
                   "type": "text"
                 },
                 {
+                  "key": "image_file",
+                  "type": "file",
+                  "src": ""
+                },
+                {
                   "key": "location",
                   "value": "Bolinao, Pangasinan",
                   "type": "text"
@@ -1810,11 +1720,6 @@
                   "key": "status",
                   "value": "active",
                   "type": "text"
-                },
-                {
-                  "key": "image_file",
-                  "type": "file",
-                  "src": []
                 }
               ]
             },
@@ -2895,7 +2800,7 @@
           ]
         },
         {
-          "name": "Create or Update Payment by Booking",
+          "name": "Create or Update Payment",
           "event": [
             {
               "listen": "test",
@@ -2916,69 +2821,6 @@
                   "const data = () => json().data;",
                   "const first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Payment is created or updated', function () {",
-                  "  pm.response.to.have.status(201);",
-                  "  const item = data();",
-                  "  saveVar('payment_id', item && item.id);",
-                  "});"
-                ]
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"booking_id\": {{booking_id}},\n  \"amount\": 1500,\n  \"method\": \"gcash\",\n  \"reference_number\": \"GCASH-POSTMAN-001\",\n  \"proof\": \"payment-proofs/sample.jpg\",\n  \"status\": \"unpaid\"\n}"
-            },
-            "url": {
-              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/payments",
-              "host": [
-                "tourism-booking-system-production-b0bb",
-                "up",
-                "railway",
-                "app"
-              ],
-              "path": [
-                "api",
-                "payments"
-              ],
-              "protocol": "https"
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Create or Update Payment with Proof File",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "const saveVar = (key, value) => {",
-                  "  if (value === undefined || value === null) return;",
-                  "  const text = String(value);",
-                  "  pm.collectionVariables.set(key, text);",
-                  "  try { pm.environment.set(key, text); } catch (e) {}",
-                  "};",
-                  "const clearVar = (key) => {",
-                  "  pm.collectionVariables.unset(key);",
-                  "  try { pm.environment.unset(key); } catch (e) {}",
-                  "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
-                  "pm.test('Payment proof file is uploaded', function () {",
                   "  pm.response.to.have.status(201);",
                   "  const item = data();",
                   "  saveVar('payment_id', item && item.id);",
@@ -3005,6 +2847,11 @@
                   "type": "text"
                 },
                 {
+                  "key": "proof_file",
+                  "type": "file",
+                  "src": ""
+                },
+                {
                   "key": "amount",
                   "value": "1500",
                   "type": "text"
@@ -3023,11 +2870,6 @@
                   "key": "status",
                   "value": "unpaid",
                   "type": "text"
-                },
-                {
-                  "key": "proof_file",
-                  "type": "file",
-                  "src": []
                 }
               ]
             },
@@ -3045,74 +2887,17 @@
               ],
               "protocol": "https"
             },
-            "description": "Authenticated user required. Choose a local jpg/png/webp/gif/pdf file for `proof_file`."
-          },
-          "response": []
-        },
-        {
-          "name": "Upload Payment Proof File",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "const saveVar = (key, value) => {",
-                  "  if (value === undefined || value === null) return;",
-                  "  const text = String(value);",
-                  "  pm.collectionVariables.set(key, text);",
-                  "  try { pm.environment.set(key, text); } catch (e) {}",
-                  "};",
-                  "const clearVar = (key) => {",
-                  "  pm.collectionVariables.unset(key);",
-                  "  try { pm.environment.unset(key); } catch (e) {}",
-                  "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
-                  "pm.test('Payment proof is uploaded', function () {",
-                  "  pm.response.to.have.status(200);",
-                  "  pm.expect(data().proof_url).to.be.a('string');",
-                  "});"
-                ]
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
+            "description": "Authenticated user required. Use Body > form-data. To include proof of payment, choose a jpg/png/webp/gif/pdf file for `proof_file`; leave it empty for text-only payment create/update.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
                 {
-                  "key": "proof_file",
-                  "type": "file",
-                  "src": []
+                  "key": "token",
+                  "value": "{{admin_access_token}}",
+                  "type": "string"
                 }
               ]
-            },
-            "url": {
-              "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/payments/{{payment_id}}/proof",
-              "host": [
-                "tourism-booking-system-production-b0bb",
-                "up",
-                "railway",
-                "app"
-              ],
-              "path": [
-                "api",
-                "payments",
-                "{{payment_id}}",
-                "proof"
-              ],
-              "protocol": "https"
-            },
-            "description": "Authenticated user required. Choose a local jpg/png/webp/gif/pdf file for `proof_file`."
+            }
           },
           "response": []
         },
