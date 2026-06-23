@@ -112,6 +112,14 @@ Route::get('/reservations/{booking}/proof', [ReservationController::class, 'proo
     ->middleware('auth')
     ->name('reservations.proof');
 
+Route::get('/reservations/{booking}/edit', [ReservationController::class, 'edit'])
+    ->middleware(['auth', 'not.guest'])
+    ->name('reservations.edit');
+
+Route::patch('/reservations/{booking}', [ReservationController::class, 'update'])
+    ->middleware(['auth', 'not.guest'])
+    ->name('reservations.update');
+
 Route::delete('/reservations/{booking}', [ReservationController::class, 'cancel'])
     ->middleware('auth')
     ->name('reservations.cancel');

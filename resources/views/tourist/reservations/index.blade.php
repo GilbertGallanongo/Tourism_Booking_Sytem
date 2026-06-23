@@ -43,6 +43,10 @@
                         <td>
                             <a href="{{ route('reservations.show', $booking) }}"
                                class="btn btn-sm btn-outline-secondary">View</a>
+                            @if($booking->isPending())
+                                <a href="{{ route('reservations.edit', $booking) }}"
+                                   class="btn btn-sm btn-outline-primary">Edit</a>
+                            @endif
                             @if($booking->isPending() || $booking->status === 'confirmed')
                                 <button type="button" class="btn btn-sm btn-outline-danger" onclick="showCancelModal({{ $booking->id }})">Cancel</button>
                             @endif
