@@ -104,6 +104,11 @@
       "key": "payment_id",
       "value": "1",
       "type": "string"
+    },
+    {
+      "key": "admin_authorization_header",
+      "value": "",
+      "type": "string"
     }
   ],
   "event": [
@@ -236,6 +241,8 @@
                   "  pm.expect(body.token).to.be.a('string');",
                   "  saveVar('token', body.token);",
                   "  saveVar('admin_access_token', body.token);",
+                  "  saveVar('admin_authorization_header', 'Bearer ' + body.token);",
+                  "  saveVar('admin_token', body.token);",
                   "  saveVar('current_token_id', body.token_id);",
                   "  saveVar('admin_id', body.user && body.user.id);",
                   "  clearVar('token_id');",
@@ -284,7 +291,7 @@
               ],
               "protocol": "https"
             },
-            "description": "Creates an admin personal access token using the sample admin account. The token is automatically saved as `token` and `admin_access_token` for admin-only requests."
+            "description": "Creates an admin personal access token using the sample admin account. The token is automatically saved as `token`, `admin_access_token`, and `admin_authorization_header` for admin-only requests."
           },
           "response": []
         },
@@ -1972,6 +1979,10 @@
             "method": "GET",
             "header": [
               {
+                "key": "Authorization",
+                "value": "{{admin_authorization_header}}"
+              },
+              {
                 "key": "Accept",
                 "value": "application/json"
               }
@@ -1991,16 +2002,9 @@
               "protocol": "https"
             },
             "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{admin_access_token}}",
-                  "type": "string"
-                }
-              ]
+              "type": "noauth"
             },
-            "description": "Admin token required. Run `Auth and Tokens / Admin Login - Create Token` first so `admin_access_token` is saved, then send this request."
+            "description": "Admin token required. Run `Auth and Tokens / Admin Login - Create Token` first, then send this request. If entering manually, put either the full token in `admin_access_token` or `Bearer YOUR_TOKEN` in the visible Authorization header."
           },
           "response": [],
           "event": [
@@ -2041,6 +2045,10 @@
             "method": "POST",
             "header": [
               {
+                "key": "Authorization",
+                "value": "{{admin_authorization_header}}"
+              },
+              {
                 "key": "Accept",
                 "value": "application/json"
               },
@@ -2067,16 +2075,9 @@
               ],
               "protocol": "https"
             },
-            "description": "Authenticated user required. If using an admin token, `user_id` is required because the admin must choose which tourist owns the booking. If using a tourist token, the API ignores `user_id` and uses the logged-in tourist automatically.\n\nAdmin token required. Run `Auth and Tokens / Admin Login - Create Token` first so `admin_access_token` is saved, then send this request.",
+            "description": "Authenticated user required. If using an admin token, `user_id` is required because the admin must choose which tourist owns the booking. If using a tourist token, the API ignores `user_id` and uses the logged-in tourist automatically.\n\nAdmin token required. Run `Auth and Tokens / Admin Login - Create Token` first, then send this request. If entering manually, put either the full token in `admin_access_token` or `Bearer YOUR_TOKEN` in the visible Authorization header.",
             "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{admin_access_token}}",
-                  "type": "string"
-                }
-              ]
+              "type": "noauth"
             }
           },
           "response": [],
@@ -2116,6 +2117,10 @@
             "method": "GET",
             "header": [
               {
+                "key": "Authorization",
+                "value": "{{admin_authorization_header}}"
+              },
+              {
                 "key": "Accept",
                 "value": "application/json"
               }
@@ -2136,16 +2141,9 @@
               "protocol": "https"
             },
             "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{admin_access_token}}",
-                  "type": "string"
-                }
-              ]
+              "type": "noauth"
             },
-            "description": "Admin token required. Run `Auth and Tokens / Admin Login - Create Token` first so `admin_access_token` is saved, then send this request."
+            "description": "Admin token required. Run `Auth and Tokens / Admin Login - Create Token` first, then send this request. If entering manually, put either the full token in `admin_access_token` or `Bearer YOUR_TOKEN` in the visible Authorization header."
           },
           "response": [],
           "event": [
@@ -2179,6 +2177,10 @@
             "method": "PUT",
             "header": [
               {
+                "key": "Authorization",
+                "value": "{{admin_authorization_header}}"
+              },
+              {
                 "key": "Accept",
                 "value": "application/json"
               },
@@ -2207,16 +2209,9 @@
               "protocol": "https"
             },
             "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{admin_access_token}}",
-                  "type": "string"
-                }
-              ]
+              "type": "noauth"
             },
-            "description": "Admin token required. Run `Auth and Tokens / Admin Login - Create Token` first so `admin_access_token` is saved, then send this request."
+            "description": "Admin token required. Run `Auth and Tokens / Admin Login - Create Token` first, then send this request. If entering manually, put either the full token in `admin_access_token` or `Bearer YOUR_TOKEN` in the visible Authorization header."
           },
           "response": [],
           "event": [
@@ -2250,6 +2245,10 @@
             "method": "DELETE",
             "header": [
               {
+                "key": "Authorization",
+                "value": "{{admin_authorization_header}}"
+              },
+              {
                 "key": "Accept",
                 "value": "application/json"
               }
@@ -2270,16 +2269,9 @@
               "protocol": "https"
             },
             "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{admin_access_token}}",
-                  "type": "string"
-                }
-              ]
+              "type": "noauth"
             },
-            "description": "Admin token required. Run `Auth and Tokens / Admin Login - Create Token` first so `admin_access_token` is saved, then send this request."
+            "description": "Admin token required. Run `Auth and Tokens / Admin Login - Create Token` first, then send this request. If entering manually, put either the full token in `admin_access_token` or `Bearer YOUR_TOKEN` in the visible Authorization header."
           },
           "response": [],
           "event": [
@@ -2313,6 +2305,10 @@
             "method": "DELETE",
             "header": [
               {
+                "key": "Authorization",
+                "value": "{{admin_authorization_header}}"
+              },
+              {
                 "key": "Accept",
                 "value": "application/json"
               },
@@ -2345,16 +2341,9 @@
               ],
               "protocol": "https"
             },
-            "description": "Admin token required. Deletes all booking records and their related payments. Keep `confirm` exactly as `DELETE ALL BOOKINGS` to avoid accidental deletion.\n\nAdmin token required. Run `Auth and Tokens / Admin Login - Create Token` first so `admin_access_token` is saved, then send this request.",
+            "description": "Admin token required. Deletes all booking records and their related payments. Keep `confirm` exactly as `DELETE ALL BOOKINGS` to avoid accidental deletion.\n\nAdmin token required. Run `Auth and Tokens / Admin Login - Create Token` first, then send this request. If entering manually, put either the full token in `admin_access_token` or `Bearer YOUR_TOKEN` in the visible Authorization header.",
             "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{admin_access_token}}",
-                  "type": "string"
-                }
-              ]
+              "type": "noauth"
             }
           },
           "response": [],
@@ -2371,6 +2360,25 @@
               }
             }
           ]
+        }
+      ],
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const existingHeader = pm.request.headers.get('Authorization');",
+              "let authValue = (pm.variables.get('admin_authorization_header') || pm.variables.get('admin_access_token') || pm.variables.get('admin_token') || pm.variables.get('token') || '').trim();",
+              "if (!authValue && existingHeader && !existingHeader.includes('{{')) authValue = existingHeader.trim();",
+              "if (authValue) {",
+              "  if (!/^Bearer\\s+/i.test(authValue)) authValue = 'Bearer ' + authValue;",
+              "  pm.collectionVariables.set('admin_authorization_header', authValue);",
+              "  try { pm.environment.set('admin_authorization_header', authValue); } catch (e) {}",
+              "  pm.request.headers.upsert({ key: 'Authorization', value: authValue });",
+              "}"
+            ]
+          }
         }
       ]
     },
