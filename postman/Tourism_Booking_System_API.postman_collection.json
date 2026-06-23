@@ -1967,10 +1967,14 @@
       "name": "Bookings",
       "item": [
         {
-          "name": "List All Bookings",
+          "name": "Show All Bookings",
           "request": {
             "method": "GET",
             "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_access_token}}"
+              },
               {
                 "key": "Accept",
                 "value": "application/json"
@@ -1991,19 +1995,25 @@
               "protocol": "https"
             },
             "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{admin_access_token}}",
-                  "type": "string"
-                }
-              ]
+              "type": "noauth"
             },
-            "description": "Admin token required. Run `Auth and Tokens / Admin Login - Create Token` first so `admin_access_token` is saved, then send this request."
+            "description": "Admin token required. Run `Auth and Tokens / Admin Login - Create Token` first so `admin_access_token` is saved, then send this request.\n\nThis request also injects the Authorization header automatically from `admin_access_token` or `token` before sending."
           },
           "response": [],
           "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const adminToken = pm.collectionVariables.get('admin_access_token') || pm.environment.get('admin_access_token') || pm.collectionVariables.get('token') || pm.environment.get('token');",
+                  "if (!adminToken) {",
+                  "  throw new Error('Missing admin token. Run Auth and Tokens / Admin Login - Create Token first, then retry this booking request.');",
+                  "}",
+                  "pm.request.headers.upsert({ key: 'Authorization', value: `Bearer ${adminToken}` });"
+                ]
+              }
+            },
             {
               "listen": "test",
               "script": {
@@ -2041,6 +2051,10 @@
             "method": "POST",
             "header": [
               {
+                "key": "Authorization",
+                "value": "Bearer {{admin_access_token}}"
+              },
+              {
                 "key": "Accept",
                 "value": "application/json"
               },
@@ -2067,20 +2081,26 @@
               ],
               "protocol": "https"
             },
-            "description": "Authenticated user required. If using an admin token, `user_id` is required because the admin must choose which tourist owns the booking. If using a tourist token, the API ignores `user_id` and uses the logged-in tourist automatically.\n\nAdmin token required. Run `Auth and Tokens / Admin Login - Create Token` first so `admin_access_token` is saved, then send this request.",
+            "description": "Authenticated user required. If using an admin token, `user_id` is required because the admin must choose which tourist owns the booking. If using a tourist token, the API ignores `user_id` and uses the logged-in tourist automatically.\n\nAdmin token required. Run `Auth and Tokens / Admin Login - Create Token` first so `admin_access_token` is saved, then send this request.\n\nThis request also injects the Authorization header automatically from `admin_access_token` or `token` before sending.",
             "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{admin_access_token}}",
-                  "type": "string"
-                }
-              ]
+              "type": "noauth"
             }
           },
           "response": [],
           "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const adminToken = pm.collectionVariables.get('admin_access_token') || pm.environment.get('admin_access_token') || pm.collectionVariables.get('token') || pm.environment.get('token');",
+                  "if (!adminToken) {",
+                  "  throw new Error('Missing admin token. Run Auth and Tokens / Admin Login - Create Token first, then retry this booking request.');",
+                  "}",
+                  "pm.request.headers.upsert({ key: 'Authorization', value: `Bearer ${adminToken}` });"
+                ]
+              }
+            },
             {
               "listen": "test",
               "script": {
@@ -2116,6 +2136,10 @@
             "method": "GET",
             "header": [
               {
+                "key": "Authorization",
+                "value": "Bearer {{admin_access_token}}"
+              },
+              {
                 "key": "Accept",
                 "value": "application/json"
               }
@@ -2136,19 +2160,25 @@
               "protocol": "https"
             },
             "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{admin_access_token}}",
-                  "type": "string"
-                }
-              ]
+              "type": "noauth"
             },
-            "description": "Admin token required. Run `Auth and Tokens / Admin Login - Create Token` first so `admin_access_token` is saved, then send this request."
+            "description": "Admin token required. Run `Auth and Tokens / Admin Login - Create Token` first so `admin_access_token` is saved, then send this request.\n\nThis request also injects the Authorization header automatically from `admin_access_token` or `token` before sending."
           },
           "response": [],
           "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const adminToken = pm.collectionVariables.get('admin_access_token') || pm.environment.get('admin_access_token') || pm.collectionVariables.get('token') || pm.environment.get('token');",
+                  "if (!adminToken) {",
+                  "  throw new Error('Missing admin token. Run Auth and Tokens / Admin Login - Create Token first, then retry this booking request.');",
+                  "}",
+                  "pm.request.headers.upsert({ key: 'Authorization', value: `Bearer ${adminToken}` });"
+                ]
+              }
+            },
             {
               "listen": "test",
               "script": {
@@ -2179,6 +2209,10 @@
             "method": "PUT",
             "header": [
               {
+                "key": "Authorization",
+                "value": "Bearer {{admin_access_token}}"
+              },
+              {
                 "key": "Accept",
                 "value": "application/json"
               },
@@ -2207,19 +2241,25 @@
               "protocol": "https"
             },
             "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{admin_access_token}}",
-                  "type": "string"
-                }
-              ]
+              "type": "noauth"
             },
-            "description": "Admin token required. Run `Auth and Tokens / Admin Login - Create Token` first so `admin_access_token` is saved, then send this request."
+            "description": "Admin token required. Run `Auth and Tokens / Admin Login - Create Token` first so `admin_access_token` is saved, then send this request.\n\nThis request also injects the Authorization header automatically from `admin_access_token` or `token` before sending."
           },
           "response": [],
           "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const adminToken = pm.collectionVariables.get('admin_access_token') || pm.environment.get('admin_access_token') || pm.collectionVariables.get('token') || pm.environment.get('token');",
+                  "if (!adminToken) {",
+                  "  throw new Error('Missing admin token. Run Auth and Tokens / Admin Login - Create Token first, then retry this booking request.');",
+                  "}",
+                  "pm.request.headers.upsert({ key: 'Authorization', value: `Bearer ${adminToken}` });"
+                ]
+              }
+            },
             {
               "listen": "test",
               "script": {
@@ -2250,6 +2290,10 @@
             "method": "DELETE",
             "header": [
               {
+                "key": "Authorization",
+                "value": "Bearer {{admin_access_token}}"
+              },
+              {
                 "key": "Accept",
                 "value": "application/json"
               }
@@ -2270,19 +2314,25 @@
               "protocol": "https"
             },
             "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{admin_access_token}}",
-                  "type": "string"
-                }
-              ]
+              "type": "noauth"
             },
-            "description": "Admin token required. Run `Auth and Tokens / Admin Login - Create Token` first so `admin_access_token` is saved, then send this request."
+            "description": "Admin token required. Run `Auth and Tokens / Admin Login - Create Token` first so `admin_access_token` is saved, then send this request.\n\nThis request also injects the Authorization header automatically from `admin_access_token` or `token` before sending."
           },
           "response": [],
           "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const adminToken = pm.collectionVariables.get('admin_access_token') || pm.environment.get('admin_access_token') || pm.collectionVariables.get('token') || pm.environment.get('token');",
+                  "if (!adminToken) {",
+                  "  throw new Error('Missing admin token. Run Auth and Tokens / Admin Login - Create Token first, then retry this booking request.');",
+                  "}",
+                  "pm.request.headers.upsert({ key: 'Authorization', value: `Bearer ${adminToken}` });"
+                ]
+              }
+            },
             {
               "listen": "test",
               "script": {
@@ -2312,6 +2362,10 @@
           "request": {
             "method": "DELETE",
             "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_access_token}}"
+              },
               {
                 "key": "Accept",
                 "value": "application/json"
@@ -2345,20 +2399,26 @@
               ],
               "protocol": "https"
             },
-            "description": "Admin token required. Deletes all booking records and their related payments. Keep `confirm` exactly as `DELETE ALL BOOKINGS` to avoid accidental deletion.\n\nAdmin token required. Run `Auth and Tokens / Admin Login - Create Token` first so `admin_access_token` is saved, then send this request.",
+            "description": "Admin token required. Deletes all booking records and their related payments. Keep `confirm` exactly as `DELETE ALL BOOKINGS` to avoid accidental deletion.\n\nAdmin token required. Run `Auth and Tokens / Admin Login - Create Token` first so `admin_access_token` is saved, then send this request.\n\nThis request also injects the Authorization header automatically from `admin_access_token` or `token` before sending.",
             "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{admin_access_token}}",
-                  "type": "string"
-                }
-              ]
+              "type": "noauth"
             }
           },
           "response": [],
           "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const adminToken = pm.collectionVariables.get('admin_access_token') || pm.environment.get('admin_access_token') || pm.collectionVariables.get('token') || pm.environment.get('token');",
+                  "if (!adminToken) {",
+                  "  throw new Error('Missing admin token. Run Auth and Tokens / Admin Login - Create Token first, then retry this booking request.');",
+                  "}",
+                  "pm.request.headers.upsert({ key: 'Authorization', value: `Bearer ${adminToken}` });"
+                ]
+              }
+            },
             {
               "listen": "test",
               "script": {
