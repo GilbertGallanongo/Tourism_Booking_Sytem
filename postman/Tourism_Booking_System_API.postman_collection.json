@@ -114,6 +114,11 @@
       "key": "admin_token",
       "value": "",
       "type": "string"
+    },
+    {
+      "key": "booking_access_token",
+      "value": "",
+      "type": "string"
     }
   ],
   "event": [
@@ -168,6 +173,7 @@
                   "  pm.expect(body.token).to.be.a('string');",
                   "  saveVar('token', body.token);",
                   "  saveVar('tourist_access_token', body.token);",
+                  "  saveVar('booking_access_token', body.token);",
                   "  saveVar('current_token_id', body.token_id);",
                   "  saveVar('user_id', body.user && body.user.id);",
                   "  clearVar('token_id');",
@@ -215,7 +221,7 @@
               ],
               "protocol": "https"
             },
-            "description": "Creates a tourist personal access token using the sample tourist account. The token is automatically saved as `token` and `tourist_access_token` for protected tourist requests."
+            "description": "Creates a tourist personal access token using the sample tourist account. The token is automatically saved as `token`, `tourist_access_token`, and `booking_access_token` for tourist booking requests."
           },
           "response": []
         },
@@ -246,6 +252,7 @@
                   "  pm.expect(body.token).to.be.a('string');",
                   "  saveVar('token', body.token);",
                   "  saveVar('admin_access_token', body.token);",
+                  "  saveVar('booking_access_token', body.token);",
                   "  saveVar('admin_authorization_header', 'Bearer ' + body.token);",
                   "  saveVar('admin_token', body.token);",
                   "  saveVar('current_token_id', body.token_id);",
@@ -296,7 +303,7 @@
               ],
               "protocol": "https"
             },
-            "description": "Creates an admin personal access token using the sample admin account. After sending this, Bookings and other admin requests use `admin_access_token` automatically in the Authorization tab."
+            "description": "Creates an admin personal access token using the sample admin account. The token is automatically saved as `token`, `admin_access_token`, and `booking_access_token` for admin booking requests."
           },
           "response": []
         },
@@ -2007,12 +2014,12 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "{{admin_access_token}}",
+                  "value": "{{booking_access_token}}",
                   "type": "string"
                 }
               ]
             },
-            "description": "Admin token required. Run `Auth and Tokens / Admin Login - Create Token` first. This request uses Authorization tab > Bearer Token = `{{admin_access_token}}`. If you paste manually, paste only the token value in the Bearer Token field, not the word `Bearer`."
+            "description": "Booking token required. Run `Auth and Tokens / Tourist Login - Create Token` to use tourist access, or `Auth and Tokens / Admin Login - Create Token` to use admin access. This request uses Authorization tab > Bearer Token = `{{booking_access_token}}`. Tourist token can only access that tourist account's own bookings; admin token can access all bookings."
           },
           "response": [],
           "event": [
@@ -2079,13 +2086,13 @@
               ],
               "protocol": "https"
             },
-            "description": "Authenticated user required. If using an admin token, `user_id` is required because the admin must choose which tourist owns the booking. If using a tourist token, the API ignores `user_id` and uses the logged-in tourist automatically.\n\nAdmin token required. Run `Auth and Tokens / Admin Login - Create Token` first. This request uses Authorization tab > Bearer Token = `{{admin_access_token}}`. If you paste manually, paste only the token value in the Bearer Token field, not the word `Bearer`.",
+            "description": "Authenticated user required. If using an admin token, `user_id` is required because the admin must choose which tourist owns the booking. If using a tourist token, the API ignores `user_id` and uses the logged-in tourist automatically.\n\nBooking token required. Run `Auth and Tokens / Tourist Login - Create Token` to use tourist access, or `Auth and Tokens / Admin Login - Create Token` to use admin access. This request uses Authorization tab > Bearer Token = `{{booking_access_token}}`. Tourist token can only access that tourist account's own bookings; admin token can access all bookings.",
             "auth": {
               "type": "bearer",
               "bearer": [
                 {
                   "key": "token",
-                  "value": "{{admin_access_token}}",
+                  "value": "{{booking_access_token}}",
                   "type": "string"
                 }
               ]
@@ -2152,12 +2159,12 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "{{admin_access_token}}",
+                  "value": "{{booking_access_token}}",
                   "type": "string"
                 }
               ]
             },
-            "description": "Admin token required. Run `Auth and Tokens / Admin Login - Create Token` first. This request uses Authorization tab > Bearer Token = `{{admin_access_token}}`. If you paste manually, paste only the token value in the Bearer Token field, not the word `Bearer`."
+            "description": "Booking token required. Run `Auth and Tokens / Tourist Login - Create Token` to use tourist access, or `Auth and Tokens / Admin Login - Create Token` to use admin access. This request uses Authorization tab > Bearer Token = `{{booking_access_token}}`. Tourist token can only access that tourist account's own bookings; admin token can access all bookings."
           },
           "response": [],
           "event": [
@@ -2223,12 +2230,12 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "{{admin_access_token}}",
+                  "value": "{{booking_access_token}}",
                   "type": "string"
                 }
               ]
             },
-            "description": "Admin token required. Run `Auth and Tokens / Admin Login - Create Token` first. This request uses Authorization tab > Bearer Token = `{{admin_access_token}}`. If you paste manually, paste only the token value in the Bearer Token field, not the word `Bearer`."
+            "description": "Booking token required. Run `Auth and Tokens / Tourist Login - Create Token` to use tourist access, or `Auth and Tokens / Admin Login - Create Token` to use admin access. This request uses Authorization tab > Bearer Token = `{{booking_access_token}}`. Tourist token can only access that tourist account's own bookings; admin token can access all bookings."
           },
           "response": [],
           "event": [
@@ -2291,7 +2298,7 @@
                 }
               ]
             },
-            "description": "Admin token required. Run `Auth and Tokens / Admin Login - Create Token` first. This request uses Authorization tab > Bearer Token = `{{admin_access_token}}`. If you paste manually, paste only the token value in the Bearer Token field, not the word `Bearer`."
+            "description": "Admin token required. Run `Auth and Tokens / Admin Login - Create Token` first. This request uses Authorization tab > Bearer Token = `{{admin_access_token}}`. Tourist tokens are not allowed for delete/admin-only booking actions."
           },
           "response": [],
           "event": [
@@ -2357,7 +2364,7 @@
               ],
               "protocol": "https"
             },
-            "description": "Admin token required. Deletes all booking records and their related payments. Keep `confirm` exactly as `DELETE ALL BOOKINGS` to avoid accidental deletion.\n\nAdmin token required. Run `Auth and Tokens / Admin Login - Create Token` first. This request uses Authorization tab > Bearer Token = `{{admin_access_token}}`. If you paste manually, paste only the token value in the Bearer Token field, not the word `Bearer`.",
+            "description": "Admin token required. Deletes all booking records and their related payments. Keep `confirm` exactly as `DELETE ALL BOOKINGS` to avoid accidental deletion.\n\nAdmin token required. Run `Auth and Tokens / Admin Login - Create Token` first. This request uses Authorization tab > Bearer Token = `{{admin_access_token}}`. Tourist tokens are not allowed for delete/admin-only booking actions.",
             "auth": {
               "type": "bearer",
               "bearer": [
@@ -2391,15 +2398,11 @@
           "script": {
             "type": "text/javascript",
             "exec": [
-              "let token = (pm.collectionVariables.get('admin_access_token') || pm.environment.get('admin_access_token') || pm.collectionVariables.get('admin_token') || pm.environment.get('admin_token') || pm.collectionVariables.get('token') || pm.environment.get('token') || '').trim();",
-              "if (/^Bearer\\s+/i.test(token)) token = token.replace(/^Bearer\\s+/i, '').trim();",
-              "if (token) {",
-              "  pm.collectionVariables.set('admin_access_token', token);",
-              "  pm.collectionVariables.set('admin_token', token);",
-              "  pm.collectionVariables.set('admin_authorization_header', 'Bearer ' + token);",
-              "  try { pm.environment.set('admin_access_token', token); } catch (e) {}",
-              "  try { pm.environment.set('admin_token', token); } catch (e) {}",
-              "  try { pm.environment.set('admin_authorization_header', 'Bearer ' + token); } catch (e) {}",
+              "let bookingToken = (pm.collectionVariables.get('booking_access_token') || pm.environment.get('booking_access_token') || pm.collectionVariables.get('tourist_access_token') || pm.environment.get('tourist_access_token') || pm.collectionVariables.get('admin_access_token') || pm.environment.get('admin_access_token') || pm.collectionVariables.get('token') || pm.environment.get('token') || '').trim();",
+              "if (/^Bearer\\s+/i.test(bookingToken)) bookingToken = bookingToken.replace(/^Bearer\\s+/i, '').trim();",
+              "if (bookingToken) {",
+              "  pm.collectionVariables.set('booking_access_token', bookingToken);",
+              "  try { pm.environment.set('booking_access_token', bookingToken); } catch (e) {}",
               "}"
             ]
           }
