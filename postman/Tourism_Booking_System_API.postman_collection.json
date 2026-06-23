@@ -2040,7 +2040,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"tour_package_id\": {{package_id}},\n  \"tour_date\": \"2026-07-01\",\n  \"tour_start_date\": \"2026-07-01\",\n  \"tour_end_date\": \"2026-07-02\",\n  \"num_guests\": 2,\n  \"num_adults\": 2,\n  \"num_children\": 0,\n  \"num_seniors\": 0,\n  \"special_requests\": \"Created from Postman\"\n}"
+              "raw": "{\n  \"user_id\": {{user_id}},\n  \"tour_package_id\": {{package_id}},\n  \"tour_date\": \"2026-07-01\",\n  \"tour_start_date\": \"2026-07-01\",\n  \"tour_end_date\": \"2026-07-02\",\n  \"num_guests\": 2,\n  \"num_adults\": 2,\n  \"num_children\": 0,\n  \"num_seniors\": 0,\n  \"special_requests\": \"Created from Postman\"\n}"
             },
             "url": {
               "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/bookings",
@@ -2055,6 +2055,17 @@
                 "bookings"
               ],
               "protocol": "https"
+            },
+            "description": "Authenticated user required. If using an admin token, `user_id` is required because the admin must choose which tourist owns the booking. If using a tourist token, the API ignores `user_id` and uses the logged-in tourist automatically.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_access_token}}",
+                  "type": "string"
+                }
+              ]
             }
           },
           "response": [],
