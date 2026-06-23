@@ -1989,7 +1989,18 @@
                 "bookings"
               ],
               "protocol": "https"
-            }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Admin token required. Run `Auth and Tokens / Admin Login - Create Token` first so `admin_access_token` is saved, then send this request."
           },
           "response": [],
           "event": [
@@ -2056,7 +2067,7 @@
               ],
               "protocol": "https"
             },
-            "description": "Authenticated user required. If using an admin token, `user_id` is required because the admin must choose which tourist owns the booking. If using a tourist token, the API ignores `user_id` and uses the logged-in tourist automatically.",
+            "description": "Authenticated user required. If using an admin token, `user_id` is required because the admin must choose which tourist owns the booking. If using a tourist token, the API ignores `user_id` and uses the logged-in tourist automatically.\n\nAdmin token required. Run `Auth and Tokens / Admin Login - Create Token` first so `admin_access_token` is saved, then send this request.",
             "auth": {
               "type": "bearer",
               "bearer": [
@@ -2123,7 +2134,18 @@
                 "{{booking_id}}"
               ],
               "protocol": "https"
-            }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Admin token required. Run `Auth and Tokens / Admin Login - Create Token` first so `admin_access_token` is saved, then send this request."
           },
           "response": [],
           "event": [
@@ -2183,7 +2205,18 @@
                 "{{booking_id}}"
               ],
               "protocol": "https"
-            }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Admin token required. Run `Auth and Tokens / Admin Login - Create Token` first so `admin_access_token` is saved, then send this request."
           },
           "response": [],
           "event": [
@@ -2245,7 +2278,8 @@
                   "type": "string"
                 }
               ]
-            }
+            },
+            "description": "Admin token required. Run `Auth and Tokens / Admin Login - Create Token` first so `admin_access_token` is saved, then send this request."
           },
           "response": [],
           "event": [
@@ -2311,7 +2345,7 @@
               ],
               "protocol": "https"
             },
-            "description": "Admin token required. Deletes all booking records and their related payments. Keep `confirm` exactly as `DELETE ALL BOOKINGS` to avoid accidental deletion.",
+            "description": "Admin token required. Deletes all booking records and their related payments. Keep `confirm` exactly as `DELETE ALL BOOKINGS` to avoid accidental deletion.\n\nAdmin token required. Run `Auth and Tokens / Admin Login - Create Token` first so `admin_access_token` is saved, then send this request.",
             "auth": {
               "type": "bearer",
               "bearer": [
