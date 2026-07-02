@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\Concerns\AuthorizesApiAccess;
+use App\Http\Controllers\Api\Concerns\HandlesApiImageUploads;
 use App\Http\Controllers\Controller;
 use App\Models\TourPackage;
 use Illuminate\Http\JsonResponse;
@@ -13,6 +14,7 @@ use Illuminate\Support\Str;
 class TourPackageController extends Controller
 {
     use AuthorizesApiAccess;
+    use HandlesApiImageUploads;
 
     public function index(Request $request): JsonResponse
     {
@@ -33,6 +35,10 @@ class TourPackageController extends Controller
     public function store(Request $request): JsonResponse
     {
         $this->requireAdmin($request);
+
+        if ($failure = $this->imageUploadFailureResponse($request)) {
+            return $failure;
+        }
 
         $validated = $this->validatePackage($request);
         $validated = $this->prepareImageData($request, $validated);
@@ -55,6 +61,10 @@ class TourPackageController extends Controller
     {
         $this->requireAdmin($request);
 
+        if ($failure = $this->imageUploadFailureResponse($request)) {
+            return $failure;
+        }
+
         $validated = $this->validatePackage($request, $package->id);
         $validated = $this->prepareImageData($request, $validated);
 
@@ -72,8 +82,12 @@ class TourPackageController extends Controller
     {
         $this->requireAdmin($request);
 
+        if ($failure = $this->imageUploadFailureResponse($request, required: true)) {
+            return $failure;
+        }
+
         $request->validate([
-            'image_file' => ['required', 'image', 'max:10240'],
+            'image_file' => $this->imageUploadRules(required: true),
         ]);
 
         $this->deletePublicFile($package->image);
@@ -130,7 +144,7 @@ class TourPackageController extends Controller
             'duration_days' => ['sometimes', 'required', 'integer', 'min:1'],
             'max_guests' => ['sometimes', 'required', 'integer', 'min:1'],
             'image' => ['nullable', 'string', 'max:255'],
-            'image_file' => ['nullable', 'image', 'max:10240'],
+            'image_file' => $this->imageUploadRules(),
             'status' => ['sometimes', 'required', 'in:active,inactive'],
             'rating' => ['nullable', 'numeric', 'between:0,5'],
         ]);

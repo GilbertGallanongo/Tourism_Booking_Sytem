@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\Concerns\AuthorizesApiAccess;
+use App\Http\Controllers\Api\Concerns\HandlesApiImageUploads;
 use App\Http\Controllers\Controller;
 use App\Models\PromoPackage;
 use Illuminate\Http\JsonResponse;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Storage;
 class PromoPackageController extends Controller
 {
     use AuthorizesApiAccess;
+    use HandlesApiImageUploads;
 
     public function index(): JsonResponse
     {
@@ -25,6 +27,10 @@ class PromoPackageController extends Controller
     public function store(Request $request): JsonResponse
     {
         $this->requireAdmin($request);
+
+        if ($failure = $this->imageUploadFailureResponse($request)) {
+            return $failure;
+        }
 
         $validated = $this->validatePromoPackage($request);
         $validated = $this->prepareImageData($request, $validated);
@@ -49,6 +55,10 @@ class PromoPackageController extends Controller
     {
         $this->requireAdmin($request);
 
+        if ($failure = $this->imageUploadFailureResponse($request)) {
+            return $failure;
+        }
+
         $validated = $this->validatePromoPackage($request, true);
         $validated = $this->prepareImageData($request, $validated);
 
@@ -70,8 +80,12 @@ class PromoPackageController extends Controller
     {
         $this->requireAdmin($request);
 
+        if ($failure = $this->imageUploadFailureResponse($request, required: true)) {
+            return $failure;
+        }
+
         $request->validate([
-            'image_file' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:5120'],
+            'image_file' => $this->imageUploadRules(required: true),
         ]);
 
         $this->deletePublicFile($promoPackage->image);
@@ -130,7 +144,7 @@ class PromoPackageController extends Controller
             'end_date' => [$required, 'date', 'after_or_equal:start_date'],
             'is_active' => ['sometimes', 'boolean'],
             'image' => ['nullable', 'string', 'max:255'],
-            'image_file' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:5120'],
+            'image_file' => $this->imageUploadRules(),
         ]);
     }
 

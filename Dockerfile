@@ -23,6 +23,16 @@ RUN apt-get update && apt-get install -y \
 
 RUN docker-php-ext-install pdo pdo_pgsql pdo_sqlite intl zip
 
+RUN { \
+    echo "upload_max_filesize=50M"; \
+    echo "post_max_size=60M"; \
+    echo "memory_limit=512M"; \
+    echo "max_file_uploads=50"; \
+    echo "max_execution_time=300"; \
+    echo "max_input_time=300"; \
+    echo "upload_tmp_dir=/tmp"; \
+  } > /usr/local/etc/php/conf.d/uploads.ini
+
 # Install composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
