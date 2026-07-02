@@ -119,6 +119,11 @@
       "key": "booking_access_token",
       "value": "",
       "type": "string"
+    },
+    {
+      "key": "payment_access_token",
+      "value": "",
+      "type": "string"
     }
   ],
   "event": [
@@ -174,6 +179,7 @@
                   "  saveVar('token', body.token);",
                   "  saveVar('tourist_access_token', body.token);",
                   "  saveVar('booking_access_token', body.token);",
+                  "  saveVar('payment_access_token', body.token);",
                   "  saveVar('current_token_id', body.token_id);",
                   "  saveVar('user_id', body.user && body.user.id);",
                   "  clearVar('token_id');",
@@ -253,6 +259,7 @@
                   "  saveVar('token', body.token);",
                   "  saveVar('admin_access_token', body.token);",
                   "  saveVar('booking_access_token', body.token);",
+                  "  saveVar('payment_access_token', body.token);",
                   "  saveVar('admin_authorization_header', 'Bearer ' + body.token);",
                   "  saveVar('admin_token', body.token);",
                   "  saveVar('current_token_id', body.token_id);",
@@ -2435,6 +2442,16 @@
                 "payments"
               ],
               "protocol": "https"
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{payment_access_token}}",
+                  "type": "string"
+                }
+              ]
             }
           },
           "response": [],
@@ -2555,13 +2572,13 @@
               ],
               "protocol": "https"
             },
-            "description": "Authenticated user required. Use Body > form-data. To include proof of payment, choose a jpg/png/webp/gif/pdf file for `proof_file`; leave it empty for text-only payment create/update.",
+            "description": "Authenticated user required. Run Tourist Login - Create Token for tourist payment proof uploads, or Admin Login - Create Token for admin payment management. Use Body > form-data. Choose a jpg/png/webp/gif/pdf file for `proof_file`; leave it empty for text-only payment create/update. Do not manually set Content-Type for file uploads.",
             "auth": {
               "type": "bearer",
               "bearer": [
                 {
                   "key": "token",
-                  "value": "{{admin_access_token}}",
+                  "value": "{{payment_access_token}}",
                   "type": "string"
                 }
               ]
@@ -2593,6 +2610,16 @@
                 "{{payment_id}}"
               ],
               "protocol": "https"
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{payment_access_token}}",
+                  "type": "string"
+                }
+              ]
             }
           },
           "response": [],
@@ -2817,6 +2844,33 @@
               }
             }
           ]
+        }
+      ],
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{payment_access_token}}",
+            "type": "string"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "var paymentToken = (pm.collectionVariables.get('payment_access_token') || pm.environment.get('payment_access_token') || pm.collectionVariables.get('booking_access_token') || pm.environment.get('booking_access_token') || pm.collectionVariables.get('tourist_access_token') || pm.environment.get('tourist_access_token') || pm.collectionVariables.get('admin_access_token') || pm.environment.get('admin_access_token') || pm.collectionVariables.get('token') || pm.environment.get('token') || '').trim();",
+              "if (/^Bearer\\s+/i.test(paymentToken)) paymentToken = paymentToken.replace(/^Bearer\\s+/i, '').trim();",
+              "if (!paymentToken) {",
+              "  throw new Error('Missing payment token. Run Auth and Tokens / Tourist Login - Create Token for tourist payments, or Admin Login - Create Token for admin payment management.');",
+              "}",
+              "pm.collectionVariables.set('payment_access_token', paymentToken);",
+              "try { pm.environment.set('payment_access_token', paymentToken); } catch (e) {}"
+            ]
+          }
         }
       ]
     }
