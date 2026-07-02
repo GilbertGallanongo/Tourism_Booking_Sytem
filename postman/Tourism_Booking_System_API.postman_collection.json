@@ -72,7 +72,7 @@
     },
     {
       "key": "user_id",
-      "value": "1",
+      "value": "3",
       "type": "string"
     },
     {
@@ -82,12 +82,12 @@
     },
     {
       "key": "package_id",
-      "value": "1",
+      "value": "20",
       "type": "string"
     },
     {
       "key": "promo_package_id",
-      "value": "1",
+      "value": "10",
       "type": "string"
     },
     {
@@ -97,12 +97,12 @@
     },
     {
       "key": "booking_id",
-      "value": "1",
+      "value": "145",
       "type": "string"
     },
     {
       "key": "payment_id",
-      "value": "1",
+      "value": "115",
       "type": "string"
     },
     {
@@ -154,19 +154,19 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "const saveVar = (key, value) => {",
+                  "var saveVar = (key, value) => {",
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
                   "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
-                  "const clearVar = (key) => {",
+                  "var clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
                   "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "var json = () => pm.response.json();",
+                  "var data = () => json().data;",
+                  "var first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Tourist login returns token', function () {",
                   "  pm.response.to.have.status(201);",
                   "  const body = json();",
@@ -233,19 +233,19 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "const saveVar = (key, value) => {",
+                  "var saveVar = (key, value) => {",
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
                   "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
-                  "const clearVar = (key) => {",
+                  "var clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
                   "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "var json = () => pm.response.json();",
+                  "var data = () => json().data;",
+                  "var first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Admin login returns token', function () {",
                   "  pm.response.to.have.status(201);",
                   "  const body = json();",
@@ -315,19 +315,19 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "const saveVar = (key, value) => {",
+                  "var saveVar = (key, value) => {",
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
                   "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
-                  "const clearVar = (key) => {",
+                  "var clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
                   "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "var json = () => pm.response.json();",
+                  "var data = () => json().data;",
+                  "var first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Extra token is created and saved', function () {",
                   "  pm.response.to.have.status(201);",
                   "  const body = json();",
@@ -382,19 +382,19 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "const saveVar = (key, value) => {",
+                  "var saveVar = (key, value) => {",
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
                   "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
-                  "const clearVar = (key) => {",
+                  "var clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
                   "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "var json = () => pm.response.json();",
+                  "var data = () => json().data;",
+                  "var first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Tokens are listed', function () {",
                   "  pm.response.to.have.status(200);",
                   "  const body = json();",
@@ -441,19 +441,19 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "const saveVar = (key, value) => {",
+                  "var saveVar = (key, value) => {",
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
                   "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
-                  "const clearVar = (key) => {",
+                  "var clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
                   "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "var json = () => pm.response.json();",
+                  "var data = () => json().data;",
+                  "var first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Token is revoked by id', function () {",
                   "  pm.response.to.have.status(200);",
                   "  pm.expect(json().message).to.include('revoked');",
@@ -500,19 +500,19 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "const saveVar = (key, value) => {",
+                  "var saveVar = (key, value) => {",
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
                   "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
-                  "const clearVar = (key) => {",
+                  "var clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
                   "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "var json = () => pm.response.json();",
+                  "var data = () => json().data;",
+                  "var first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('All tokens are revoked', function () {",
                   "  pm.response.to.have.status(200);",
                   "  ['token', 'current_token_id', 'token_id', 'extra_token', 'admin_access_token', 'tourist_access_token'].forEach(clearVar);",
@@ -557,19 +557,19 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "const saveVar = (key, value) => {",
+                  "var saveVar = (key, value) => {",
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
                   "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
-                  "const clearVar = (key) => {",
+                  "var clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
                   "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "var json = () => pm.response.json();",
+                  "var data = () => json().data;",
+                  "var first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Current token is revoked', function () {",
                   "  pm.response.to.have.status(200);",
                   "  clearVar('token');",
@@ -647,19 +647,19 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "const saveVar = (key, value) => {",
+                  "var saveVar = (key, value) => {",
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
                   "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
-                  "const clearVar = (key) => {",
+                  "var clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
                   "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "var json = () => pm.response.json();",
+                  "var data = () => json().data;",
+                  "var first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Promo packages are listed', function () {",
                   "  pm.response.to.have.status(200);",
                   "  const item = first(data());",
@@ -706,19 +706,19 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "const saveVar = (key, value) => {",
+                  "var saveVar = (key, value) => {",
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
                   "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
-                  "const clearVar = (key) => {",
+                  "var clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
                   "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "var json = () => pm.response.json();",
+                  "var data = () => json().data;",
+                  "var first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Promo package is returned', function () { pm.response.to.have.status(200); });"
                 ]
               }
@@ -733,19 +733,19 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "const saveVar = (key, value) => {",
+                  "var saveVar = (key, value) => {",
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
                   "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
-                  "const clearVar = (key) => {",
+                  "var clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
                   "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "var json = () => pm.response.json();",
+                  "var data = () => json().data;",
+                  "var first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Promo package is created', function () {",
                   "  pm.response.to.have.status(201);",
                   "  const item = data();",
@@ -789,7 +789,7 @@
                 },
                 {
                   "key": "start_date",
-                  "value": "2026-06-01",
+                  "value": "2026-07-10",
                   "type": "text"
                 },
                 {
@@ -872,7 +872,7 @@
                 },
                 {
                   "key": "start_date",
-                  "value": "2026-06-01",
+                  "value": "2026-07-10",
                   "type": "text"
                 },
                 {
@@ -920,19 +920,19 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "const saveVar = (key, value) => {",
+                  "var saveVar = (key, value) => {",
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
                   "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
-                  "const clearVar = (key) => {",
+                  "var clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
                   "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "var json = () => pm.response.json();",
+                  "var data = () => json().data;",
+                  "var first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Promo package is updated', function () { pm.response.to.have.status(200); });"
                 ]
               }
@@ -982,19 +982,19 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "const saveVar = (key, value) => {",
+                  "var saveVar = (key, value) => {",
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
                   "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
-                  "const clearVar = (key) => {",
+                  "var clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
                   "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "var json = () => pm.response.json();",
+                  "var data = () => json().data;",
+                  "var first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Promo package is deleted', function () { pm.response.to.have.status(200); });"
                 ]
               }
@@ -1107,19 +1107,19 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "const saveVar = (key, value) => {",
+                  "var saveVar = (key, value) => {",
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
                   "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
-                  "const clearVar = (key) => {",
+                  "var clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
                   "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "var json = () => pm.response.json();",
+                  "var data = () => json().data;",
+                  "var first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Tourist spots are listed', function () {",
                   "  pm.response.to.have.status(200);",
                   "  const item = first(data());",
@@ -1166,19 +1166,19 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "const saveVar = (key, value) => {",
+                  "var saveVar = (key, value) => {",
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
                   "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
-                  "const clearVar = (key) => {",
+                  "var clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
                   "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "var json = () => pm.response.json();",
+                  "var data = () => json().data;",
+                  "var first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Tourist spot is returned', function () { pm.response.to.have.status(200); });"
                 ]
               }
@@ -1193,19 +1193,19 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "const saveVar = (key, value) => {",
+                  "var saveVar = (key, value) => {",
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
                   "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
-                  "const clearVar = (key) => {",
+                  "var clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
                   "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "var json = () => pm.response.json();",
+                  "var data = () => json().data;",
+                  "var first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Tourist spot is created', function () {",
                   "  pm.response.to.have.status(201);",
                   "  const item = data();",
@@ -1370,19 +1370,19 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "const saveVar = (key, value) => {",
+                  "var saveVar = (key, value) => {",
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
                   "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
-                  "const clearVar = (key) => {",
+                  "var clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
                   "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "var json = () => pm.response.json();",
+                  "var data = () => json().data;",
+                  "var first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Tourist spot is updated', function () { pm.response.to.have.status(200); });"
                 ]
               }
@@ -1432,19 +1432,19 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "const saveVar = (key, value) => {",
+                  "var saveVar = (key, value) => {",
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
                   "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
-                  "const clearVar = (key) => {",
+                  "var clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
                   "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "var json = () => pm.response.json();",
+                  "var data = () => json().data;",
+                  "var first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Tourist spot is deleted', function () { pm.response.to.have.status(200); });"
                 ]
               }
@@ -1557,19 +1557,19 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "const saveVar = (key, value) => {",
+                  "var saveVar = (key, value) => {",
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
                   "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
-                  "const clearVar = (key) => {",
+                  "var clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
                   "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "var json = () => pm.response.json();",
+                  "var data = () => json().data;",
+                  "var first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Tour packages are listed', function () {",
                   "  pm.response.to.have.status(200);",
                   "  const item = first(data());",
@@ -1617,19 +1617,19 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "const saveVar = (key, value) => {",
+                  "var saveVar = (key, value) => {",
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
                   "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
-                  "const clearVar = (key) => {",
+                  "var clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
                   "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "var json = () => pm.response.json();",
+                  "var data = () => json().data;",
+                  "var first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Tour package is returned', function () { pm.response.to.have.status(200); });"
                 ]
               }
@@ -1644,19 +1644,19 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "const saveVar = (key, value) => {",
+                  "var saveVar = (key, value) => {",
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
                   "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
-                  "const clearVar = (key) => {",
+                  "var clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
                   "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "var json = () => pm.response.json();",
+                  "var data = () => json().data;",
+                  "var first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Package is created', function () {",
                   "  pm.response.to.have.status(201);",
                   "  const item = data();",
@@ -1842,8 +1842,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
+                  "var json = () => pm.response.json();",
+                  "var data = () => json().data;",
                   "pm.test('Package is updated', function () {",
                   "  pm.response.to.have.status(200);",
                   "  pm.expect(data().image_url).to.be.a('string');",
@@ -1896,19 +1896,19 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "const saveVar = (key, value) => {",
+                  "var saveVar = (key, value) => {",
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
                   "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
-                  "const clearVar = (key) => {",
+                  "var clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
                   "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "var json = () => pm.response.json();",
+                  "var data = () => json().data;",
+                  "var first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Package is deleted', function () { pm.response.to.have.status(200); });"
                 ]
               }
@@ -2028,19 +2028,19 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "const saveVar = (key, value) => {",
+                  "var saveVar = (key, value) => {",
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
                   "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
-                  "const clearVar = (key) => {",
+                  "var clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
                   "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "var json = () => pm.response.json();",
+                  "var data = () => json().data;",
+                  "var first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Bookings are listed', function () {",
                   "  pm.response.to.have.status(200);",
                   "  const item = first(data());",
@@ -2070,7 +2070,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"user_id\": {{user_id}},\n  \"tour_package_id\": {{package_id}},\n  \"tour_date\": \"2026-07-01\",\n  \"tour_start_date\": \"2026-07-01\",\n  \"tour_end_date\": \"2026-07-02\",\n  \"num_guests\": 2,\n  \"num_adults\": 2,\n  \"num_children\": 0,\n  \"num_seniors\": 0,\n  \"special_requests\": \"Created from Postman\"\n}"
+              "raw": "{\n  \"user_id\": {{user_id}},\n  \"tour_package_id\": {{package_id}},\n  \"tour_date\": \"2026-07-10\",\n  \"tour_start_date\": \"2026-07-10\",\n  \"tour_end_date\": \"2026-07-11\",\n  \"num_guests\": 2,\n  \"num_adults\": 2,\n  \"num_children\": 0,\n  \"num_seniors\": 0,\n  \"special_requests\": \"Created from Postman demo\"\n}"
             },
             "url": {
               "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/bookings",
@@ -2105,19 +2105,19 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "const saveVar = (key, value) => {",
+                  "var saveVar = (key, value) => {",
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
                   "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
-                  "const clearVar = (key) => {",
+                  "var clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
                   "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "var json = () => pm.response.json();",
+                  "var data = () => json().data;",
+                  "var first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Booking is created', function () {",
                   "  pm.response.to.have.status(201);",
                   "  const item = data();",
@@ -2173,19 +2173,19 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "const saveVar = (key, value) => {",
+                  "var saveVar = (key, value) => {",
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
                   "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
-                  "const clearVar = (key) => {",
+                  "var clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
                   "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "var json = () => pm.response.json();",
+                  "var data = () => json().data;",
+                  "var first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Booking is returned', function () { pm.response.to.have.status(200); });"
                 ]
               }
@@ -2208,7 +2208,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"tour_package_id\": {{package_id}},\n  \"tour_date\": \"2026-07-03\",\n  \"tour_start_date\": \"2026-07-03\",\n  \"tour_end_date\": \"2026-07-04\",\n  \"num_guests\": 3,\n  \"status\": \"pending\",\n  \"special_requests\": \"Updated from Postman\"\n}"
+              "raw": "{\n  \"tour_package_id\": {{package_id}},\n  \"tour_date\": \"2026-07-12\",\n  \"tour_start_date\": \"2026-07-12\",\n  \"tour_end_date\": \"2026-07-13\",\n  \"num_guests\": 3,\n  \"status\": \"pending\",\n  \"special_requests\": \"Updated from Postman demo\"\n}"
             },
             "url": {
               "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/bookings/{{booking_id}}",
@@ -2244,19 +2244,19 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "const saveVar = (key, value) => {",
+                  "var saveVar = (key, value) => {",
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
                   "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
-                  "const clearVar = (key) => {",
+                  "var clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
                   "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "var json = () => pm.response.json();",
+                  "var data = () => json().data;",
+                  "var first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Booking is updated', function () { pm.response.to.have.status(200); });"
                 ]
               }
@@ -2307,19 +2307,19 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "const saveVar = (key, value) => {",
+                  "var saveVar = (key, value) => {",
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
                   "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
-                  "const clearVar = (key) => {",
+                  "var clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
                   "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "var json = () => pm.response.json();",
+                  "var data = () => json().data;",
+                  "var first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Booking is deleted', function () { pm.response.to.have.status(200); });"
                 ]
               }
@@ -2444,19 +2444,19 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "const saveVar = (key, value) => {",
+                  "var saveVar = (key, value) => {",
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
                   "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
-                  "const clearVar = (key) => {",
+                  "var clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
                   "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "var json = () => pm.response.json();",
+                  "var data = () => json().data;",
+                  "var first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Payments are listed', function () {",
                   "  pm.response.to.have.status(200);",
                   "  const item = first(data());",
@@ -2475,19 +2475,19 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "const saveVar = (key, value) => {",
+                  "var saveVar = (key, value) => {",
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
                   "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
-                  "const clearVar = (key) => {",
+                  "var clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
                   "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "var json = () => pm.response.json();",
+                  "var data = () => json().data;",
+                  "var first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Payment is created or updated', function () {",
                   "  pm.response.to.have.status(201);",
                   "  const item = data();",
@@ -2531,7 +2531,7 @@
                 },
                 {
                   "key": "reference_number",
-                  "value": "GCASH-POSTMAN-001",
+                  "value": "GCASH-POSTMAN-DEMO-001",
                   "type": "text"
                 },
                 {
@@ -2602,19 +2602,19 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "const saveVar = (key, value) => {",
+                  "var saveVar = (key, value) => {",
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
                   "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
-                  "const clearVar = (key) => {",
+                  "var clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
                   "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "var json = () => pm.response.json();",
+                  "var data = () => json().data;",
+                  "var first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Payment is returned', function () { pm.response.to.have.status(200); });"
                 ]
               }
@@ -2637,7 +2637,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"booking_id\": {{booking_id}},\n  \"amount\": 1500,\n  \"method\": \"gcash\",\n  \"reference_number\": \"GCASH-POSTMAN-001\",\n  \"status\": \"paid\"\n}"
+              "raw": "{\n  \"booking_id\": {{booking_id}},\n  \"amount\": 1500,\n  \"method\": \"gcash\",\n  \"reference_number\": \"GCASH-POSTMAN-DEMO-001\",\n  \"status\": \"paid\"\n}"
             },
             "url": {
               "raw": "https://tourism-booking-system-production-b0bb.up.railway.app/api/payments/{{payment_id}}",
@@ -2672,19 +2672,19 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "const saveVar = (key, value) => {",
+                  "var saveVar = (key, value) => {",
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
                   "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
-                  "const clearVar = (key) => {",
+                  "var clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
                   "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "var json = () => pm.response.json();",
+                  "var data = () => json().data;",
+                  "var first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Payment is marked paid', function () { pm.response.to.have.status(200); });"
                 ]
               }
@@ -2734,19 +2734,19 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "const saveVar = (key, value) => {",
+                  "var saveVar = (key, value) => {",
                   "  if (value === undefined || value === null) return;",
                   "  const text = String(value);",
                   "  pm.collectionVariables.set(key, text);",
                   "  try { pm.environment.set(key, text); } catch (e) {}",
                   "};",
-                  "const clearVar = (key) => {",
+                  "var clearVar = (key) => {",
                   "  pm.collectionVariables.unset(key);",
                   "  try { pm.environment.unset(key); } catch (e) {}",
                   "};",
-                  "const json = () => pm.response.json();",
-                  "const data = () => json().data;",
-                  "const first = (value) => Array.isArray(value) ? value[0] : null;",
+                  "var json = () => pm.response.json();",
+                  "var data = () => json().data;",
+                  "var first = (value) => Array.isArray(value) ? value[0] : null;",
                   "pm.test('Payment is deleted', function () { pm.response.to.have.status(200); });"
                 ]
               }
